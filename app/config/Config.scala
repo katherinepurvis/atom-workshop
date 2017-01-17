@@ -2,6 +2,7 @@ package config
 
 import com.amazonaws.auth.{AWSCredentialsProviderChain, InstanceProfileCredentialsProvider}
 import com.amazonaws.auth.profile.ProfileCredentialsProvider
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient
 import play.api.Configuration
 import services.AwsInstanceTags
 import com.gu.cm.{Mode, Configuration => ConfigurationMagic}
@@ -37,5 +38,12 @@ object Config extends AwsInstanceTags {
   val pandaDomain = config.getString("panda.domain")
   val pandaAuthCallback = config.getString("panda.authCallback")
   val pandaSystem = config.getString("panda.system")
+
+  val dynamoDB = region.createClient(
+    classOf[AmazonDynamoDBClient],
+    awsCredentialsProvider,
+    null
+  )
+  val previewDynamoTableName = "atom-workshop-preview-DEV"
 
 }
