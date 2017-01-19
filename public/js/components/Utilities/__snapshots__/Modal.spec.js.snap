@@ -1,4 +1,4 @@
-exports[`test Modal - Should render contents when open 1`] = `
+exports[`test Should render contents when open 1`] = `
 <div
   className="modal"
   onClick={undefined}>
@@ -20,4 +20,4 @@ exports[`test Modal - Should render contents when open 1`] = `
 </div>
 `;
 
-exports[`test Modal - Should render null when closed 1`] = `null`;
+exports[`test Should render null when closed 1`] = `null`;
