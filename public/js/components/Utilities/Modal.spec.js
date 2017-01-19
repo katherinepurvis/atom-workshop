@@ -28,7 +28,7 @@ test('Should call dismiss function when close clicked', () => {
     </Modal>
   );
   modal.find('.modal__dismiss').simulate('click');
-  expect(dismissFn.mock.calls.length).toBe(1);
+  expect(dismissFn).toHaveBeenCalledTimes(1);
 });
 
 test('Should call dismiss function when background clicked', () => {
@@ -40,7 +40,7 @@ test('Should call dismiss function when background clicked', () => {
     </Modal>
   );
   modal.find('.modal').simulate('click');
-  expect(dismissFn.mock.calls.length).toBe(1);
+  expect(dismissFn).toHaveBeenCalledTimes(1);
 });
 
 test('Should not call dismiss function when content clicked', () => {
@@ -52,5 +52,5 @@ test('Should not call dismiss function when content clicked', () => {
     </Modal>
   );
   modal.find('.modal__content').simulate('click', { stopPropagation() {} });
-  expect(dismissFn.mock.calls.length).toBe(0);
+  expect(dismissFn).not.toHaveBeenCalled();
 });
