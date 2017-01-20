@@ -8,7 +8,7 @@ module.exports = {
             {
                 test:    /\.js$/,
                 exclude: /node_modules/,
-                loaders: ['babel-loader?presets[]=es2015&presets[]=react&plugins[]=transform-object-assign']
+                loaders: ['babel-loader']
             },
             {
                 test: /\.scss$/,

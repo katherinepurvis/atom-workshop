@@ -1,0 +1,23 @@
+exports[`test Should render contents when open 1`] = `
+<div
+  className="modal"
+  onClick={undefined}>
+  <div
+    className="modal__content"
+    onClick={[Function]}>
+    <div
+      className="modal__content__header">
+      <button
+        className="i-cross modal__dismiss"
+        onClick={undefined}>
+        Close
+      </button>
+    </div>
+    <div>
+      Modal Contents
+    </div>
+  </div>
+</div>
+`;
+
+exports[`test Should render null when closed 1`] = `null`;
