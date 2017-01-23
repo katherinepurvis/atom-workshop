@@ -44,6 +44,6 @@ object Config extends AwsInstanceTags {
     awsCredentialsProvider,
     null
   )
-  val previewDynamoTableName = "atom-workshop-preview-DEV"
-
+  val previewDynamoTableName = "atom-worshop-live-DEV"
+  val liveDynamoTableName = config.getString("aws.dynamo.live.tableName")
 }
