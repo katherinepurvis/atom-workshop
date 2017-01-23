@@ -3,21 +3,22 @@ version := "1.0"
 
 scalaVersion := "2.11.8"
 
-lazy val awsVersion = "1.11.77"
+lazy val awsVersion = "1.11.8"
+lazy val atomLibVersion = "0.1.9" //"0.1.10-SNAPSHOT"
 
 libraryDependencies ++= Seq(
   ws,
-  "com.amazonaws" % "aws-java-sdk-core" % awsVersion,
-  "com.gu" % "kinesis-logback-appender" % "1.3.0",
-  "com.amazonaws" % "aws-java-sdk-ec2" % awsVersion,
-  "net.logstash.logback" % "logstash-logback-encoder" % "4.2",
-  "com.gu" %% "configuration-magic-core" %  "1.3.0",
-  "com.gu" %% "pan-domain-auth-play_2-5" % "0.4.1",
-  "com.gu" %% "atom-publisher-lib" % "0.1.8",
-  "com.gu" %% "atom-manager-play" % "0.1.8",
-  "com.gu" %% "scanamo" % "0.9.0",
-  "com.gu" %% "scanamo-scrooge" % "0.1.3",
-  "org.typelevel" %% "cats-core" % "0.9.0" // for interacting with scanamo
+  "com.amazonaws"            %  "aws-java-sdk-core"           % awsVersion,
+  "com.amazonaws"            %  "aws-java-sdk-ec2"            % awsVersion,
+  "com.gu"                   %% "atom-manager-play"           % atomLibVersion,
+  "com.gu"                   %% "atom-publisher-lib"          % atomLibVersion,
+  "com.gu"                   %% "configuration-magic-core"    % "1.3.0",
+  "com.gu"                   %  "kinesis-logback-appender"    % "1.3.0",
+  "com.gu"                   %% "pan-domain-auth-play_2-5"    % "0.4.1",
+  "com.gu"                   %% "scanamo"                     % "0.9.1",
+  "com.gu"                   %% "scanamo-scrooge"             % "0.1.4",
+  "net.logstash.logback"     %  "logstash-logback-encoder"    % "4.2",
+  "org.typelevel"            %% "cats-core"                   % "0.9.0" // for interacting with scanamo
 )
 routesGenerator := InjectedRoutesGenerator
 

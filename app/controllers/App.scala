@@ -5,6 +5,8 @@ import config.Config
 import play.api.Logger
 import play.api.libs.ws.WSClient
 import play.api.mvc._
+import cats.syntax.either._
+import cats.instances.either._
 
 class App(val wsClient: WSClient, implicit val previewDataStore: PreviewDataStore) extends Controller with PanDomainAuthActions {
 
