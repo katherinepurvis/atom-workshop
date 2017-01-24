@@ -1,4 +1,4 @@
-@(title: String)
+@(title: String, clientConfigJson: String)
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,6 +11,9 @@
     <body>
         <div class="wrap" id="react-mount"></div>
 
+        <script type="application/json" id="config">
+            @Html(clientConfigJson)
+        </script>
         <script src="@routes.Assets.versioned("build/app.js")" type="application/javascript"></script>
     </body>
 </html>

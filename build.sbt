@@ -15,6 +15,7 @@ libraryDependencies ++= Seq(
   "com.gu"                   %% "configuration-magic-core"    % "1.3.0",
   "com.gu"                   %  "kinesis-logback-appender"    % "1.3.0",
   "com.gu"                   %% "pan-domain-auth-play_2-5"    % "0.4.1",
+  "org.cvogt"                %% "play-json-extensions"      % "0.6.0",
   "net.logstash.logback"     %  "logstash-logback-encoder"    % "4.2"
 )
 
