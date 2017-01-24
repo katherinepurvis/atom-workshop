@@ -17,6 +17,7 @@ for the composer AWS account from [janus](https://janus.gutools.co.uk). You'll a
   
 ## Compiling Client Side Dependencies
 
+Requires Node 6, we recommend you use [nvm](https://github.com/creationix/nvm) to manage versions of node. We've included an `.nvmrc` file so you can use `nvm use` to switch to the correct version.
 You can compile client side dependencies with `yarn build` or `npm run build`. 
 Alternatively to compile client side assets on change run `yarn build-dev` or `npm run build-dev`
 
