@@ -21,7 +21,6 @@ function extractConfigFromPage() {
 
 const store = configureStore();
 const config = extractConfigFromPage();
-    console.log(config);
 
 // Send config to store on init
 store.dispatch({
