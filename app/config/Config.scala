@@ -46,6 +46,6 @@ object Config extends AwsInstanceTags {
   )
 
   val previewDynamoTableName = config.getString("aws.dynamo.preview.tableName")
-  val liveDynamoTableName = config.getString("aws.dynamo.live.tableName")
+  val publishedDynamoTableName = config.getString("aws.dynamo.live.tableName")
 
 }

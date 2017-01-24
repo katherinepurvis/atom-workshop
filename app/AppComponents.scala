@@ -1,4 +1,4 @@
-import data.PreviewAtomDataStore
+import data.AtomDataStores
 import config.LogConfig
 import play.api._
 import play.api.ApplicationLoader.Context
@@ -17,7 +17,8 @@ class AppComponents(context: Context)
   lazy val loginController = new controllers.Login(wsClient)
   lazy val healthcheckController = new controllers.Healthcheck()
 
-  lazy val previewAtomDataStore = new PreviewAtomDataStore(Config.dynamoDB, Config.previewDynamoTableName).store
+  lazy val previewAtomDataStore = AtomDataStores.previewStore
+  lazy val publishedAtomDataStore = AtomDataStores.publishedStore
 }
 
 
