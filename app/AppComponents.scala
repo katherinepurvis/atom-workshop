@@ -16,7 +16,7 @@ class AppComponents(context: Context)
   lazy val loginController = new controllers.Login(wsClient)
   lazy val healthcheckController = new controllers.Healthcheck()
 
-  lazy val atomDataStore = new PreviewAtomDataStore(Config.dynamoDB, Config.previewDynamoTableName)
+  lazy val atomDataStore = new PreviewAtomDataStore(Config.dynamoDB, Config.previewDynamoTableName).store
 }
 
 

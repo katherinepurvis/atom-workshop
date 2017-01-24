@@ -13,11 +13,7 @@ libraryDependencies ++= Seq(
   "net.logstash.logback" % "logstash-logback-encoder" % "4.2",
   "com.gu" %% "configuration-magic-core" %  "1.3.0",
   "com.gu" %% "pan-domain-auth-play_2-5" % "0.4.1",
-  "com.gu" %% "atom-publisher-lib" % "0.1.8",
-  "com.gu" %% "atom-manager-play" % "0.1.8",
-  "com.gu" %% "scanamo" % "0.9.0",
-  "com.gu" %% "scanamo-scrooge" % "0.1.3",
-  "org.typelevel" %% "cats-core" % "0.9.0" // for interacting with scanamo
+  "com.gu" %% "atom-publisher-lib" % "0.1.10-SNAPSHOT"
 )
 routesGenerator := InjectedRoutesGenerator
 
