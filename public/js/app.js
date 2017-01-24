@@ -3,7 +3,6 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 
 import configureStore from './util/configureStore';
-import { setStore } from './util/storeAccessor';
 import { routes } from './routes';
 
 import '../styles/main.scss';
@@ -30,8 +29,6 @@ store.dispatch({
     config:     extractConfigFromPage(),
     receivedAt: Date.now()
 });
-
-setStore(store);
 
 render(
     <Provider store={store}>
