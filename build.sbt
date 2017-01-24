@@ -18,6 +18,11 @@ libraryDependencies ++= Seq(
   "net.logstash.logback"     %  "logstash-logback-encoder"    % "4.2"
 )
 
+resolvers ++= Seq(
+  "Sonatype OSS Snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/",
+    Resolver.sonatypeRepo("snapshots")
+)
+
 routesGenerator := InjectedRoutesGenerator
 
 import com.typesafe.sbt.packager.archetypes.ServerLoader.Systemd
