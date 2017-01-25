@@ -1,7 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { ApolloProvider } from 'react-apollo';
-import ApolloClient from 'apollo-client';
+import { Provider } from 'react-redux';
 
 import configureStore from './util/configureStore';
 import { routes } from './routes';
@@ -19,9 +18,8 @@ function extractConfigFromPage() {
     return JSON.parse(configEl.innerHTML);
 }
 
-const client = new ApolloClient();
 
-const store = configureStore(client);
+const store = configureStore();
 const config = extractConfigFromPage();
 
 // Send config to store on init
@@ -32,7 +30,7 @@ store.dispatch({
 });
 
 render(
-    <ApolloProvider client={client} store={store}>
+    <Provider store={store}>
       {routes}
-    </ApolloProvider>
+    </Provider>
     , document.getElementById('react-mount'));
