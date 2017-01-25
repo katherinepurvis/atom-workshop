@@ -2,21 +2,45 @@ package controllers
 
 import com.gu.atom.data.{DynamoCompositeKey, PreviewDataStore}
 import com.gu.contentatom.thrift._
-import com.gu.contentatom.thrift.AtomData.Media
 import config.Config
 import model.ClientConfig
 import play.api.Logger
 import play.api.libs.ws.WSClient
 import play.api.libs.json.Json
 import play.api.mvc._
-import com.gu.contentatom.thrift.atom.media._
 import cats.syntax.either._
 import util.Copier
 
 import scala.reflect.ClassTag
-import scala.reflect.api.TypeTags
 import scala.reflect.runtime.{universe => ru}
 import scala.util.Try
+
+// From: http://jayconrod.com/posts/32/convenient-updates-for-immutable-objects-in-scala
+trait Copying[T] {
+  def copyWith(changes: (String, AnyRef)*): T = {
+    val clas = getClass
+    val constructor = clas.getDeclaredConstructors.head
+    val argumentCount = constructor.getParameterTypes.size
+    val fields = clas.getDeclaredFields
+    val arguments = (0 until argumentCount) map { i =>
+      val fieldName = fields(i).getName
+      changes.find(_._1 == fieldName) match {
+        case Some(change) => change._2
+        case None =>
+          val getter = clas.getMethod(fieldName)
+          getter.invoke(this)
+      }
+    }
+    constructor.newInstance(arguments: _*).asInstanceOf[T]
+  }
+}
+
+object AnyTrait {
+  implicit def innerObj[T](o: MixClass[T]):T = o.obj
+
+  def ::[T](o: T) = new MixClass(o)
+  final class MixClass[T] private[AnyTrait](val obj: T) extends Copying[T]
+}
 
 class App(val wsClient: WSClient, previewDataStore: PreviewDataStore) extends Controller with PanDomainAuthActions {
 
@@ -36,8 +60,6 @@ class App(val wsClient: WSClient, previewDataStore: PreviewDataStore) extends Co
   }
 
   case class AtomUpdate(atomType: AtomType, id: String, field:String, value: String)
-
-
 
   def updateField(atom:Atom, field: String, value: String) = {
 
@@ -76,14 +98,7 @@ class App(val wsClient: WSClient, previewDataStore: PreviewDataStore) extends Co
       println("doing final copy")
       val lalala = Copier(atom, ("contentChangeDetails", Copier(ccd, ("lastModified", Some(updatedLm)))))
       println(lalala)
-
-
-
     }
-
-
-
-
 
     val m = ru.runtimeMirror(atom.getClass.getClassLoader)
     val defaultHtmlSymb = ru.typeOf[Atom].decl(ru.TermName("defaultHtml")).asMethod
@@ -102,14 +117,12 @@ class App(val wsClient: WSClient, previewDataStore: PreviewDataStore) extends Co
   }
 
   def updateAtom() = AuthAction {
-
-    val testAtom = previewDataStore.getAtom(DynamoCompositeKey("Media", Some("8ba4c6c8-0815-45d9-9e87-0a6c20954094")))
-
-//    previewDataStore.getAtom(DynamoCompositeKey(atomUpdate.atomType.name, Some(atomUpdate.id)))
-
-      testAtom.fold(
+    val testAtom = previewDataStore.getAtom(DynamoCompositeKey("Media", Some("8ba4c6c8-0815-45d9-9e87-0a6c20954094"))).fold(
       err => Logger.error(err.msg),
-      atom => updateField(atom, "contentChangeDetails.lastModified.date", "12345")
+      atom => { //updateField(atom, "contentChangeDetails.lastModified.date", "12345")
+        val newAtom = (atom :: AnyTrait).copyWith(("defaultHtml", "12345"))
+        println(newAtom)
+      }
     )
     Ok("yay!")
   }
