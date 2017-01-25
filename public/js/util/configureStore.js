@@ -1,7 +1,13 @@
-import { compose, createStore, applyMiddleware } from 'redux';
+import { compose, createStore, applyMiddleware, combineReducers } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 
-import rootReducer from '../reducers/rootReducer';
+import config from '../reducers/configReducer';
+import error from '../reducers/errorReducer';
+
+const rootReducer = combineReducers({
+  config,
+  error
+});
 
 const createStoreWithMiddleware = compose(
     applyMiddleware(
