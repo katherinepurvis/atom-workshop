@@ -12,7 +12,7 @@ export default class FormFieldTextInput extends React.Component {
   }
 };
 
-TextInput.propTypes = {
+FormFieldTextInput.propTypes = {
   fieldLabel: React.PropTypes.string.isRequired,
   fieldName: React.PropTypes.string.isRequired,
   fieldValue: React.PropTypes.string.isRequired,

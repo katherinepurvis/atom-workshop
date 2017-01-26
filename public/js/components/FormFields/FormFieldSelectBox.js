@@ -9,7 +9,7 @@ export default class FormFieldSelectBox extends React.Component {
   }
 
   renderOptions() {
-    return this.props.selectValues.map(this.renderOption);
+    return this.props.fieldValues.map(this.renderOption);
   }
 
   render() {
@@ -23,3 +23,9 @@ export default class FormFieldSelectBox extends React.Component {
     );
   };
 }
+
+FormFieldSelectBox.propTypes = {
+  fieldLabel: React.PropTypes.string.isRequired,
+  fieldName: React.PropTypes.string.isRequired,
+  fieldValues: React.PropTypes.array.isRequired
+};
