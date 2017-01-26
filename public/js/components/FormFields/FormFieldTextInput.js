@@ -1,6 +1,14 @@
 import React from 'react';
 
 export default class FormFieldTextInput extends React.Component {
+
+  static propTypes = {
+    fieldLabel: React.PropTypes.string.isRequired,
+    fieldName: React.PropTypes.string.isRequired,
+    fieldValue: React.PropTypes.string.isRequired,
+    fieldPlaceholder: React.PropTypes.string
+  };
+
   render() {
     return (
         <div>
@@ -12,9 +20,3 @@ export default class FormFieldTextInput extends React.Component {
   }
 };
 
-FormFieldTextInput.propTypes = {
-  fieldLabel: React.PropTypes.string.isRequired,
-  fieldName: React.PropTypes.string.isRequired,
-  fieldValue: React.PropTypes.string.isRequired,
-  fieldPlaceholder: React.PropTypes.string
-};

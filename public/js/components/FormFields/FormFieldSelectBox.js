@@ -2,6 +2,12 @@ import React from 'react';
 
 export default class FormFieldSelectBox extends React.Component {
 
+  static propTypes = {
+    fieldLabel: React.PropTypes.string.isRequired,
+    fieldName: React.PropTypes.string.isRequired,
+    fieldValues: React.PropTypes.array.isRequired
+  };
+
   renderOption(option) {
     return (
         <option key={option} value={option}>{option}</option>
@@ -23,9 +29,3 @@ export default class FormFieldSelectBox extends React.Component {
     );
   };
 }
-
-FormFieldSelectBox.propTypes = {
-  fieldLabel: React.PropTypes.string.isRequired,
-  fieldName: React.PropTypes.string.isRequired,
-  fieldValues: React.PropTypes.array.isRequired
-};
