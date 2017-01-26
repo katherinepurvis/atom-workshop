@@ -1,8 +1,9 @@
 import React from 'react';
 
 import Header from './Header';
-import TextInput from './FormFields/FormFieldTextInput';
-import SelectBox from './FormFields/FormFieldSelectBox';
+import FormFieldTextInput from './FormFields/FormFieldTextInput';
+import FormFieldSelectBox from './FormFields/FormFieldSelectBox';
+import FormFieldRadioButtons from './FormFields/FormFieldRadioButtons';
 
 export default class ReactApp extends React.Component {
 
@@ -21,8 +22,13 @@ export default class ReactApp extends React.Component {
                 <FormFieldTextInput fieldName="test field" fieldLabel="test label" fieldPlaceholder="placeholder" fieldValue=""/>
               </div>
               <div className="form__row">
-                <FormFieldSelectBox fieldName="test field" fieldLabel="test label" selectValues={[1, 2, 3, 4, 5]} />
+                <FormFieldSelectBox fieldName="test field" fieldLabel="test label" fieldValues={["1", "2", "3", "4", "5"]} />
               </div>
+
+              <div className="form__row">
+                <FormFieldRadioButtons fieldName="test field" fieldLabel="test label" fieldValues={["1", "2", "3", "4", "5"]} checkedValue="1" />
+              </div>
+
 
             </section>
 
