@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class TextInput extends React.Component {
+export default class FormFieldTextInput extends React.Component {
   render() {
     return (
         <div>

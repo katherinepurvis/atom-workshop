@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class SelectBox extends React.Component {
+export default class FormFieldSelectBox extends React.Component {
 
   renderOption(option) {
     return (
@@ -16,7 +16,7 @@ export default class SelectBox extends React.Component {
     return (
         <div>
           <label htmlFor={this.props.fieldName} className="form__label">{this.props.fieldLabel}</label>
-          <select id={this.props.fieldName}>
+          <select className="form__field form__field--select" id={this.props.fieldName}>
             {this.renderOptions()}
           </select>
         </div>
