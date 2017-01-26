@@ -7,6 +7,9 @@ import FormFieldRadioButtons from './FormFields/FormFieldRadioButtons';
 
 export default class ReactApp extends React.Component {
 
+  updateCheckbox = () => {
+    console.log("Updated");
+  };
 
   render() {
     return (
@@ -26,7 +29,7 @@ export default class ReactApp extends React.Component {
               </div>
 
               <div className="form__row">
-                <FormFieldRadioButtons fieldName="test field" fieldLabel="test label" fieldValues={["1", "2", "3", "4", "5"]} checkedValue="1" />
+                <FormFieldRadioButtons fieldName="test field" fieldLabel="test label" fieldValues={["1", "2", "3", "4", "5"]} checkedValue="1" onUpdateField={this.updateCheckbox}/>
               </div>
 
 
