@@ -38,11 +38,30 @@
 
 }
 
+.form__group {
+  margin-bottom: 5px;
+}
+
+// because they're special snowflakes
+.form__radio-btn {
+  display: inline-block;
+
+  & + .form__label {
+    margin-left: 5px;
+  }
+}
+
 .form__label {
   display: block;
   font-size: 13px;
   font-weight: bold;
   margin: 0 0 5px;
+
+  &--radio {
+    display: inline-block;
+    margin: 0;
+    font-weight: normal;
+  }
 }
 
 .form-checkbox {
