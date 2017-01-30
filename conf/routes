@@ -7,3 +7,9 @@ GET     /reauth                     controllers.Login.reauth
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+
+
+GET  /api/:atomType/:id/preview             controllers.App.getAtom(atomType: String, id: String, version = "preview")
+
+# We only ever create into the preview table so no version needed here
+POST  /api/:atomType             controllers.App.createAtom(atomType: String)
