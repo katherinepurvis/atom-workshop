@@ -22,10 +22,10 @@ export default class ReactApp extends React.Component {
       <ScribeEditor
         onChange={this.updateDescription}
         value=""
-        className="tag-edit__richtext"
-        toolbarClassName="scribe-toolbar"
-        toolbarItemClassName="scribe-toolbar-item"
-        editorClassName="scribe-editor"
+        className="scribe"
+        toolbarClassName="scribe__toolbar"
+        toolbarItemClassName="scribe__toolbar__item"
+        editorClassName="scribe__editor"
       />
 
 
