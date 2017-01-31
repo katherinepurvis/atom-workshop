@@ -1,10 +1,10 @@
-import data.AtomDataStores
 import config.LogConfig
 import play.api._
 import play.api.ApplicationLoader.Context
 import play.api.libs.ws.ahc.AhcWSComponents
 import router.Routes
 import config._
+import db.AtomDataStores
 
 class AppComponents(context: Context)
   extends BuiltInComponentsFromContext(context) with AhcWSComponents {

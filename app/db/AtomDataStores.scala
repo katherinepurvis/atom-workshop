@@ -1,15 +1,14 @@
-package data
+package db
 
 import com.gu.atom.data._
 import com.gu.contentatom.thrift._
-import com.gu.contentatom.thrift.atom.media.MediaAtom
-import com.gu.scanamo.scrooge.ScroogeDynamoFormat._
-import com.gu.scanamo.DynamoFormat
-import DynamoFormat._
-import cats.syntax.either._
-import com.gu.contentatom.thrift.atom.explainer.ExplainerAtom
 import com.gu.contentatom.thrift.atom.cta.CTAAtom
+import com.gu.contentatom.thrift.atom.explainer.ExplainerAtom
+import com.gu.contentatom.thrift.atom.media.MediaAtom
+import com.gu.scanamo.DynamoFormat
+import com.gu.scanamo.scrooge.ScroogeDynamoFormat._
 import config.Config
+import cats.syntax.either._
 import models.{Live, Preview, UnsupportedAtomTypeError, Version}
 
 import scala.reflect.ClassTag

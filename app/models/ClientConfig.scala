@@ -1,11 +1,13 @@
 package models
 
-import org.cvogt.play.json.Jsonx
+import io.circe.{Decoder, Encoder}
+import io.circe.generic.semiauto._
 
 case class ClientConfig(
                          username: String
                        )
 
 object ClientConfig {
-  implicit val clientConfigFormat = Jsonx.formatCaseClass[ClientConfig]
+  implicit val clientConfigEncoder: Encoder[ClientConfig] = deriveEncoder
+  implicit val clientConfigDecoder: Decoder[ClientConfig] = deriveDecoder
 }
