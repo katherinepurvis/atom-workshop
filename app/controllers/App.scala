@@ -6,8 +6,8 @@ import play.api.Logger
 import play.api.libs.ws.WSClient
 import play.api.mvc._
 import cats.syntax.either._
-import com.gu.fezziwig.CirceScroogeMacros._
 import db.{AtomDataStores, AtomWorkshopDB}
+import com.gu.fezziwig.CirceScroogeMacros._
 import io.circe._
 import io.circe.generic.auto._
 import io.circe.syntax._
@@ -30,7 +30,7 @@ class App(val wsClient: WSClient) extends Controller with PanDomainAuthActions {
       for {
         atomType <- validateAtomType(atomType)
         ds <- AtomDataStores.getDataStore(atomType, getVersion(version))
-        atom <- ds.getAtom(AtomWorkshopDB.buildKey(atomType, id))
+        atom <- AtomWorkshopDB.getAtom(ds, atomType, id)
       } yield atom
     }
   }

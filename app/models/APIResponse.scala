@@ -13,13 +13,13 @@ object AtomWorkshopAPIResponse{
 
 
 object APIResponse extends Results {
-  def exceptionToResult(e: Exception) = {
-    Logger.error(e.getMessage, e)
-    InternalServerError(AtomWorkshopAPIResponse(e.getMessage).asJson.noSpaces)
+  def apiErrorToResult(e: AtomAPIError) = {
+    Logger.error(e.msg)
+    InternalServerError(AtomWorkshopAPIResponse(e.msg).asJson.noSpaces)
   }
 
-  def apply[T](result: Either[Exception, T])(implicit encoder: Encoder[T]): Result = {
-    val res = result.fold(exceptionToResult(_), r => Ok(r.asJson.noSpaces))
+  def apply[T](result: Either[AtomAPIError, T])(implicit encoder: Encoder[T]): Result = {
+    val res = result.fold(apiErrorToResult(_), r => Ok(r.asJson.noSpaces))
     res.as("text/json")
   }
 }
