@@ -3,7 +3,6 @@ import Scribe from 'scribe';
 import scribeKeyboardShortcutsPlugin from 'scribe-plugin-keyboard-shortcuts';
 import scribePluginToolbar from 'scribe-plugin-toolbar';
 import scribePluginLinkPromptCommand from 'scribe-plugin-link-prompt-command';
-import scribePluginNoting from 'scribe-plugin-noting';
 import scribePluginSanitizer from 'scribe-plugin-sanitizer';
 
 export default class ScribeEditor extends React.Component {
@@ -37,15 +36,6 @@ export default class ScribeEditor extends React.Component {
         unlink: function (event) { return event.metaKey && event.shiftKey && event.keyCode === 75; } // shft + k
     }));
 
-    var noteElConfig = {
-        'class': true,
-        'title': true,
-        'data-note-edited-by': true,
-        'data-note-edited-date': true,
-        'data-note-id': true,
-        'data-click-action': true
-    };
-
     this.scribe.use(scribePluginSanitizer({
       tags: {
         p: {},
@@ -56,30 +46,9 @@ export default class ScribeEditor extends React.Component {
         },
         ul: {},
         ol: {},
-        li: {},
-        "gu-note": noteElConfig,
-        "gu-flag": noteElConfig,
-        "gu-correct": noteElConfig
+        li: {}
       }
     }));
-
-    // @TODO - Add first and last names to config
-    const userName = "User Name";
-
-    const notingConfig = {
-        user: userName,
-        scribeInstanceSelector: this.props.editorClassName,
-        selectors: [
-            { commandName: 'note',    tagName: 'gu-note',    clickAction: 'collapse',   keyCodes: [119, 121] }
-        ]
-    };
-
-    notingConfig.selectors = [
-        { commandName: 'note',    tagName: 'gu-note',    clickAction: 'collapse',   keyCodes: [119, 121] },
-        { commandName: 'flag',    tagName: 'gu-flag',    clickAction: 'toggle-tag', toggleTagTo: 'gu-correct', keyCodes: [117] },
-        { commandName: 'correct', tagName: 'gu-correct', clickAction: 'toggle-tag', toggleTagTo: 'gu-flag', keyCodes: [118] }
-    ];
-    this.scribe.use(scribePluginNoting(notingConfig));
 
   }
 
@@ -103,9 +72,6 @@ export default class ScribeEditor extends React.Component {
             <div data-command-name="italic" className={this.props.toolbarItemClassName}>Italic</div>
             <div data-command-name="linkPrompt" className={this.props.toolbarItemClassName}>Link</div>
             <div data-command-name="unlink" className={this.props.toolbarItemClassName}>Unlink</div>
-            <div data-command-name="note" className={this.props.toolbarItemClassName}>Note</div>
-            <div data-command-name="flag" className={this.props.toolbarItemClassName}>Flag</div>
-            <div data-command-name="correct" className={this.props.toolbarItemClassName}>Correct</div>
           </div>
           <div className={this.props.editorClassName} dangerouslySetInnerHTML={{__html: this.props.value}} ref="editor"></div>
         </div>
