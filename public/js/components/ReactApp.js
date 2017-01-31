@@ -5,8 +5,8 @@ import ScribeEditor from './ScribeEditor/ScribeEditor';
 
 export default class ReactApp extends React.Component {
 
-  updateDescription = () => {
-    console.log("Updated");
+  updateDescription = (newContent) => {
+    console.log(newContent);
   };
 
   render() {
