@@ -41,7 +41,7 @@ object AtomWorkshopDB {
   }
 
   def getAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atomType: AtomType, id: String) = {
-    datastore.getAtom(buildKey(atomType, id))
+
   }
 
 
