@@ -1,41 +1,37 @@
 import React from 'react';
 
 import Header from './Header';
-import FormFieldTextInput from './FormFields/FormFieldTextInput';
-import FormFieldSelectBox from './FormFields/FormFieldSelectBox';
-import FormFieldRadioButtons from './FormFields/FormFieldRadioButtons';
+import ScribeEditor from './ScribeEditor/ScribeEditor';
 
 export default class ReactApp extends React.Component {
 
-  updateCheckbox = () => {
-    console.log("Updated");
+  updateDescription = (newContent) => {
+    console.log(newContent);
   };
 
   render() {
     return (
       <div className="page">
-          <Header />
-          <main className="container" role="main">
+      <Header />
+      <main className="container" role="main">
 
-            <section className="page__section">
+      <section className="page__section">
 
-              <h2 className="page__subheading">Atom Workshop</h2>
+      <h2 className="page__subheading">Atom Workshop</h2>
 
-              <div className="form__row">
-                <FormFieldTextInput fieldName="test field" fieldLabel="test label" fieldPlaceholder="placeholder" fieldValue=""/>
-              </div>
-              <div className="form__row">
-                <FormFieldSelectBox fieldName="test field" fieldLabel="test label" fieldValues={["1", "2", "3", "4", "5"]} />
-              </div>
-
-              <div className="form__row">
-                <FormFieldRadioButtons fieldName="test field" fieldLabel="test label" fieldValues={["1", "2", "3", "4", "5"]} checkedValue="1" onUpdateField={this.updateCheckbox}/>
-              </div>
+      <ScribeEditor
+        onChange={this.updateDescription}
+        value=""
+        className="scribe"
+        toolbarClassName="scribe__toolbar"
+        toolbarItemClassName="scribe__toolbar__item"
+        editorClassName="scribe__editor"
+      />
 
 
-            </section>
+      </section>
 
-          </main>
+      </main>
       </div>
     );
   }
