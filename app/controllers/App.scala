@@ -1,31 +1,48 @@
 package controllers
 
-import com.gu.atom.data.{DynamoCompositeKey, PreviewDataStore}
-import com.gu.contentatom.thrift.AtomData
-import com.gu.contentatom.thrift.AtomData.Media
 import config.Config
-import model.ClientConfig
+import models._
 import play.api.Logger
 import play.api.libs.ws.WSClient
-import play.api.libs.json.Json
 import play.api.mvc._
-import com.gu.contentatom.thrift.atom.media._
 import cats.syntax.either._
+import db.{AtomDataStores, AtomWorkshopDB}
+import com.gu.fezziwig.CirceScroogeMacros._
+import io.circe._
+import io.circe.generic.auto._
+import io.circe.syntax._
+import util.HelperFunctions._
 
-class App(val wsClient: WSClient, previewDataStore: PreviewDataStore) extends Controller with PanDomainAuthActions {
+class App(val wsClient: WSClient) extends Controller with PanDomainAuthActions {
 
   def index = AuthAction { req =>
     Logger.info(s"I am the ${Config.appName}")
-
-    val someAtom = previewDataStore.getAtom(DynamoCompositeKey("Media", Some("8ba4c6c8-0815-45d9-9e87-0a6c20954094"))).fold(
-      err => err.msg,
-      atom => atom.data.asInstanceOf[AtomData.Media].media.title
-    )
 
     val clientConfig = ClientConfig(
       username = req.user.email
     )
 
-    Ok(views.html.index(someAtom, Json.toJson(clientConfig).toString()))
+    Ok(views.html.index("AtomMcAtomFace", clientConfig.asJson.noSpaces))
   }
+
+  def getAtom(atomType: String, id: String, version: String) = AuthAction {
+    APIResponse {
+      for {
+        atomType <- validateAtomType(atomType)
+        ds <- AtomDataStores.getDataStore(atomType, getVersion(version))
+        atom <- AtomWorkshopDB.getAtom(ds, atomType, id)
+      } yield atom
+    }
+  }
+
+  def createAtom(atomType: String) = AuthAction {
+    APIResponse{
+      for {
+        atomType <- validateAtomType(atomType)
+        ds <- AtomDataStores.getDataStore(atomType, Preview)
+        result <- AtomWorkshopDB.createAtom(ds, atomType)
+      } yield AtomWorkshopAPIResponse("Atom creation successful")
+    }
+  }
+
 }
