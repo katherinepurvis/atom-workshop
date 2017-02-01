@@ -13,4 +13,6 @@ GET  /api/preview/:atomType/:id/    controllers.App.getAtom(atomType: String, id
 GET  /api/live/:atomType/:id/       controllers.App.getAtom(atomType: String, id: String, version = "live")
 
 # We only ever create into the preview table so no version passed through here (but kept in route to match the pattern!)
-POST  /api/preview/:atomType               controllers.App.createAtom(atomType: String)
+POST  /api/preview/:atomType        controllers.App.createAtom(atomType: String)
+
+PUT  /api/preview/:atomType/:id     controllers.App.updateAtom(atomType: String, id: String)
