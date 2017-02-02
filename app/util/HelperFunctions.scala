@@ -9,6 +9,9 @@ import cats.syntax.either._
 import com.amazonaws.services.dynamodbv2.model.AmazonDynamoDBException
 import play.api.Logger
 import com.gu.fezziwig.CirceScroogeMacros._
+import io.circe.syntax._
+import io.circe._
+import io.circe.parser.decode
 
 object HelperFunctions {
   def getVersion(version: String): Version = version match {
@@ -32,7 +35,12 @@ object HelperFunctions {
     Left(atomApiError)
   }
 
+  def extractRequestBody(body: Option[String]): Either[AtomAPIError, String]= {
+    Either.cond(body.isDefined, body.get, BodyRequiredForUpdateError)
+  }
+
   def parseAtomJson(atomJson: String): Either[AtomAPIError, Atom] = {
+    println(atomJson)
     val parsingResult = for {
       parsedAtom <- parser.parse(atomJson)
       decodedAtom <- parsedAtom.as[Atom]
