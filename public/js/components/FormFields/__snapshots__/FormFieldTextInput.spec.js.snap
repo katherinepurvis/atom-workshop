@@ -1,0 +1,16 @@
+exports[`test Should render 1`] = `
+<div>
+  <label
+    className="form__label"
+    htmlFor="test">
+    test
+  </label>
+  <input
+    className="form__field"
+    id="test"
+    onChange={undefined}
+    placeholder=""
+    type="text"
+    value="test" />
+</div>
+`;
