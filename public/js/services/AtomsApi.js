@@ -5,9 +5,17 @@ export default {
 
   fetchAtom: (atomId, atomType) => {
     return pandaReqwest({
-      url: `/api/preview/${atomType}/${atomId}`
+      url: `/api/preview/${atomType}/${atomId}`,
       method: 'get'
     });
+  }
+
+
+  createAtom: (atomType) => {
+    return pandaReqwest({
+      url `/api/preview/${atomType}`,
+      method: 'post'
+    })
   }
 
 }
