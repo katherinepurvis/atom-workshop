@@ -2,6 +2,7 @@ name := "atom-workshop"
 version := "1.0"
 
 scalaVersion := "2.11.8"
+scalaOrganization := "org.typelevel"
 
 lazy val awsVersion = "1.11.8"
 lazy val atomLibVersion = "0.1.10"
@@ -57,3 +58,5 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala, RiffRaffArtifact
       "-Dpidfile.path=/dev/null"
     )
   )
+
+//scalacOptions in ThisBuild += "-Xlog-implicits"
