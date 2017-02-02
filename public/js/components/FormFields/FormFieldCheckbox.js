@@ -11,7 +11,7 @@ export default class FormFieldCheckbox extends React.Component {
   renderCheckbox(value, i) {
     return (
       <div key={i} className="form__group form__group--checkbox">
-        <input className="form__checkbox-btn" type="checkbox" checked={value.selected} name={this.props.fieldName} value={value} onChange={this.props.onUpdateField} />
+        <input className="form__checkbox" type="checkbox" checked={value.selected} name={this.props.fieldName} value={value} onChange={this.props.onUpdateField} />
         <span className="form__label form__label--checkbox">{value.id}</span>
       </div>
     )
