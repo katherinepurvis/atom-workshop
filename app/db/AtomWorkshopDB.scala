@@ -1,16 +1,13 @@
 package db
 
-import com.amazonaws.services.dynamodbv2.model.AmazonDynamoDBException
-import com.gu.atom.data.{DataStoreError, DataStoreResult, DynamoCompositeKey, DynamoDataStore}
-import com.gu.contentatom.thrift.{Atom, AtomData, AtomType, ContentChangeDetails}
-import com.gu.atom.data.{DynamoCompositeKey, DynamoDataStore}
+import com.gu.contentatom.thrift.{Atom, AtomType}
+import com.gu.atom.data.{DynamoCompositeKey, DynamoDataStore, DataStoreResult}
 import com.gu.contentatom.thrift.atom.cta.CTAAtom
 import com.gu.contentatom.thrift.atom.explainer.{DisplayType, ExplainerAtom}
 import com.gu.contentatom.thrift.atom.media.MediaAtom
 import play.api.Logger
 import cats.syntax.either._
-import com.gu.atom
-import models.{AtomAPIError, AtomWorkshopDynamoDatastoreError, AmazonDynamoError}
+import models.{AtomAPIError, AtomWorkshopDynamoDatastoreError}
 import com.gu.fezziwig.CirceScroogeMacros._
 import io.circe._
 import io.circe.syntax._

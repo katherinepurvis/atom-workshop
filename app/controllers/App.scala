@@ -6,7 +6,6 @@ import play.api.Logger
 import play.api.libs.ws.WSClient
 import play.api.mvc.Controller
 import cats.syntax.either._
-import com.gu.contentatom.thrift.Atom
 import db.{AtomDataStores, AtomWorkshopDB}
 import com.gu.fezziwig.CirceScroogeMacros._
 import io.circe._
