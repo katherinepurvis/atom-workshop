@@ -3,11 +3,11 @@ import { getStore } from '../util/storeAccessor';
 
 export default {
 
-  fetchAtom: (atomId) => {
+  fetchAtom: (atomId, atomType) => {
     return pandaReqwest({
-      url: '/api/preview/' + atomId,
+      url: `/api/preview/${atomType}/${atomId}`
       method: 'get'
     });
   }
-  
+
 }

@@ -1,9 +1,10 @@
 import AtomsApi from '../../services/AtomsApi';
 
-function requestAtom(id) {
+function requestAtom(id, atomType) {
   return {
     type:       'ATOM_GET_REQUEST',
     id:         id,
+    atomType:   atomType,
     receivedAt: Date.now()
   };
 }
@@ -26,10 +27,10 @@ function errorReceivingAtom(error) {
   };
 }
 
-export function getAtom(id) {
+export function getAtom(id, atomType) {
   return dispatch => {
-    dispatch(requestAtom(id));
-    return AtomsApi.fetchAtom(id)
+    dispatch(requestAtom(id, atomType));
+    return AtomsApi.fetchAtom(id, atomType)
         .then(atom => {
           dispatch(receiveAtom(atom));
         })
