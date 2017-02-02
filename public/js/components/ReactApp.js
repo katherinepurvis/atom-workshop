@@ -20,7 +20,7 @@ export default class ReactApp extends React.Component {
       <h2 className="page__subheading">Atom Workshop</h2>
 
       <ScribeEditor
-        onChange={this.updateDescription}
+        onUpdate={this.updateDescription}
         value=""
         className="scribe"
         toolbarClassName="scribe__toolbar"
