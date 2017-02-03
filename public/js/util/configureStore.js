@@ -3,10 +3,12 @@ import thunkMiddleware from 'redux-thunk';
 
 import config from '../reducers/configReducer';
 import error from '../reducers/errorReducer';
+import atom from '../reducers/atomReducer';
 
 const rootReducer = combineReducers({
   config,
-  error
+  error,
+  atom
 });
 
 const createStoreWithMiddleware = compose(
