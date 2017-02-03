@@ -4,16 +4,7 @@ import Header from './Header';
 
 export default class ReactApp extends React.Component {
 
-  updateDescription = (newContent) => {
-    console.log(newContent);
-  };
-
   render() {
-
-    const data = [
-      {id: 'one', selected: false},
-      {id: 'two', selected: true}
-    ];
 
     return (
       <div className="page">
