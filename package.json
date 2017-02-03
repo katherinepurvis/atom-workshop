@@ -39,19 +39,21 @@
   },
   "dependencies": {
     "babel-plugin-transform-class-properties": "^6.22.0",
+    "es6-promise": "^4.0.5",
+    "exports-loader": "^0.6.3",
+    "imports-loader": "^0.7.0",
     "panda-session": "^0.1.6",
-    "q": "^1.4.1",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.2",
     "react-router": "^3.0.2",
     "redux": "^3.6.0",
     "redux-thunk": "^2.2.0",
-    "reqwest": "^2.0.5",
     "scribe": "guardian/scribe#fcf4e16",
+    "scribe-plugin-keyboard-shortcuts": "^0.1.1",
     "scribe-plugin-link-prompt-command": "^1.0.0",
     "scribe-plugin-sanitizer": "^0.1.10",
     "scribe-plugin-toolbar": "^1.0.0",
-    "scribe-plugin-keyboard-shortcuts": "^0.1.1"
+    "whatwg-fetch": "^2.0.2"
   }
 }

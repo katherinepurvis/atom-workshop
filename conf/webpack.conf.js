@@ -1,4 +1,5 @@
 var path = require('path');
+var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
@@ -40,6 +41,10 @@ module.exports = {
     },
 
     plugins: [
-        new ExtractTextPlugin('main.css')
+        new ExtractTextPlugin('main.css'),
+        new webpack.ProvidePlugin({
+            'Promise': 'es6-promise',
+            'fetch': 'imports-loader?this=>global!exports-loader?global.fetch!whatwg-fetch'
+        })
     ]
 };
