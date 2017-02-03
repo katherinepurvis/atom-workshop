@@ -60,7 +60,7 @@ export default class ScribeEditor extends React.Component {
     const newContent = this.refs.editor.innerHTML;
 
     if (newContent !== this.props.value) {
-      this.props.onChange(newContent);
+      this.props.onUpdate(newContent);
     }
   }
 
