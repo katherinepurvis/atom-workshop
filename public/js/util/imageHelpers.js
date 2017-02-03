@@ -1,4 +1,4 @@
-function parseMimeType(mimeType) {
+export function parseMimeType(mimeType) {
 
   //Normalise Mime Types coming from the grid.
   switch(mimeType) {
