@@ -11,7 +11,7 @@ function requestAtom(id, atomType) {
 
 function receiveAtom(atom) {
   return {
-    type:       'VIDEO_GET_RECEIVE',
+    type:       'ATOM_GET_RECEIVE',
     atom:       atom,
     receivedAt: Date.now()
   };
