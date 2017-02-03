@@ -13,10 +13,9 @@ export default class FormFieldTextInput extends React.Component {
     return (
         <div>
           <label htmlFor={this.props.fieldName} className="form__label">{this.props.fieldLabel}</label>
-          <input type="text" className="form__field" id={this.props.fieldName} placeholder={this.props.fieldPlaceholder || ''} value={this.props.fieldValue} />
+          <input type="text" className="form__field" id={this.props.fieldName} placeholder={this.props.fieldPlaceholder || ''} value={this.props.fieldValue} onChange={this.props.onUpdateField}/>
         </div>
 
     );
   }
 };
-

@@ -3,7 +3,6 @@ import Header from './Header';
 
 export default class ReactApp extends React.Component {
 
-
   render() {
 
     return (
