@@ -49,7 +49,6 @@
     "redux-thunk": "^2.2.0",
     "reqwest": "^2.0.5",
     "scribe": "guardian/scribe#fcf4e16",
-    "scribe": "guardian/scribe#fcf4e16",
     "scribe-plugin-link-prompt-command": "^1.0.0",
     "scribe-plugin-sanitizer": "^0.1.10",
     "scribe-plugin-toolbar": "^1.0.0",
