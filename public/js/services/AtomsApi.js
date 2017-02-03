@@ -8,12 +8,12 @@ export default {
       url: `/api/preview/${atomType}/${atomId}`,
       method: 'get'
     });
-  }
+  },
 
 
   createAtom: (atomType) => {
     return pandaReqwest({
-      url `/api/preview/${atomType}`,
+      url: `/api/preview/${atomType}`,
       method: 'post'
     })
   }
