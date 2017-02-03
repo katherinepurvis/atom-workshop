@@ -22,7 +22,6 @@ export default class FormFieldCheckbox extends React.Component {
   }
 
   render() {
-    console.log(this.props.fieldValues);
     return (
         <div>
           <label className="form__label" htmlFor={this.props.fieldName}>{this.props.fieldLabel}</label>
