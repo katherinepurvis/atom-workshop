@@ -8,7 +8,7 @@ exports[`test Should render 1`] = `
   <input
     className="form__field"
     id="test"
-    onChange={undefined}
+    onChange={[Function]}
     placeholder=""
     type="text"
     value="test" />

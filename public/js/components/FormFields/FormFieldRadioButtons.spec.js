@@ -8,6 +8,7 @@ let fieldLabel = 'test',
     fieldValues = ['One', 'Two'];
 
 test('Should render', () => {
+  
   const updateFn = jest.fn();
   const component = renderer.create(
     <FormFieldRadioButtons fieldLabel={fieldLabel} fieldName={fieldName} fieldValues={fieldValues} onUpdateField={updateFn} />

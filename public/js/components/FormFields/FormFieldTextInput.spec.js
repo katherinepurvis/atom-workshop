@@ -8,8 +8,10 @@ let fieldLabel = 'test',
     fieldValue= 'test';
 
 test('Should render', () => {
+
+  const updateFn = jest.fn();
   const component = renderer.create(
-    <FormFieldTextInput fieldLabel={fieldLabel} fieldName={fieldName} fieldValue={fieldValue} />
+    <FormFieldTextInput fieldLabel={fieldLabel} fieldName={fieldName} fieldValue={fieldValue} onUpdateField={updateFn} />
   );
   let tree = component.toJSON();
   expect(tree).toMatchSnapshot();
