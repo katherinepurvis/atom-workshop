@@ -2,7 +2,7 @@ import config from './configReducer';
 
 describe('config reducer', () => {
 
-  it('should return the inital state', () => {
+  it('should return the initial state', () => {
     expect(
       config(undefined, {})
     ).toEqual({}, {})
