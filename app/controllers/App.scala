@@ -44,7 +44,7 @@ class App(val wsClient: WSClient) extends Controller with PanDomainAuthActions {
     }
   }
 
-  def updateAtom(atomType: String, id: String) = AuthAction { req =>
+  def updateEntireAtom(atomType: String, id: String) = AuthAction { req =>
     APIResponse {
       for {
         atomType <- validateAtomType(atomType)
