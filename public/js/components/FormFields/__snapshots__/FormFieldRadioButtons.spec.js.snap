@@ -11,7 +11,7 @@ exports[`test Should render 1`] = `
       checked={false}
       className="form__radio-btn"
       name="test"
-      onChange={undefined}
+      onChange={[Function]}
       type="radio"
       value="One" />
     <span
@@ -25,7 +25,7 @@ exports[`test Should render 1`] = `
       checked={false}
       className="form__radio-btn"
       name="test"
-      onChange={undefined}
+      onChange={[Function]}
       type="radio"
       value="Two" />
     <span
