@@ -107,14 +107,14 @@ class FormFieldImageSelect extends React.Component {
   render () {
     return (
       <div>
-        <label className="form__label" htmlFor={this.props.fieldName}>{this.props.fieldLabel}</label>
-          <div className="image-select form__group">
-              {this.props.fieldValue ? this.renderWithImage() : this.renderWithoutImage()}
+        <label className="form__label">{this.props.fieldLabel}</label>
+        <div className="image-select form__group">
+            {this.props.fieldValue ? this.renderWithImage() : this.renderWithoutImage()}
 
-              <Modal isOpen={this.state.modalOpen} dismiss={this.closeModal}>
-                  <iframe className="image-select__modal" src={this.props.gridUrl}></iframe>
-              </Modal>
-          </div>
+            <Modal isOpen={this.state.modalOpen} dismiss={this.closeModal}>
+                <iframe className="image-select__modal" src={this.props.gridUrl}></iframe>
+            </Modal>
+        </div>
       </div>
     )
   }
