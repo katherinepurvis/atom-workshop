@@ -9,20 +9,20 @@ module.exports = {
             {
                 test:    /\.js$/,
                 exclude: /node_modules/,
-                loaders: ['babel-loader']
+                loader: 'babel-loader'
             },
             {
                 test: /\.scss$/,
                 loader: ExtractTextPlugin.extract({
-                    fallbackLoader: 'style-loader',
-                    loader: 'css-loader?sourceMap!sass-loader?sourceMap'
+                    fallback: 'style-loader',
+                    use: 'css-loader?sourceMap!sass-loader?sourceMap'
                 })
             },
             {
                 test: /\.css$/,
                 loader: ExtractTextPlugin.extract({
-                    fallbackLoader: 'style-loader',
-                    loader: 'css-loader?sourceMap'
+                    fallback: 'style-loader',
+                    use: 'css-loader?sourceMap'
                 })
             },
             {
