@@ -55,5 +55,9 @@ object AtomWorkshopDB {
     transformAtomLibResult(datastore.getAtom(AtomWorkshopDB.buildKey(atomType, id)))
   }
 
+  def deleteAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atomType: AtomType, id: String) = {
+    transformAtomLibResult(datastore.deleteAtom(AtomWorkshopDB.buildKey(atomType, id)))
+  }
+
 
 }
