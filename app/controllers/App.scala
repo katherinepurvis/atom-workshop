@@ -22,7 +22,13 @@ class App(val wsClient: WSClient) extends Controller with PanDomainAuthActions {
       username = req.user.email
     )
 
-    Ok(views.html.index("AtomMcAtomFace", clientConfig.asJson.noSpaces))
+    val jsFileName = "build/app.js"
+
+    val jsLocation = sys.env.get("JS_ASSET_HOST").map(_ + jsFileName)
+      .getOrElse(routes.Assets.versioned(jsFileName).toString)
+
+
+    Ok(views.html.index("AtomMcAtomFace", jsLocation, clientConfig.asJson.noSpaces))
   }
 
   def getAtom(atomType: String, id: String, version: String) = AuthAction {

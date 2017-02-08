@@ -1,15 +1,7 @@
 import { compose, createStore, applyMiddleware, combineReducers } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 
-import config from '../reducers/configReducer';
-import error from '../reducers/errorReducer';
-import atom from '../reducers/atomReducer';
-
-const rootReducer = combineReducers({
-  config,
-  error,
-  atom
-});
+import {rootReducer} from '../reducers/rootReducer.js';
 
 const createStoreWithMiddleware = compose(
     applyMiddleware(
@@ -19,5 +11,15 @@ const createStoreWithMiddleware = compose(
 )(createStore);
 
 export default function configureStore(initialState) {
-  return createStoreWithMiddleware(rootReducer, initialState);
+
+  const store = createStoreWithMiddleware(rootReducer, initialState);
+
+  //Hot Reloading code
+  if (module.hot) {
+    module.hot.accept('../reducers/rootReducer.js', () => {
+      store.replaceReducer(rootReducer);
+    });
+  }
+
+  return store;
 }
