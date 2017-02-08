@@ -14,11 +14,12 @@ export default function configureStore(initialState) {
 
   const store = createStoreWithMiddleware(rootReducer, initialState);
 
+  //Hot Reloading code
   if (module.hot) {
     module.hot.accept('../reducers/rootReducer.js', () => {
       store.replaceReducer(rootReducer);
     });
   }
-  
+
   return store;
 }

@@ -46,6 +46,8 @@ const render = (Component) => {
 
 render(<BaseApp store={store} />);
 
+
+//Hot Reloading code
 if (module.hot) {
   module.hot.accept('./BaseApp.js', () => {
     render(<BaseApp store={store} />);
