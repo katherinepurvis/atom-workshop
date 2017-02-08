@@ -14,8 +14,7 @@ import com.gu.fezziwig.CirceScroogeMacros._
 import io.circe._
 import io.circe.syntax._
 
-
-object AtomWorkshopDB {
+trait AtomWorkshopDBAPI {
 
   def buildKey(atomType: AtomType, id: String) = DynamoCompositeKey(atomType.name, Some(id))
 
@@ -32,10 +31,19 @@ object AtomWorkshopDB {
       contentChangeDetails = ContentChangeDetails(revision = 0L))
   }
 
-    def transformAtomLibResult[T](result: DataStoreResult.DataStoreResult[T]): Either[AtomAPIError, T] = result match {
-      case Left(e) => Left(AtomWorkshopDynamoDatastoreError(e.msg))
-      case Right(r:T) => Right(r)
-    }
+  def transformAtomLibResult[T](result: DataStoreResult.DataStoreResult[T]): Either[AtomAPIError, T] = result match {
+    case Left(e) => Left(AtomWorkshopDynamoDatastoreError(e.msg))
+    case Right(r:T) => Right(r)
+  }
+
+  def createAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atomType: AtomType): Either[AtomAPIError, Unit]
+
+  def getAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atomType: AtomType, id: String): Either[AtomAPIError, Atom]
+
+  def deleteAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atomType: AtomType, id: String): Either[AtomAPIError, Unit]
+}
+
+class AtomWorkshopDB() extends AtomWorkshopDBAPI {
 
   def createAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atomType: AtomType) = {
     val defaultAtom = buildDefaultAtom(atomType)
@@ -52,12 +60,10 @@ object AtomWorkshopDB {
   }
 
   def getAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atomType: AtomType, id: String) = {
-    transformAtomLibResult(datastore.getAtom(AtomWorkshopDB.buildKey(atomType, id)))
+    transformAtomLibResult(datastore.getAtom(buildKey(atomType, id)))
   }
 
   def deleteAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atomType: AtomType, id: String) = {
-    transformAtomLibResult(datastore.deleteAtom(AtomWorkshopDB.buildKey(atomType, id)))
+    transformAtomLibResult(datastore.deleteAtom(buildKey(atomType, id)))
   }
-
-
 }

@@ -7,14 +7,12 @@ import play.api.libs.ws.WSClient
 import play.api.mvc._
 import cats.syntax.either._
 import com.gu.contentatom.thrift.Atom
-import db.{AtomDataStores, AtomWorkshopDB}
+import db.{AtomDataStores, AtomWorkshopDBAPI}
 import com.gu.fezziwig.CirceScroogeMacros._
-import io.circe._
-import io.circe.generic.auto._
 import io.circe.syntax._
 import util.HelperFunctions._
 
-class App(val wsClient: WSClient) extends Controller with PanDomainAuthActions {
+class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends Controller with PanDomainAuthActions {
 
   def index = AuthAction { req =>
     Logger.info(s"I am the ${Config.appName}")
@@ -30,7 +28,7 @@ class App(val wsClient: WSClient) extends Controller with PanDomainAuthActions {
     for {
       atomType <- validateAtomType(atomType)
       ds <- AtomDataStores.getDataStore(atomType, getVersion(version))
-      atom <- AtomWorkshopDB.getAtom(ds, atomType, id)
+      atom <- atomWorkshopDB.getAtom(ds, atomType, id)
     } yield atom
 
   def getAtom(atomType: String, id: String, version: String) = AuthAction {
@@ -44,7 +42,7 @@ class App(val wsClient: WSClient) extends Controller with PanDomainAuthActions {
       for {
         atomType <- validateAtomType(atomType)
         ds <- AtomDataStores.getDataStore(atomType, Preview)
-        result <- AtomWorkshopDB.createAtom(ds, atomType)
+        result <- atomWorkshopDB.createAtom(ds, atomType)
       } yield AtomWorkshopAPIResponse("Atom creation successful")
     }
   }
@@ -53,7 +51,7 @@ class App(val wsClient: WSClient) extends Controller with PanDomainAuthActions {
     for {
       atomType <- validateAtomType(atomType)
       ds <- AtomDataStores.getDataStore(atomType, getVersion(version))
-      result <- AtomWorkshopDB.deleteAtom(ds, atomType, id)
+      result <- atomWorkshopDB.deleteAtom(ds, atomType, id)
     } yield result
 
   def deleteAtom(atomType: String, id: String) = AuthAction {
