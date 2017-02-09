@@ -7,7 +7,7 @@
  */
 html {
   box-sizing: border-box;
-  background: $bodyBgColor;
+  background-color: $cWhite;
 }
 
 /**
@@ -27,8 +27,8 @@ html {
   margin: 0;
 }
 
-.container {
-  padding: 40px;
+.page__content {
+  padding-top: 10px;
   max-width: 900px;
   width: 100%;
   margin: 0 auto;

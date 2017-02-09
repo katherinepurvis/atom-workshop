@@ -14,7 +14,7 @@ import util.HelperFunctions._
 
 class App(val wsClient: WSClient) extends Controller with PanDomainAuthActions {
 
-  def index = AuthAction { req =>
+  def index(placeholder: String) = AuthAction { req =>
     Logger.info(s"I am the ${Config.appName}")
 
     val clientConfig = ClientConfig(

@@ -1,15 +1,25 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import {Router, Route, browserHistory} from 'react-router';
+import {Router, Route, browserHistory, IndexRedirect} from 'react-router';
 
-import ReactApp from './components/ReactApp';
+import {Page} from './components/Page';
+import {AtomCreateTypeSelect} from './components/AtomCreate/AtomCreateTypeSelect';
+import {AtomCreateGenericInfo} from './components/AtomCreate/AtomCreateGenericInfo';
+import {AtomEdit} from './components/AtomEdit/AtomEdit';
+import {AtomStats} from './components/AtomStats/AtomStats';
 
 export class BaseApp extends React.Component {
   render () {
     return (
       <Provider store={this.props.store}>
         <Router history={browserHistory}>
-          <Route path="/" component={ReactApp}></Route>
+          <Route path="/" component={Page}>
+            <Route path="/create" component={AtomCreateTypeSelect} />
+            <Route path="/create/:atomType" component={AtomCreateGenericInfo} />
+            <Route path="/atoms/:id/edit" component={AtomEdit} />
+            <Route path="/atoms/:id/stats" component={AtomStats} />
+            <IndexRedirect to="/create" />
+          </Route>
         </Router>
       </Provider>
     )

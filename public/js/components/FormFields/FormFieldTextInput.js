@@ -6,7 +6,8 @@ export default class FormFieldTextInput extends React.Component {
     fieldLabel: React.PropTypes.string.isRequired,
     fieldName: React.PropTypes.string.isRequired,
     fieldValue: React.PropTypes.string.isRequired,
-    fieldPlaceholder: React.PropTypes.string
+    fieldPlaceholder: React.PropTypes.string,
+    onUpdateField: React.PropTypes.func.isRequired
   };
 
   render() {
