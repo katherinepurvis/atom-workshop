@@ -8,16 +8,15 @@ export default class Header extends React.Component {
         <div className="toolbar">
 
           <header className="toolbar__container">
-            <a className="toolbar__title" href="/">
+            <Link className="toolbar__title" href="/">
               <div className="toolbar__logo"></div>
               <div className="toolbar__page-icon"></div>
               <div className="toolbar__title__hover-state">
                 <span className="toolbar__title__hover-state__subtitle">Back to</span><br />
                 <span className="toolbar__title__hover-state__title">Dashboard</span>
               </div>
-            </a>
+            </Link>
           </header>
-
 
           <div className="toolbar__container">
             <nav className="main-nav" role="navigation">
