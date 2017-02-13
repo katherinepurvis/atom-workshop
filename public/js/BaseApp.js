@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import { Provider } from 'react-redux';
 import {Router, Route, browserHistory, IndexRedirect} from 'react-router';
 
@@ -9,6 +9,11 @@ import {AtomEdit} from './components/AtomEdit/AtomEdit';
 import {AtomStats} from './components/AtomStats/AtomStats';
 
 export class BaseApp extends React.Component {
+
+  static propTypes = {
+    store: PropTypes.object.isRequired
+  }
+
   render () {
     return (
       <Provider store={this.props.store}>
@@ -22,6 +27,6 @@ export class BaseApp extends React.Component {
           </Route>
         </Router>
       </Provider>
-    )
+    );
   }
 }

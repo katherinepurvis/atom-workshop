@@ -19,4 +19,4 @@ export default class FormFieldTextInput extends React.Component {
 
     );
   }
-};
+}

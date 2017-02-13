@@ -6,7 +6,8 @@ export default class FormFieldRadioButtons extends React.Component {
     fieldLabel: React.PropTypes.string.isRequired,
     fieldName: React.PropTypes.string.isRequired,
     fieldValues: React.PropTypes.array.isRequired,
-    checkedValue: React.PropTypes.string
+    checkedValue: React.PropTypes.string,
+    onUpdateField: React.PropTypes.func.isRequired
   };
 
   renderButton(value, i) {
@@ -15,7 +16,7 @@ export default class FormFieldRadioButtons extends React.Component {
         <input className="form__radio-btn" type="radio" name={this.props.fieldName} value={value} checked={this.props.checkedValue === value ? 'checked' : false} onChange={this.props.onUpdateField} />
         <span className="form__label form__label--radio">{value}</span>
       </div>
-    )
+    );
   }
 
   renderButtons() {
@@ -28,9 +29,6 @@ export default class FormFieldRadioButtons extends React.Component {
           <label className="form__label" htmlFor={this.props.fieldName}>{this.props.fieldLabel}</label>
           {this.renderButtons()}
         </div>
-    )
+    );
   }
 }
-
-
-

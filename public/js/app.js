@@ -23,7 +23,6 @@ function extractConfigFromPage() {
 
 
 const store = configureStore();
-const config = extractConfigFromPage();
 
 setStore(store);
 
@@ -48,6 +47,7 @@ render(<BaseApp store={store} />);
 
 
 //Hot Reloading code
+/* global module:false */
 if (module.hot) {
   module.hot.accept('./BaseApp.js', () => {
     render(<BaseApp store={store} />);

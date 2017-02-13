@@ -17,6 +17,6 @@ export class AtomCreateTypeSelect extends React.Component {
           </Link>
         ))}
       </div>
-    )
+    );
   }
 }

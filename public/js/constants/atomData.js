@@ -3,6 +3,8 @@
 //fullName - The human readable name (Don't include "Atom")
 //description - A brief description of what they are and when you use them
 
+import {PropTypes} from 'react';
+
 export const cta = {
   type: "cta",
   fullName: "Call To Action",
@@ -24,5 +26,12 @@ export const recipe = {
 export const allAtomTypes = [cta, explainer, recipe];
 
 export function getAtomByType(type) {
-  return allAtomTypes.filter((atomData) => atomData.type.toLowerCase() === type.toLowerCase())[0]
+  return allAtomTypes.filter((atomData) => atomData.type.toLowerCase() === type.toLowerCase())[0];
 }
+
+//Keep this together with the data
+export const AtomTypePropType = PropTypes.shape({
+  type: PropTypes.string.isRequired,
+  fullName: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired
+});

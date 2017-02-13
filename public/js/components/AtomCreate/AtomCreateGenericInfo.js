@@ -4,6 +4,8 @@ import {getAtomByType} from '../../constants/atomData';
 import {AtomTypeCard} from '../AtomTypeCard/AtomTypeCard.js';
 import FormFieldTextInput from '../FormFields/FormFieldTextInput';
 
+import {logInfo} from '../../util/logger';
+
 export class AtomCreateGenericInfo extends React.Component {
 
   static propTypes = {
@@ -23,15 +25,15 @@ export class AtomCreateGenericInfo extends React.Component {
   }
 
   createAtom = (e) => {
-    console.log("This is where we create the atom");
+    logInfo("This is where we create the atom", e);
   }
 
   render () {
 
-    const atomType = getAtomByType(this.props.routeParams.atomType)
+    const atomType = getAtomByType(this.props.routeParams.atomType);
 
     if (!atomType) {
-      return <div>Unrecognised Atom Type</div>
+      return <div>Unrecognised Atom Type</div>;
     }
 
     return (
@@ -54,6 +56,6 @@ export class AtomCreateGenericInfo extends React.Component {
           <button className="btn" onClick={this.createAtom}>Create Atom</button>
         </div>
       </div>
-    )
+    );
   }
 }

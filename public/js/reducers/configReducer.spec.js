@@ -5,8 +5,8 @@ describe('config reducer', () => {
   it('should return the initial state', () => {
     expect(
       config(undefined, {})
-    ).toEqual({}, {})
-  })
+    ).toEqual({}, {});
+  });
 
   it('should handle CONFIG_RECEIVED', () => {
     expect(
@@ -14,6 +14,6 @@ describe('config reducer', () => {
         type: 'CONFIG_RECEIVED',
         config: 'this is some configuration'
       })
-    ).toEqual('this is some configuration')
-  })
-})
+    ).toEqual('this is some configuration');
+  });
+});

@@ -3,9 +3,9 @@ import { getStore } from '../util/storeAccessor';
 
 function checkStatus(res) {
   if (res.status >= 200 && res.status < 300) {
-    return res
+    return res;
   } else {
-    throw new Error(res)
+    throw new Error(res);
   }
 }
 
@@ -20,7 +20,7 @@ export function pandaFetch(requestBody) {
             var reauthUrl = store.getState().config.reauthUrl;
 
             reEstablishSession(reauthUrl, 5000).then(
-                res => {
+                () => {
                   fetch(requestBody)
                   .then(checkStatus)
                   .then(res => resolve(res))
@@ -31,7 +31,7 @@ export function pandaFetch(requestBody) {
                 });
 
           } else {
-            reject(err)
+            reject(err);
           }
         });
   });
