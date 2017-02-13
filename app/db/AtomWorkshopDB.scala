@@ -1,18 +1,16 @@
 package db
 
 import com.gu.contentatom.thrift.{Atom, AtomType}
-import com.gu.atom.data.{DynamoCompositeKey, DynamoDataStore, DataStoreResult}
+import com.gu.atom.data.{DataStoreResult, DynamoCompositeKey, DynamoDataStore}
 import com.gu.contentatom.thrift.atom.cta.CTAAtom
-import com.gu.contentatom.thrift.atom.explainer.{DisplayType, ExplainerAtom}
+import com.gu.contentatom.thrift.atom.explainer.ExplainerAtom
 import com.gu.contentatom.thrift.atom.media.MediaAtom
 import play.api.Logger
 import cats.syntax.either._
-import models.{AtomAPIError, AtomWorkshopDynamoDatastoreError}
+import models.{AtomAPIError, AtomWorkshopDynamoDatastoreError, UnsupportedAtomTypeError}
 import com.gu.fezziwig.CirceScroogeMacros._
 import io.circe._
-import io.circe.syntax._
 import util.AtomElementBuilders._
-
 import com.gu.pandomainauth.model.User
 import util.HelperFunctions._
 
@@ -37,23 +35,51 @@ object AtomWorkshopDB {
     }
   }
 
-  def getAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atomType: AtomType, id: String) = {
+  def getAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atomType: AtomType, id: String): Either[AtomAPIError, Atom] = {
     transformAtomLibResult(datastore.getAtom(AtomWorkshopDB.buildKey(atomType, id)))
   }
 
-  def updateAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atomType: AtomType, user: User, currentVersion: Atom, newAtom: Atom): Either[AtomAPIError, Unit]  = {
-    val updatedAtom = currentVersion.copy(
-      contentChangeDetails = buildContentChangeDetails(user, Some(currentVersion.contentChangeDetails), updateLastModified = true),
-      defaultHtml = buildDefaultHtml(atomType, currentVersion.data, Some(currentVersion.defaultHtml)),
-      data = newAtom.data
-    )
+  private def updateAtomInDatastore(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atom: Atom): Either[AtomAPIError, Unit] = {
     try {
-      val result = datastore.updateAtom(updatedAtom)
-      Logger.info(s"Successfully updated atom of type ${atomType.name} with id ${currentVersion.id}")
+      val result = datastore.updateAtom(atom)
+      Logger.info(s"Successfully updated atom of type ${atom.atomType.name} with id ${atom.id}")
       Right(transformAtomLibResult(result))
     } catch {
       case e: Exception => processException(e)
     }
+  }
+
+  private def createAtomFromUpdatedAtom(atom: Atom, updatedAtom: Atom, user: User): Atom =
+    atom.copy(
+      contentChangeDetails = buildContentChangeDetails(user, Some(atom.contentChangeDetails), updateLastModified = true),
+      defaultHtml = buildDefaultHtml(atom.atomType, updatedAtom.data, Some(atom.defaultHtml)),
+      data = updatedAtom.data
+    )
+
+  def updateAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atomType: AtomType, user: User, currentVersion: Atom, newAtom: Atom): Either[AtomAPIError, Unit]  = {
+    val updatedAtom: Atom = createAtomFromUpdatedAtom(currentVersion, newAtom, user)
+    updateAtomInDatastore(datastore, updatedAtom)
+  }
+
+  def updateAtomByPath(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atomType: AtomType, user: User, currentVersion: Json, path: String, newValue: String): Either[AtomAPIError, Unit]  = {
+    def setCursor(cursor: ACursor, pathList: List[String]): ACursor = pathList match {
+      case Nil => cursor
+      case head :: Nil => cursor.downField(head)
+      case head :: tail => setCursor(cursor.downField(head), tail)
+    }
+
+    val pathList: List[String] = path.split('.').toList
+    val cursor: ACursor = setCursor(currentVersion.hcursor, pathList)
+    val updatedCursor: ACursor = cursor.withFocus(_.mapString(_ => newValue))
+    val updatedAtomJson: Option[Json] = updatedCursor.top
+
+    val updatedAtom = for {
+      atom <- parseToAtomJson(currentVersion.toString)
+      updAtom <- parseToAtomJson(updatedAtomJson.map(_.toString).getOrElse(""))
+    } yield createAtomFromUpdatedAtom(atom, updAtom, user)
+
+    println("updated atom ", updatedAtom)
+    updatedAtom.fold(err => Left(err), updateAtomInDatastore(datastore, _))
 
   }
 

@@ -17,7 +17,7 @@ libraryDependencies ++= Seq(
   "com.gu"                   %% "pan-domain-auth-play_2-5"    % "0.4.1",
   "net.logstash.logback"     %  "logstash-logback-encoder"    % "4.2",
   "com.gu"                   %  "fezziwig"                    % "0.1.1",
-  "io.circe"                 %% "circe-parser"                %  "0.6.1"
+  "io.circe"                 %% "circe-parser"                % "0.6.1"
 )
 
 resolvers ++= Seq(
