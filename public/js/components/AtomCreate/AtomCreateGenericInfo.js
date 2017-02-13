@@ -4,13 +4,14 @@ import {getAtomByType} from '../../constants/atomData';
 import {AtomTypeCard} from '../AtomTypeCard/AtomTypeCard.js';
 import FormFieldTextInput from '../FormFields/FormFieldTextInput';
 
-import {logInfo} from '../../util/logger';
-
-export class AtomCreateGenericInfo extends React.Component {
+class AtomCreateGenericInfo extends React.Component {
 
   static propTypes = {
     routeParams: PropTypes.shape({
       atomType: PropTypes.String
+    }).isRequired,
+    atomActions: PropTypes.shape({
+      createAtom: PropTypes.func.isRequired
     }).isRequired
   }
 
@@ -24,8 +25,8 @@ export class AtomCreateGenericInfo extends React.Component {
     });
   }
 
-  createAtom = (e) => {
-    logInfo("This is where we create the atom", e);
+  triggerAtomCreate = () => {
+    this.props.atomActions.createAtom(this.props.routeParams.atomType);
   }
 
   render () {
@@ -53,9 +54,28 @@ export class AtomCreateGenericInfo extends React.Component {
           />
         </div>
         <div className="create__buttons">
-          <button className="btn" onClick={this.createAtom}>Create Atom</button>
+          <button className="btn" onClick={this.triggerAtomCreate}>Create Atom</button>
         </div>
       </div>
     );
   }
 }
+
+//REDUX CONNECTIONS
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as createAtomActions from '../../actions/AtomActions/createAtom.js';
+
+function mapStateToProps(state) {
+  return {
+    config: state.config
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    atomActions: bindActionCreators(Object.assign({}, createAtomActions), dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AtomCreateGenericInfo);

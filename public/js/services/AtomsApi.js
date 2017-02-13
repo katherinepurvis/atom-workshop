@@ -7,7 +7,8 @@ export default {
       new Request(
         `/api/preview/${atomType}/${atomId}`,
         {
-          method: 'get'
+          method: 'get',
+          credentials: 'same-origin'
         }
       )
     );
@@ -19,7 +20,8 @@ export default {
       new Request(
         `/api/preview/${atomType}`,
         {
-          method: 'post'
+          method: 'post',
+          credentials: 'same-origin'
         }
       )
     );

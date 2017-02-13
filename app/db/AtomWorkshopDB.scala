@@ -31,7 +31,7 @@ object AtomWorkshopDB {
     try {
       val r = datastore.createAtom(buildKey(atomType, defaultAtom.id), defaultAtom)
       Logger.info(s"Successfully created atom of type ${atomType.name} with id ${defaultAtom.id}")
-      Right(transformAtomLibResult(r))
+      getAtom(datastore, atomType, defaultAtom.id)
     } catch {
       case e: Exception => processException(e)
     }

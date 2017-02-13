@@ -4,7 +4,7 @@ import {Router, Route, browserHistory, IndexRedirect} from 'react-router';
 
 import {Page} from './components/Page';
 import {AtomCreateTypeSelect} from './components/AtomCreate/AtomCreateTypeSelect';
-import {AtomCreateGenericInfo} from './components/AtomCreate/AtomCreateGenericInfo';
+import AtomCreateGenericInfo from './components/AtomCreate/AtomCreateGenericInfo';
 import {AtomEdit} from './components/AtomEdit/AtomEdit';
 import {AtomStats} from './components/AtomStats/AtomStats';
 
