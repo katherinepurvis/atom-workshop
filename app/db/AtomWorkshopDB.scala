@@ -78,9 +78,7 @@ object AtomWorkshopDB {
       updAtom <- parseToAtomJson(updatedAtomJson.map(_.toString).getOrElse(""))
     } yield createAtomFromUpdatedAtom(atom, updAtom, user)
 
-    println("updated atom ", updatedAtom)
     updatedAtom.fold(err => Left(err), updateAtomInDatastore(datastore, _))
-
   }
 
 

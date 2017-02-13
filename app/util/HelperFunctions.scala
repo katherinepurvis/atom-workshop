@@ -47,13 +47,13 @@ object HelperFunctions {
     parsingResult.fold(processException, a => Right(a))
   }
 
-  def parseFromAtomToJson(atom: Atom): Json = {
+  def parseAtomToJson(atom: Atom): Json = {
     Logger.info(s"Parsing atom to json: $atom")
     atom.asJson
   }
 
-  def parseValueToUpdateJson(atomJson: String): Either[AtomAPIError, String] = {
-    Logger.info(s"Parsing value to update json: $atomJson")
+  def parseValue(atomJson: String): Either[AtomAPIError, String] = {
+    Logger.info(s"Parsing value to update to json: $atomJson")
     val parsingResult = for {
       parsedJson <- parser.parse(atomJson)
       value <- parsedJson.hcursor.downField("value").as[String]
