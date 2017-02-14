@@ -21,7 +21,7 @@ export class BaseApp extends React.Component {
           <Route path="/" component={Page}>
             <Route path="/create" component={AtomCreateTypeSelect} />
             <Route path="/create/:atomType" component={AtomCreateGenericInfo} />
-            <Route path="/atoms/:id/edit" component={AtomEdit} />
+            <Route path="/atoms/:atomType/:id/edit" component={AtomEdit} />
             <Route path="/atoms/:id/stats" component={AtomStats} />
             <IndexRedirect to="/create" />
           </Route>

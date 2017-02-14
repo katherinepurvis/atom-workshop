@@ -1,27 +1,34 @@
 import React, { PropTypes } from 'react';
-
 import {CTAEditor} from './CustomEditors/CTAEditor';
 
-export default class AtomEdit extends React.Component {
+const atomPropType = PropTypes.shape({
+  id: PropTypes.string.isRequired,
+  atomType: PropTypes.string.isRequired,
+  labels: PropTypes.array.isRequired,
+  defaultHtml: PropTypes.string.isRequired,
+  data: PropTypes.object.isRequired
+});
+
+class AtomEdit extends React.Component {
 
   static propTypes = {
-    atom: PropTypes.shape({
-      type: PropTypes.string
-    })
+    routeParams: PropTypes.shape({
+      atomType: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequired
+    }).isRequired,
+    atomActions: PropTypes.shape({
+      getAtom: PropTypes.func.isRequired,
+      updateAtom: PropTypes.func.isRequired
+    }).isRequired,
+    atom: atomPropType
   }
 
-  static defaultProps = {
-    atom: {
-      id: "123",
-      atomType: "CTA",
-      data: {
-        url: "Test url"
-      }
-    }
+  componentWillMount() {
+    this.props.atomActions.getAtom(this.props.routeParams.atomType, this.props.routeParams.id);
   }
 
-  updateAtom(atom) {
-    console.log("New Atom", atom, "Old Atom", atom)
+  updateAtom = () => {
+    this.props.atomActions.updateAtom(this.props.atom);
   }
 
   render () {
@@ -37,3 +44,24 @@ export default class AtomEdit extends React.Component {
     }
   }
 }
+
+//REDUX CONNECTIONS
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as getAtomActions from '../../actions/AtomActions/getAtom.js';
+import * as updateAtomActions from '../../actions/AtomActions/updateAtom.js';
+
+function mapStateToProps(state) {
+  return {
+    config: state.config,
+    atom: state.atom
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    atomActions: bindActionCreators(Object.assign({}, updateAtomActions, getAtomActions), dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AtomEdit);
