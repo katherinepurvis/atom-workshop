@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 
 const atomPropType = PropTypes.shape({
-  id: PropTypes.func.isRequired,
-  atomType: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+  atomType: PropTypes.string.isRequired,
   labels: PropTypes.array.isRequired,
   defaultHtml: PropTypes.string.isRequired,
   data: PropTypes.object.isRequired
@@ -33,7 +33,7 @@ class AtomEdit extends React.Component {
   render () {
     return (
       <dev>
-        <p>Editing atom: {this.props.atom.id}</p>
+        <p>Editing atom: </p>
         <button className="btn" type="button" onClick={this.updateAtom}>Update atom</button>
       </dev>
     );
