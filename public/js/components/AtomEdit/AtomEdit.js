@@ -8,7 +8,8 @@ class AtomEdit extends React.Component {
       id: PropTypes.string.isRequired
     }).isRequired,
     atomActions: PropTypes.shape({
-      getAtom: PropTypes.func.isRequired
+      getAtom: PropTypes.func.isRequired,
+      updateAtom: PropTypes.func.isRequired
     }).isRequired,
     atom: PropTypes.object
   }
@@ -17,10 +18,16 @@ class AtomEdit extends React.Component {
     this.props.atomActions.getAtom(this.props.routeParams.atomType, this.props.routeParams.id);
   }
 
-  render () {
+  updateAtom = () => {
+    this.props.atomActions.updateAtom(this.props.atom);
+  }
 
+  render () {
     return (
-      <p>{this.props.atom || {}}</p>
+      <dev>
+        <p>Editing atom: {this.props.atom.id}</p>
+        <button className="btn" type="button" onClick={this.updateAtom}>Update atom</button>
+      </dev>
     );
   }
 }
@@ -29,6 +36,7 @@ class AtomEdit extends React.Component {
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as getAtomActions from '../../actions/AtomActions/getAtom.js';
+import * as updateAtomActions from '../../actions/AtomActions/updateAtom.js';
 
 function mapStateToProps(state) {
   return {
@@ -39,7 +47,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    atomActions: bindActionCreators(Object.assign({}, getAtomActions), dispatch)
+    atomActions: bindActionCreators(Object.assign({}, updateAtomActions, getAtomActions), dispatch)
   };
 }
 

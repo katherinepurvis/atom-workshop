@@ -25,5 +25,18 @@ export default {
         }
       )
     );
+  },
+
+  updateAtom: (atom) => {
+    return pandaFetch(
+      new Request(
+        `/api/preview/${atom.atomType}/${atom.id}`,
+        {
+          method: 'put',
+          credentials: 'same-origin',
+          body: atom
+        }
+      )
+    );
   }
 };
