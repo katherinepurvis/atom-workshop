@@ -34,7 +34,7 @@ export default {
         {
           method: 'put',
           credentials: 'same-origin',
-          body: atom
+          body: JSON.stringify(atom)
         }
       )
     );
