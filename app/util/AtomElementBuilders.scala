@@ -30,7 +30,7 @@ object AtomElementBuilders {
   def buildDefaultAtom(atomType: AtomType, user: PandaUser) = {
     val defaultAtoms: Map[AtomType, AtomData] = Map(
       AtomType.Explainer -> AtomData.Explainer(ExplainerAtom("-", "-", DisplayType.Flat)),
-      AtomType.Cta -> AtomData.Cta(CTAAtom(""))
+      AtomType.Cta -> AtomData.Cta(CTAAtom("-"))
     )
 
     Atom(id = java.util.UUID.randomUUID.toString,
