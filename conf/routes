@@ -3,7 +3,7 @@ GET     /                           controllers.App.index(placeholder = "")
 GET     /create                     controllers.App.index(placeholder = "")
 GET     /create/:placeholder        controllers.App.index(placeholder)
 GET     /atoms/:placeholder         controllers.App.index(placeholder)
-GET     /atoms/:placeholder/edit    controllers.App.index(placeholder)
+GET     /atoms/:placeholder/:placeholder/edit    controllers.App.index(placeholder)
 GET     /atoms/:placeholder/stats   controllers.App.index(placeholder)
 
 
@@ -16,11 +16,10 @@ GET     /reauth                     controllers.Login.reauth
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 
 
-GET  /api/preview/:atomType/:id/    controllers.App.getAtom(atomType: String, id: String, version = "preview")
-GET  /api/live/:atomType/:id/       controllers.App.getAtom(atomType: String, id: String, version = "live")
+GET  /api/preview/:atomType/:id    controllers.App.getAtom(atomType: String, id: String, version = "preview")
+GET  /api/live/:atomType/:id       controllers.App.getAtom(atomType: String, id: String, version = "live")
 
 # We only ever create into the preview table so no version passed through here (but kept in route to match the pattern!)
 POST  /api/preview/:atomType        controllers.App.createAtom(atomType: String)
 
 PUT  /api/preview/:atomType/:id     controllers.App.updateEntireAtom(atomType: String, id: String)
-

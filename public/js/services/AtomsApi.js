@@ -2,7 +2,7 @@ import { pandaFetch } from './pandaFetch';
 
 export default {
 
-  fetchAtom: (atomId, atomType) => {
+  getAtom: (atomType, atomId) => {
     return pandaFetch(
       new Request(
         `/api/preview/${atomType}/${atomId}`,
