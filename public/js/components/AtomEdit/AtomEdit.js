@@ -1,4 +1,12 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
+
+const atomPropType = PropTypes.shape({
+  id: PropTypes.func.isRequired,
+  atomType: PropTypes.func.isRequired,
+  labels: PropTypes.array.isRequired,
+  defaultHtml: PropTypes.string.isRequired,
+  data: PropTypes.object.isRequired
+});
 
 class AtomEdit extends React.Component {
 
@@ -11,7 +19,7 @@ class AtomEdit extends React.Component {
       getAtom: PropTypes.func.isRequired,
       updateAtom: PropTypes.func.isRequired
     }).isRequired,
-    atom: PropTypes.object
+    atom: atomPropType
   }
 
   componentWillMount() {
