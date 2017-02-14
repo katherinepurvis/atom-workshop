@@ -1,7 +1,7 @@
 exports[`test Should render contents when open 1`] = `
 <div
   className="modal"
-  onClick={undefined}>
+  onClick={[Function]}>
   <div
     className="modal__content"
     onClick={[Function]}>
@@ -9,7 +9,7 @@ exports[`test Should render contents when open 1`] = `
       className="modal__content__header">
       <button
         className="i-cross modal__dismiss"
-        onClick={undefined}>
+        onClick={[Function]}>
         Close
       </button>
     </div>

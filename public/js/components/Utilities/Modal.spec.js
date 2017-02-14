@@ -5,7 +5,7 @@ import {shallow} from 'enzyme';
 
 test('Should render null when closed', () => {
   const component = renderer.create(
-    <Modal isOpen={false}><div>Modal Contents</div></Modal>
+    <Modal isOpen={false} dismiss={() => {}}><div>Modal Contents</div></Modal>
   );
   let tree = component.toJSON();
   expect(tree).toMatchSnapshot();
@@ -13,7 +13,7 @@ test('Should render null when closed', () => {
 
 test('Should render contents when open', () => {
   const component = renderer.create(
-    <Modal isOpen={true}><div>Modal Contents</div></Modal>
+    <Modal isOpen={true} dismiss={() => {}}><div>Modal Contents</div></Modal>
   );
   let tree = component.toJSON();
   expect(tree).toMatchSnapshot();
