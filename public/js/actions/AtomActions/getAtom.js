@@ -1,4 +1,6 @@
 import AtomsApi from '../../services/AtomsApi';
+import {logError} from '../../util/logger';
+
 
 function requestAtom(id, atomType) {
   return {
@@ -18,7 +20,7 @@ function receiveAtom(atom) {
 }
 
 function errorReceivingAtom(error) {
-  console.error(error);
+  logError(error);
   return {
     type:       'SHOW_ERROR',
     message:    'Could not get atom',

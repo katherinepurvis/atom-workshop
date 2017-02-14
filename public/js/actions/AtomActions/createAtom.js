@@ -1,4 +1,5 @@
 import AtomsApi from '../../services/AtomsApi';
+import {logError} from '../../util/logger';
 
 function requestAtomCreate(atomType) {
   return {
@@ -17,7 +18,7 @@ function receiveAtomCreate(atom) {
 }
 
 function errorCreatingAtom(error) {
-  console.error(error);
+  logError(error);
   return {
     type:       'SHOW_ERROR',
     message:    'Could not create atom',

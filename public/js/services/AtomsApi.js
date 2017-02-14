@@ -1,5 +1,4 @@
 import { pandaFetch } from './pandaFetch';
-import { getStore } from '../util/storeAccessor';
 
 export default {
 
@@ -23,7 +22,6 @@ export default {
           method: 'post'
         }
       )
-    )
+    );
   }
-
-}
+};

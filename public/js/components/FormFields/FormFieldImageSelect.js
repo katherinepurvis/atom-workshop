@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import filesize from 'filesize';
 import Modal from '../Utilities/Modal';
 import {parseImageFromGridCrop, findSmallestAssetAboveWidth, gridUrlFromApiUrl} from '../../util/imageHelpers';
-
+import {logInfo} from '../../util/logger';
 
 const assetPropType = PropTypes.shape({
   mimeType: PropTypes.string.isRequired,
@@ -51,19 +51,19 @@ class FormFieldImageSelect extends React.Component {
   onMessage = (event) => {
 
       if (event.origin !== this.props.gridUrl) {
-          console.log("didn't come from the grid");
+          logInfo("didn't come from the grid");
           return;
       }
 
       const data = event.data;
 
       if (!data) {
-          console.log("got no data...");
+          logInfo("got no data...");
           return;
       }
 
       if (!this.validMessage(data)) {
-          console.log("not a valid message...");
+          logInfo("not a valid message...");
           return;
       }
 
@@ -76,7 +76,7 @@ class FormFieldImageSelect extends React.Component {
       <button className="image-select__button" onClick={this.openModal}>
           + Add Image from Grid
       </button>
-    )
+    );
   }
 
   renderWithImage() {
@@ -101,7 +101,7 @@ class FormFieldImageSelect extends React.Component {
           </button>
         </div>
       </div>
-    )
+    );
   }
 
   render () {
@@ -116,7 +116,7 @@ class FormFieldImageSelect extends React.Component {
             </Modal>
         </div>
       </div>
-    )
+    );
   }
 }
 

@@ -6,13 +6,14 @@ export default class FormFieldSelectBox extends React.Component {
     fieldLabel: React.PropTypes.string.isRequired,
     fieldName: React.PropTypes.string.isRequired,
     fieldValue: React.PropTypes.string.isRequired,
-    selectValues: React.PropTypes.array.isRequired
+    selectValues: React.PropTypes.array.isRequired,
+    onUpdateField: React.PropTypes.func.isRequired
   };
 
   renderOption(option) {
     return (
         <option key={option} value={option}>{option}</option>
-    )
+    );
   }
 
   renderOptions() {
@@ -28,5 +29,5 @@ export default class FormFieldSelectBox extends React.Component {
           </select>
         </div>
     );
-  };
+  }
 }

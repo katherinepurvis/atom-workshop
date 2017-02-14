@@ -1,4 +1,5 @@
-import React  from 'react'
+import React from 'react';
+import {AtomTypePropType} from '../../constants/atomData';
 
 export const AtomTypeCard = (props) => (
   <div className="atom-type" key={props.atomType.type}>
@@ -8,4 +9,8 @@ export const AtomTypeCard = (props) => (
       <div>{props.atomType.description}</div>
     </div>
   </div>
-)
+);
+
+AtomTypeCard.propTypes = {
+  atomType: AtomTypePropType
+};

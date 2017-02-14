@@ -1,6 +1,12 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 
 export default class Modal extends React.Component {
+
+    static propTypes = {
+      isOpen: PropTypes.bool.isRequired,
+      dismiss: PropTypes.func.isRequired,
+      children: PropTypes.element.isRequired
+    }
 
     preventClosingClick (event) {
         event.stopPropagation();
