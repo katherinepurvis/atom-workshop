@@ -32,6 +32,11 @@ class AtomEdit extends React.Component {
   }
 
   render () {
+
+    if (!this.props.atom) {
+      return <div>Loading...</div>
+    }
+
     const atomType = this.props.atom.atomType.toLowerCase();
 
     switch (atomType) {
