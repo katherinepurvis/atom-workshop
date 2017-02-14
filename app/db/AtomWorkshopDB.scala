@@ -56,26 +56,27 @@ object AtomWorkshopDB {
       data = updatedAtom.data
     )
 
-  def updateAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atomType: AtomType, user: User, currentVersion: Atom, newAtom: Atom): Either[AtomAPIError, Unit]  = {
+  def updateAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom],
+                 atomType: AtomType,
+                 user: User,
+                 currentVersion: Atom,
+                 newAtom: Atom): Either[AtomAPIError, Unit] = {
+
     val updatedAtom: Atom = createAtomFromUpdatedAtom(currentVersion, newAtom, user)
     updateAtomInDatastore(datastore, updatedAtom)
   }
 
-  def updateAtomByPath(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atomType: AtomType, user: User, currentVersion: Json, path: String, newValue: String): Either[AtomAPIError, Unit]  = {
-    def setCursor(cursor: ACursor, pathList: List[String]): ACursor = pathList match {
-      case Nil => cursor
-      case head :: Nil => cursor.downField(head)
-      case head :: tail => setCursor(cursor.downField(head), tail)
-    }
+  def updateAtomByPath(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom],
+                       atomType: AtomType,
+                       user: User,
+                       currentJson: Json,
+                       newJson: Json): Either[AtomAPIError, Unit]  = {
 
-    val pathList: List[String] = path.split('.').toList
-    val cursor: ACursor = setCursor(currentVersion.hcursor, pathList)
-    val updatedCursor: ACursor = cursor.withFocus(_.mapString(_ => newValue))
-    val updatedAtomJson: Option[Json] = updatedCursor.top
+    val updatedAtomJson: Json = currentJson.deepMerge(newJson)
 
     val updatedAtom = for {
-      atom <- parseToAtomJson(currentVersion.toString)
-      updAtom <- parseToAtomJson(updatedAtomJson.map(_.toString).getOrElse(""))
+      atom <- parseStringToAtom(currentJson.toString)
+      updAtom <- parseJsonToAtom(updatedAtomJson)
     } yield createAtomFromUpdatedAtom(atom, updAtom, user)
 
     updatedAtom.fold(err => Left(err), updateAtomInDatastore(datastore, _))

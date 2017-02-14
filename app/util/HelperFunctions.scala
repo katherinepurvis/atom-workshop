@@ -38,11 +38,19 @@ object HelperFunctions {
     Either.cond(body.isDefined, body.get, BodyRequiredForUpdateError)
   }
 
-  def parseToAtomJson(atomJson: String): Either[AtomAPIError, Atom] = {
+  def parseStringToAtom(atomString: String): Either[AtomAPIError, Atom] = {
+    Logger.info(s"Parsing atom json: $atomString")
+    val parsingResult = for {
+      parsedAtom <- parser.parse(atomString)
+      decodedAtom <- parsedAtom.as[Atom]
+    } yield decodedAtom
+    parsingResult.fold(processException, a => Right(a))
+  }
+
+  def parseJsonToAtom(atomJson: Json): Either[AtomAPIError, Atom] = {
     Logger.info(s"Parsing atom json: $atomJson")
     val parsingResult = for {
-      parsedAtom <- parser.parse(atomJson)
-      decodedAtom <- parsedAtom.as[Atom]
+      decodedAtom <- atomJson.as[Atom]
     } yield decodedAtom
     parsingResult.fold(processException, a => Right(a))
   }
@@ -52,12 +60,11 @@ object HelperFunctions {
     atom.asJson
   }
 
-  def parseValue(atomJson: String): Either[AtomAPIError, String] = {
-    Logger.info(s"Parsing value to update to json: $atomJson")
+  def parseBody(atomJson: String): Either[AtomAPIError, Json] = {
+    Logger.info(s"Parsing body to json: $atomJson")
     val parsingResult = for {
       parsedJson <- parser.parse(atomJson)
-      value <- parsedJson.hcursor.downField("value").as[String]
-    } yield value
+    } yield parsedJson
     parsingResult.fold(processException, a => Right(a))
   }
 }
