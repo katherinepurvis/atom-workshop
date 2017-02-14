@@ -1,3 +1,6 @@
+/* global module:false, __dirname:false */
+
+
 const { resolve } = require('path');
 const webpack = require('webpack');
 
@@ -28,6 +31,11 @@ module.exports = {
             {
                 test:    /\.js$/,
                 exclude: /node_modules/,
+                loaders: ['babel-loader']
+            },
+            {
+                test:    /\.js$/,
+                include: [resolve(__dirname, "../node_modules/panda-session")],
                 loaders: ['babel-loader']
             },
             {

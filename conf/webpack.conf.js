@@ -1,3 +1,5 @@
+/* global module:false, __dirname:false */
+
 var path = require('path');
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -9,6 +11,11 @@ module.exports = {
             {
                 test:    /\.js$/,
                 exclude: /node_modules/,
+                loaders: ['babel-loader']
+            },
+            {
+                test:    /\.js$/,
+                include: [path.resolve(__dirname, "../node_modules/panda-session")],
                 loaders: ['babel-loader']
             },
             {
