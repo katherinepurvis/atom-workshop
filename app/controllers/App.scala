@@ -11,6 +11,8 @@ import db.{AtomDataStores, AtomWorkshopDBAPI}
 import com.gu.fezziwig.CirceScroogeMacros._
 import io.circe.syntax._
 import util.HelperFunctions._
+import io.circe._
+import io.circe.generic.auto._
 
 class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends Controller with PanDomainAuthActions {
 
