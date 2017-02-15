@@ -1,4 +1,7 @@
+import {browserHistory} from 'react-router';
+
 import AtomsApi from '../../services/AtomsApi';
+import {logError} from '../../util/logger';
 
 function requestAtomCreate(atomType) {
   return {
@@ -17,7 +20,7 @@ function receiveAtomCreate(atom) {
 }
 
 function errorCreatingAtom(error) {
-  console.error(error);
+  logError(error);
   return {
     type:       'SHOW_ERROR',
     message:    'Could not create atom',
@@ -30,8 +33,10 @@ export function createAtom(atomType) {
   return dispatch => {
     dispatch(requestAtomCreate(atomType));
     return AtomsApi.createAtom(atomType)
+        .then(res => res.json())
         .then(atom => {
           dispatch(receiveAtomCreate(atom));
+          browserHistory.push(`/atoms/${atom.atomType}/${atom.id}/edit`);
         })
         .catch(error => dispatch(errorCreatingAtom(error)));
   };

@@ -1,4 +1,6 @@
 import AtomsApi from '../../services/AtomsApi';
+import {logError} from '../../util/logger';
+
 
 function requestAtom(id, atomType) {
   return {
@@ -18,7 +20,7 @@ function receiveAtom(atom) {
 }
 
 function errorReceivingAtom(error) {
-  console.error(error);
+  logError(error);
   return {
     type:       'SHOW_ERROR',
     message:    'Could not get atom',
@@ -30,7 +32,8 @@ function errorReceivingAtom(error) {
 export function getAtom(id, atomType) {
   return dispatch => {
     dispatch(requestAtom(id, atomType));
-    return AtomsApi.fetchAtom(id, atomType)
+    return AtomsApi.getAtom(id, atomType)
+        .then(res => res.json())
         .then(atom => {
           dispatch(receiveAtom(atom));
         })

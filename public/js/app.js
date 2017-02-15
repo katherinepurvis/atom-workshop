@@ -1,10 +1,12 @@
 import React from 'react';
-import { render } from 'react-dom';
-import { Provider } from 'react-redux';
+import ReactDOM from 'react-dom';
+import { AppContainer } from 'react-hot-loader';
+
 
 import configureStore from './util/configureStore';
 import { setStore } from './util/storeAccessor';
-import { routes } from './routes';
+
+import {BaseApp} from './BaseApp.js';
 
 import '../styles/main.scss';
 
@@ -21,7 +23,6 @@ function extractConfigFromPage() {
 
 
 const store = configureStore();
-const config = extractConfigFromPage();
 
 setStore(store);
 
@@ -32,8 +33,23 @@ store.dispatch({
     receivedAt: Date.now()
 });
 
-render(
-    <Provider store={store}>
-      {routes}
-    </Provider>
-    , document.getElementById('react-mount'));
+const render = (Component) => {
+  ReactDOM.render(
+    <AppContainer>
+      {Component}
+    </AppContainer>,
+    document.getElementById('react-mount')
+  );
+};
+
+
+render(<BaseApp store={store} />);
+
+
+//Hot Reloading code
+/* global module:false */
+if (module.hot) {
+  module.hot.accept('./BaseApp.js', () => {
+    render(<BaseApp store={store} />);
+  });
+}

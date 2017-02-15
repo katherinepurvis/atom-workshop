@@ -1,14 +1,14 @@
 import { pandaFetch } from './pandaFetch';
-import { getStore } from '../util/storeAccessor';
 
 export default {
 
-  fetchAtom: (atomId, atomType) => {
+  getAtom: (atomType, atomId) => {
     return pandaFetch(
       new Request(
         `/api/preview/${atomType}/${atomId}`,
         {
-          method: 'get'
+          method: 'get',
+          credentials: 'same-origin'
         }
       )
     );
@@ -20,10 +20,23 @@ export default {
       new Request(
         `/api/preview/${atomType}`,
         {
-          method: 'post'
+          method: 'post',
+          credentials: 'same-origin'
         }
       )
-    )
-  }
+    );
+  },
 
-}
+  updateAtom: (atom) => {
+    return pandaFetch(
+      new Request(
+        `/api/preview/${atom.atomType}/${atom.id}`,
+        {
+          method: 'put',
+          credentials: 'same-origin',
+          body: JSON.stringify(atom)
+        }
+      )
+    );
+  }
+};

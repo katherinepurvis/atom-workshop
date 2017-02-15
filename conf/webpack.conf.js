@@ -1,9 +1,11 @@
+/* global module:false, __dirname:false */
+
 var path = require('path');
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-    devtool: 'source-map',
+    devtool: 'cheap-module-source-map',
     module: {
         loaders: [
             {
@@ -12,17 +14,22 @@ module.exports = {
                 loaders: ['babel-loader']
             },
             {
+                test:    /\.js$/,
+                include: [path.resolve(__dirname, "../node_modules/panda-session")],
+                loaders: ['babel-loader']
+            },
+            {
                 test: /\.scss$/,
                 loader: ExtractTextPlugin.extract({
-                    fallbackLoader: 'style-loader',
-                    loader: 'css-loader?sourceMap!sass-loader?sourceMap'
+                    fallback: 'style-loader',
+                    use: 'css-loader?sourceMap!sass-loader?sourceMap'
                 })
             },
             {
                 test: /\.css$/,
                 loader: ExtractTextPlugin.extract({
-                    fallbackLoader: 'style-loader',
-                    loader: 'css-loader?sourceMap'
+                    fallback: 'style-loader',
+                    use: 'css-loader?sourceMap'
                 })
             },
             {

@@ -21,7 +21,7 @@ function parseAsset(asset) {
       width: asset.dimensions.width,
       height: asset.dimensions.height
     }
-  }
+  };
 }
 
 export function parseImageFromGridCrop(cropData) {
@@ -29,7 +29,7 @@ export function parseImageFromGridCrop(cropData) {
     assets: cropData.assets.map(parseAsset),
     master: parseAsset(cropData.master),
     mediaId: cropData.specification.uri
-  }
+  };
 }
 
 export function findSmallestAsset(assetsArray) {
@@ -52,5 +52,5 @@ export function findSmallestAssetAboveWidth(assetsArray, minSize = 250) {
 }
 
 export function gridUrlFromApiUrl(url) {
-  return url.replace("https://api.media.", "https://media.")
+  return url.replace("https://api.media.", "https://media.");
 }

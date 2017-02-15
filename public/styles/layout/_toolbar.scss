@@ -12,6 +12,9 @@ $toolbarHeight: 50px;
   justify-content: space-between;
   z-index: 1;
   border-bottom: 1px solid $greyBorderColor;
+
+  box-shadow: 0px 1px 2px $color200Grey;
+
 }
 
 .toolbar__title {

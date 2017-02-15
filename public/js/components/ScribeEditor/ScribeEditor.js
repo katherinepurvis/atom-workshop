@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import Scribe from 'scribe';
 import scribeKeyboardShortcutsPlugin from 'scribe-plugin-keyboard-shortcuts';
 import scribePluginToolbar from 'scribe-plugin-toolbar';
@@ -6,6 +6,17 @@ import scribePluginLinkPromptCommand from 'scribe-plugin-link-prompt-command';
 import scribePluginSanitizer from 'scribe-plugin-sanitizer';
 
 export default class ScribeEditor extends React.Component {
+
+  static propTypes = {
+    disabled: PropTypes.bool,
+    value: PropTypes.string.isRequired,
+    onUpdateField: PropTypes.func.isRequired,
+    className: PropTypes.string,
+    toolbarClassName: PropTypes.string,
+    toolbarItemClassName: PropTypes.string,
+    editorClassName: PropTypes.string
+
+  }
 
   componentDidMount() {
     if (!this.props.disabled) {
@@ -15,11 +26,6 @@ export default class ScribeEditor extends React.Component {
       this.configureScribe();
 
       this.scribe.on('content-changed', this.onContentChange);
-    }
-  }
-
-  componentWillUnmount() {
-    if (!this.props.disabled) {
     }
   }
 
@@ -60,7 +66,7 @@ export default class ScribeEditor extends React.Component {
     const newContent = this.refs.editor.innerHTML;
 
     if (newContent !== this.props.value) {
-      this.props.onUpdate(newContent);
+      this.props.onUpdateField(newContent);
     }
   }
 
