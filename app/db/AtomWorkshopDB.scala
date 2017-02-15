@@ -42,7 +42,7 @@ object AtomWorkshopDB {
     transformAtomLibResult(datastore.getAtom(AtomWorkshopDB.buildKey(atomType, id)))
   }
 
-  def updateAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom with RecipeAtom], atomType: AtomType, user: User, currentVersion: Atom, newAtom: Atom): Either[AtomAPIError, Unit]  = {
+  def updateAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom with RecipeAtom], atomType: AtomType, user: User, currentVersion: Atom, newAtom: Atom): Either[AtomAPIError, Atom]  = {
     val updatedAtom = currentVersion.copy(
       contentChangeDetails = buildContentChangeDetails(user, Some(currentVersion.contentChangeDetails), updateLastModified = true),
       defaultHtml = buildDefaultHtml(atomType, currentVersion.data, Some(currentVersion.defaultHtml)),
@@ -51,7 +51,7 @@ object AtomWorkshopDB {
     try {
       val result = datastore.updateAtom(updatedAtom)
       Logger.info(s"Successfully updated atom of type ${atomType.name} with id ${currentVersion.id}")
-      Right(transformAtomLibResult(result))
+      getAtom(datastore, updatedAtom.atomType, updatedAtom.id)
     } catch {
       case e: Exception => processException(e)
     }

@@ -25,7 +25,7 @@ test('Should call update function on change', () => {
     <FormFieldSelectBox fieldLabel={fieldLabel} fieldName={fieldName} fieldValue={fieldValue} selectValues={selectValues} onUpdateField={updateFn} />
   );
 
-  select.find('select').simulate('change');
+  select.find('select').simulate('change', {target: {value: "test"}});
 
   expect(updateFn).toHaveBeenCalledTimes(1);
 });

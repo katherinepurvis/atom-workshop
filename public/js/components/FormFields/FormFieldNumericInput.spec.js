@@ -1,5 +1,5 @@
 import React from 'react';
-import FormFieldTextInput from './FormFieldTextInput';
+import FormFieldNumericInput from './FormFieldNumericInput';
 import renderer from 'react-test-renderer';
 import {shallow} from 'enzyme';
 
@@ -11,7 +11,7 @@ test('Should render', () => {
 
   const updateFn = jest.fn();
   const component = renderer.create(
-    <FormFieldTextInput fieldLabel={fieldLabel} fieldName={fieldName} fieldValue={fieldValue} onUpdateField={updateFn} />
+    <FormFieldNumericInput fieldLabel={fieldLabel} fieldName={fieldName} fieldValue={fieldValue} onUpdateField={updateFn} />
   );
   let tree = component.toJSON();
   expect(tree).toMatchSnapshot();
@@ -21,10 +21,13 @@ test('Should call update function on change', () => {
 
   const updateFn = jest.fn();
   const input = shallow(
-    <FormFieldTextInput fieldLabel={fieldLabel} fieldName={fieldName} fieldValue={fieldValue} onUpdateField={updateFn} />
+    <FormFieldNumericInput fieldLabel={fieldLabel} fieldName={fieldName} fieldValue={fieldValue} onUpdateField={updateFn} />
   );
 
   input.find('input').simulate('change', {target: {value: "test"}});
-
+  expect(updateFn).toHaveBeenCalledTimes(0);
+  input.find('input').simulate('change', {target: {value: "1"}});
   expect(updateFn).toHaveBeenCalledTimes(1);
+
+
 });

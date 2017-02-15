@@ -1,29 +1,31 @@
 import React, {PropTypes} from 'react';
-import _get from 'lodash.get';
-import _set from 'lodash.set';
+import _get from 'lodash/fp/get';
+import _set from 'lodash/fp/set';
 
-export const ManagedField = (props) => {
-  const updateFn = (e) => {
-    const newData = Object.assign({}, props.data);
-    _set(newData, props.fieldLocation, e.target.value);
-    props.updateData(newData);
+export class ManagedField extends React.Component {
+
+  static propTypes = {
+    fieldLocation: PropTypes.string.isRequired,
+    children: PropTypes.element.isRequired,
+    updateData: PropTypes.func.isRequired,
+    data: PropTypes.object.isRequired,
+    name: PropTypes.string
   };
 
-  const hydratedChildren = React.Children.map(props.children, (child) => {
-    return React.cloneElement(child, {
-      fieldName: props.name,
-      fieldLabel: props.name,
-      fieldValue: _get(props.data, props.fieldLocation),
-      onUpdateField: updateFn
+  updateFn = (newValue) => {
+    this.props.updateData(_set(this.props.fieldLocation, newValue, this.props.data));
+  }
+
+  render () {
+    const hydratedChildren = React.Children.map(this.props.children, (child) => {
+      return React.cloneElement(child, {
+        fieldName: this.props.name,
+        fieldLabel: this.props.name,
+        fieldValue: _get(this.props.fieldLocation, this.props.data),
+        onUpdateField: this.updateFn
+      });
     });
-  });
-  return <div>{hydratedChildren}</div>;
-};
+    return <div>{hydratedChildren}</div>;
 
-ManagedField.propTypes = {
-  fieldLocation: PropTypes.string.isRequired,
-  children: PropTypes.element.isRequired,
-  updateData: PropTypes.func.isRequired
-};
-
-export default ManagedField;
+  }
+}

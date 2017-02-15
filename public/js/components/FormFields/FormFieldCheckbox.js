@@ -9,10 +9,14 @@ export default class FormFieldCheckbox extends React.Component {
     onUpdateField: React.PropTypes.func.isRequired
   };
 
+  onUpdate = (e) => {
+    this.props.onUpdateField(e.target.value);
+  }
+
   renderCheckbox(value, i) {
     return (
       <div key={i} className="form__group form__group--checkbox">
-        <input className="form__checkbox" type="checkbox" checked={value.selected} name={this.props.fieldName} value={value} onChange={this.props.onUpdateField} />
+        <input className="form__checkbox" type="checkbox" checked={value.selected} name={this.props.fieldName} value={value} onChange={this.onUpdate} />
         <span className="form__label form__label--checkbox">{value.id}</span>
       </div>
     );
