@@ -21,7 +21,7 @@ trait AtomWorkshopDBAPI {
 
   def transformAtomLibResult[T](result: DataStoreResult.DataStoreResult[T]): Either[AtomAPIError, T] = result match {
     case Left(e) => Left(AtomWorkshopDynamoDatastoreError(e.msg))
-    case Right(r:T) => Right(r)
+    case Right(r) => Right(r)
   }
 
   def createAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atomType: AtomType, user: User): Either[AtomAPIError, Atom]
