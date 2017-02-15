@@ -5,6 +5,7 @@ import com.gu.contentatom.thrift._
 import com.gu.contentatom.thrift.atom.cta.CTAAtom
 import com.gu.contentatom.thrift.atom.explainer.ExplainerAtom
 import com.gu.contentatom.thrift.atom.media.MediaAtom
+import com.gu.contentatom.thrift.atom.recipe.RecipeAtom
 import com.gu.scanamo.DynamoFormat
 import com.gu.scanamo.scrooge.ScroogeDynamoFormat._
 import config.Config
@@ -31,6 +32,11 @@ object AtomDataStores {
     def toAtomData(data: MediaAtom): AtomData = AtomData.Media(data)
   }
 
+  val recipeDynamoFormats = new AtomDynamoFormats[RecipeAtom] {
+    def fromAtomData: PartialFunction[AtomData, RecipeAtom] = { case AtomData.Recipe(data) => data }
+    def toAtomData(data: RecipeAtom): AtomData = AtomData.Recipe(data)
+  }
+
   def getDataStores[T: ClassTag: DynamoFormat](dynamoFormats: AtomDynamoFormats[T]): Map[Version, DynamoDataStore[T]] = {
     Map(Preview -> new PreviewDynamoDataStore[T](Config.dynamoDB, Config.previewDynamoTableName) {
       def fromAtomData = dynamoFormats.fromAtomData
@@ -42,10 +48,11 @@ object AtomDataStores {
       })
   }
 
-  val dataStores: Map[AtomType, Map[Version, DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom]]] = Map(
+  val dataStores: Map[AtomType, Map[Version, DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom with RecipeAtom]]] = Map(
     AtomType.Explainer -> getDataStores[ExplainerAtom](explainerDynamoFormats),
     AtomType.Cta -> getDataStores[CTAAtom](ctaDynamoFormats),
-    AtomType.Media -> getDataStores[MediaAtom](mediaDynamoFormats)
+    AtomType.Media -> getDataStores[MediaAtom](mediaDynamoFormats),
+    AtomType.Recipe -> getDataStores[RecipeAtom](recipeDynamoFormats)
   )
 
   def getDataStore(atomType: AtomType, version: Version) = {

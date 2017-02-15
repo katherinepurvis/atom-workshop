@@ -16,6 +16,11 @@ export default class FormFieldSelectBox extends React.Component {
     );
   }
 
+  onUpdate = (e) => {
+    this.props.onUpdateField(e.target.value);
+  }
+
+
   renderOptions() {
     return this.props.selectValues.map(this.renderOption);
   }
@@ -24,7 +29,7 @@ export default class FormFieldSelectBox extends React.Component {
     return (
         <div>
           <label htmlFor={this.props.fieldName} className="form__label">{this.props.fieldLabel}</label>
-          <select className="form__field form__field--select" value={this.props.fieldValue} onChange={this.props.onUpdateField}>
+          <select className="form__field form__field--select" value={this.props.fieldValue} onChange={this.onUpdate}>
             {this.renderOptions()}
           </select>
         </div>
