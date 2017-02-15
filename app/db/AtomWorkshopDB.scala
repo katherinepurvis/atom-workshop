@@ -28,7 +28,7 @@ trait AtomWorkshopDBAPI {
 
   def getAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atomType: AtomType, id: String): Either[AtomAPIError, Atom]
 
-  def deleteAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atomType: AtomType, id: String): Either[AtomAPIError, Unit]
+  def deleteAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atomType: AtomType, id: String): Either[AtomAPIError, Atom]
 
   def updateAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atomType: AtomType, user: User, currentVersion: Atom, newAtom: Atom): Either[AtomAPIError, Unit]
 }
