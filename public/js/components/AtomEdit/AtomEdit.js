@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import {CTAEditor} from './CustomEditors/CTAEditor';
 
 const atomPropType = PropTypes.shape({
   id: PropTypes.string.isRequired,
@@ -31,12 +32,22 @@ class AtomEdit extends React.Component {
   }
 
   render () {
-    return (
-      <dev>
-        <p>Editing atom: </p>
-        <button className="btn" type="button" onClick={this.updateAtom}>Update atom</button>
-      </dev>
-    );
+
+    if (!this.props.atom) {
+      return <div>Loading...</div>;
+    }
+
+    //TODO: This is brittle, can we improve?
+    const atomType = this.props.atom.atomType.toLowerCase();
+
+    switch (atomType) {
+      case ("cta"):
+        return <CTAEditor atom={this.props.atom} onUpdate={this.updateAtom}/>;
+      default:
+        return (
+          <div>Atom Workshop cannot edit this type of atom currently</div>
+        );
+    }
   }
 }
 
