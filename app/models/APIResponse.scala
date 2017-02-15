@@ -19,7 +19,7 @@ object APIResponse extends Results {
   }
 
   def apply[T](result: Either[AtomAPIError, T])(implicit encoder: Encoder[T]): Result = {
-    val res = result.fold(apiErrorToResult(_), r => Ok(r.asJson.noSpaces))
+    val res = result.fold(apiErrorToResult, r => Ok(r.asJson.noSpaces))
     res.as("text/json")
   }
 }

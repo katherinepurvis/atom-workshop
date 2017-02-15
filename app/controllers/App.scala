@@ -57,10 +57,23 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
       for {
         atomType <- validateAtomType(atomType)
         payload <- extractRequestBody(req.body.asText)
-        newAtom <- parseAtomJson(payload)
+        newAtom <- parseStringToAtom(payload)
         datastore <- AtomDataStores.getDataStore(atomType, Preview)
         currentAtom <- atomWorkshopDB.getAtom(datastore, atomType, id)
-        result <- atomWorkshopDB.updateAtom(datastore, atomType, req.user, currentAtom,newAtom)
+        result <- atomWorkshopDB.updateAtom(datastore, atomType, req.user, currentAtom, newAtom)
+      } yield AtomWorkshopAPIResponse(s"Update of atom of type $atomType with id $id successful.")
+    }
+  }
+
+  def updateAtomByPath(atomType: String, id: String) = AuthAction { req =>
+    APIResponse {
+      for {
+        atomType <- validateAtomType(atomType)
+        payload <- extractRequestBody(req.body.asJson.map(_.toString))
+        newJson <- parseBody(payload)
+        datastore <- AtomDataStores.getDataStore(atomType, Preview)
+        currentAtom <- atomWorkshopDB.getAtom(datastore, atomType, id)
+        result <- atomWorkshopDB.updateAtomByPath(datastore, atomType, req.user, parseAtomToJson(currentAtom), newJson)
       } yield AtomWorkshopAPIResponse(s"Update of atom of type $atomType with id $id successful.")
     }
   }
