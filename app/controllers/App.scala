@@ -10,7 +10,7 @@ import com.gu.contentatom.thrift.Atom
 import db.{AtomDataStores, AtomWorkshopDBAPI}
 import com.gu.fezziwig.CirceScroogeMacros._
 import io.circe.syntax._
-import util.HelperFunctions._
+import util.Atoms._
 import io.circe._
 import io.circe.generic.auto._
 
@@ -26,16 +26,13 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
     Ok(views.html.index("AtomMcAtomFace", clientConfig.asJson.noSpaces))
   }
 
-  private def getAtomFromDataStore(atomType: String, id: String, version: String): Either[AtomAPIError, Atom] =
-    for {
-      atomType <- validateAtomType(atomType)
-      ds <- AtomDataStores.getDataStore(atomType, getVersion(version))
-      atom <- atomWorkshopDB.getAtom(ds, atomType, id)
-    } yield atom
-
-  def getAtom(atomType: String, id: String, version: String) = AuthAction {
+  def getAtom(atomType: String, id: String, version: String) = Action {
     APIResponse {
-      getAtomFromDataStore(atomType, id, version)
+      for {
+        atomType <- validateAtomType(atomType)
+        ds <- AtomDataStores.getDataStore(atomType, getVersion(version))
+        atom <- atomWorkshopDB.getAtom(ds, atomType, id)
+      } yield atom
     }
   }
 
@@ -49,25 +46,26 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
     }
   }
 
-  private def deleteAtomFromDataStore(atomType: String, id: String, version: String): Either[AtomAPIError, Unit] =
-    for {
-      atomType <- validateAtomType(atomType)
-      ds <- AtomDataStores.getDataStore(atomType, getVersion(version))
-      result <- atomWorkshopDB.deleteAtom(ds, atomType, id)
-    } yield result
-
   def deleteAtom(atomType: String, id: String) = AuthAction {
-    val atomIsLive = getAtomFromDataStore(atomType, id, "live").fold(_ => false, _ => true)
     APIResponse {
-      if (atomIsLive)
-        deleteAtomFromDataStore(atomType, id, "preview")
-      else Left(DeleteAtomFromPreviewError)
+      for {
+        atomType <- validateAtomType(atomType)
+        liveDataStore <- AtomDataStores.getDataStore(atomType, getVersion("live"))
+        liveAtom = atomWorkshopDB.getAtom(liveDataStore, atomType, id)
+        _ <- checkAtomCanBeDeletedFromPreview(liveAtom)
+        previewDataStore <- AtomDataStores.getDataStore(atomType, getVersion("preview"))
+        result <- atomWorkshopDB.deleteAtom(previewDataStore, atomType, id)
+      } yield AtomWorkshopAPIResponse("Atom deleted from preview")
     }
   }
 
   def takedownAtom(atomType: String, id: String) = AuthAction {
     APIResponse {
-      deleteAtomFromDataStore(atomType, id, "live")
+      for {
+        atomType <- validateAtomType(atomType)
+        ds <- AtomDataStores.getDataStore(atomType, getVersion("live"))
+        result <- atomWorkshopDB.deleteAtom(ds, atomType, id)
+      } yield AtomWorkshopAPIResponse("Atom taken down")
     }
   }
 

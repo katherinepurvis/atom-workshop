@@ -9,8 +9,8 @@ GET     /reauth                     controllers.Login.reauth
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 
 
-GET  /api/preview/:atomType/:id/    controllers.App.getAtom(atomType: String, id: String, version = "preview")
-GET  /api/live/:atomType/:id/       controllers.App.getAtom(atomType: String, id: String, version = "live")
+GET  /api/preview/:atomType/:id     controllers.App.getAtom(atomType: String, id: String, version = "preview")
+GET  /api/live/:atomType/:id        controllers.App.getAtom(atomType: String, id: String, version = "live")
 
 DELETE /api/preview/:atomType/:id   controllers.App.deleteAtom(atomType: String, id: String)
 DELETE /api/live/:atomType/:id      controllers.App.takedownAtom(atomType: String, id: String)
