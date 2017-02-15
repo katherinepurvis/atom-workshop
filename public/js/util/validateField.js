@@ -16,7 +16,7 @@ const validateField = (fieldValue, isRequired: false, customValidation) => {
 
       if (result !== true) {
         if (!(result instanceof FieldError)) {
-          logError('Unexpected error format');
+          logError('Unexpected error format', result);
         } else {
           errors.push(result);
         }
