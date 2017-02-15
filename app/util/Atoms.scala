@@ -1,9 +1,7 @@
 package util
 
 import com.gu.contentatom.thrift.{Atom, AtomType}
-import com.gu.pandomainauth.model.{User => PandaUser}
 import models._
-import org.joda.time.DateTime
 import io.circe.{DecodingFailure, ParsingFailure}
 import cats.syntax.either._
 import com.amazonaws.services.dynamodbv2.model.AmazonDynamoDBException
