@@ -22,8 +22,8 @@ object Atoms {
     Either.cond(t.isDefined, t.get, InvalidAtomTypeError)
   }
 
-  def checkAtomCanBeDeletedFromPreview(responseFromLiveDatastore:Either[AtomAPIError, Atom]): Either[AtomAPIError, Unit] =
-    responseFromLiveDatastore.fold(_ => Right(), _ => Left(DeleteAtomFromPreviewError))
+  def checkAtomCanBeDeletedFromPreview(responseFromLiveDatastore:Either[AtomAPIError, Atom]): Either[AtomAPIError, String] =
+    responseFromLiveDatastore.fold(_ => Right("Atom does not exist on live"), _ => Left(DeleteAtomFromPreviewError))
 
   def processException(exception: Exception) = {
     val atomApiError = exception match {
