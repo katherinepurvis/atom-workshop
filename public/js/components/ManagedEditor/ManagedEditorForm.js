@@ -12,5 +12,8 @@ export const ManagedForm = (props) => {
 
 ManagedForm.propTypes = {
   updateData: PropTypes.func.isRequired,
-  children: PropTypes.element.isRequired
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element)
+  ])
 };
