@@ -13,7 +13,7 @@ import io.circe._
 import io.circe.syntax._
 import util.AtomElementBuilders._
 import com.gu.pandomainauth.model.User
-import util.Atoms._
+import util.AtomLogic._
 
 trait AtomWorkshopDBAPI {
 

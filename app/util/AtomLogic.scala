@@ -11,7 +11,7 @@ import io.circe.syntax._
 import io.circe._
 import io.circe.parser.decode
 
-object Atoms {
+object AtomLogic {
   def getVersion(version: String): Version = version match {
     case "preview" => Preview
     case "live" => Live
