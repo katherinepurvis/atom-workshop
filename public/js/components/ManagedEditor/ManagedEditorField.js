@@ -5,10 +5,10 @@ import validateField from '../../util/validateField';
 
 export const ManagedField = (props) => {
   const updateFn = (e) => {
-    validateField(props.fieldId, _get(props.data, props.fieldLocation), props.isRequired, props.customValidation);
     const newData = Object.assign({}, props.data);
     _set(newData, props.fieldLocation, e.target.value);
     props.updateData(newData);
+    validateField(props.fieldId, _get(props.data, props.fieldLocation), props.isRequired, props.customValidation);
   };
 
   const hydratedChildren = React.Children.map(props.children, (child) => {

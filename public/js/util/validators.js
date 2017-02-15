@@ -1,3 +1,4 @@
+import FieldError from '../constants/fieldError';
 /**
  *
  * Validators should return true on a pass or the following format on failure:
@@ -15,9 +16,6 @@ export const isHttpsUrl = (value) => {
   if (stringValue.match(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/)) {
     return true;
   } else {
-    return {
-      error: 'not-https',
-      message: 'Not a HTTPS url'
-    };
+    return new FieldError('not-https', 'Not a HTTPS url');
   }
 };

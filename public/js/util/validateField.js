@@ -1,11 +1,12 @@
+import FieldError from '../constants/fieldError';
+import {logError} from './logger';
+
 const validateField = (fieldName, fieldValue, isRequired: false, customValidation) => {
   const errors = [];
   // isRequired check
   if(isRequired && !fieldValue) {
-    errors.push({
-      error: 'required',
-      message: 'This field is required'
-    });
+    const error = new FieldError('required', 'This field is required');
+    errors.push(error);
   }
 
   // Custom validators
@@ -14,7 +15,11 @@ const validateField = (fieldName, fieldValue, isRequired: false, customValidatio
       const result = validator(fieldValue);
 
       if (result !== true) {
-        errors.push(result);
+        if (!(result instanceof FieldError)) {
+          logError('Unexpected error format');
+        } else {
+          errors.push(result);
+        }
       }
     })
   }
