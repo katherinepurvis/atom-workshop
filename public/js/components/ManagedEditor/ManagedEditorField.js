@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react';
 import _get from 'lodash/fp/get';
 import _set from 'lodash/fp/set';
+import validateField from '../../util/validateField';
 
 export class ManagedField extends React.Component {
 
@@ -9,14 +10,18 @@ export class ManagedField extends React.Component {
     children: PropTypes.element.isRequired,
     updateData: PropTypes.func.isRequired,
     data: PropTypes.object.isRequired,
-    name: PropTypes.string
+    name: PropTypes.string,
+    isRequired: PropTypes.bool,
+    customValidation: PropTypes.func
   };
 
   updateFn = (newValue) => {
     this.props.updateData(_set(this.props.fieldLocation, newValue, this.props.data));
+    validateField(newValue, this.props.isRequired, this.props.customValidation);
   }
 
   render () {
+
     const hydratedChildren = React.Children.map(this.props.children, (child) => {
       return React.cloneElement(child, {
         fieldName: this.props.name,
@@ -25,7 +30,7 @@ export class ManagedField extends React.Component {
         onUpdateField: this.updateFn
       });
     });
-    return <div>{hydratedChildren}</div>;
 
+    return <div>{hydratedChildren}</div>;
   }
 }
