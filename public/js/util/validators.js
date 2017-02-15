@@ -1,12 +1,7 @@
-import FieldError from '../constants/fieldError';
+import FieldError from '../constants/FieldError';
 /**
  *
- * Validators should return true on a pass or the following format on failure:
- *
- * {
- *    error: 'ERROR_NAME',
- *    message: 'ERROR_MESSAGE'
- * }
+ * Validators should return true on a pass or an instance of FieldError('error', 'message') on failure
  *
  **/
 

@@ -1,4 +1,4 @@
-import FieldError from '../constants/fieldError';
+import FieldError from '../constants/FieldError';
 import {logError} from './logger';
 
 const validateField = (fieldName, fieldValue, isRequired: false, customValidation) => {

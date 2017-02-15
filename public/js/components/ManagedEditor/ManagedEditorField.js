@@ -19,6 +19,8 @@ export const ManagedField = (props) => {
       onUpdateField: updateFn
     });
   });
+
+  console.log(hydratedChildren);
   return <div>{hydratedChildren}</div>;
 };
 
