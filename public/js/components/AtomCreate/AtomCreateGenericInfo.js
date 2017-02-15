@@ -19,9 +19,9 @@ class AtomCreateGenericInfo extends React.Component {
     title: ""
   }
 
-  updateTitle = (e) => {
+  updateTitle = (newTitle) => {
     this.setState({
-      title: e.target.value
+      title: newTitle
     });
   }
 

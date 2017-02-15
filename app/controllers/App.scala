@@ -60,8 +60,9 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
         newAtom <- parseStringToAtom(payload)
         datastore <- AtomDataStores.getDataStore(atomType, Preview)
         currentAtom <- atomWorkshopDB.getAtom(datastore, atomType, id)
-        result <- atomWorkshopDB.updateAtom(datastore, atomType, req.user, currentAtom, newAtom)
-      } yield AtomWorkshopAPIResponse(s"Update of atom of type $atomType with id $id successful.")
+        updated <- atomWorkshopDB.updateAtom(datastore, atomType, req.user, currentAtom,newAtom)
+        updatedAtom <- atomWorkshopDB.getAtom(datastore, atomType, id)
+      } yield updatedAtom
     }
   }
 
@@ -73,8 +74,9 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
         newJson <- parseBody(payload)
         datastore <- AtomDataStores.getDataStore(atomType, Preview)
         currentAtom <- atomWorkshopDB.getAtom(datastore, atomType, id)
-        result <- atomWorkshopDB.updateAtomByPath(datastore, atomType, req.user, parseAtomToJson(currentAtom), newJson)
-      } yield AtomWorkshopAPIResponse(s"Update of atom of type $atomType with id $id successful.")
+        update <- atomWorkshopDB.updateAtomByPath(datastore, atomType, req.user, parseAtomToJson(currentAtom), newJson)
+        updatedAtom <- atomWorkshopDB.getAtom(datastore, atomType, id)
+      } yield updatedAtom
     }
   }
 
