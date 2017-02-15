@@ -1,7 +1,7 @@
 import FieldError from '../constants/FieldError';
 /**
  *
- * Validators should return true on a pass or an instance of FieldError('error', 'message') on failure
+ * Validator should return a promise resolved with true for a pass and a new FieldError('error', 'message') if false
  *
  **/
 
@@ -9,8 +9,9 @@ import FieldError from '../constants/FieldError';
 export const isHttpsUrl = (value) => {
   const stringValue = typeof value === 'string' ? value : '';
   if (stringValue.match(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/)) {
-    return true;
+    return Promise.resolve(true);
   } else {
-    return new FieldError('not-https', 'Not a HTTPS url');
+    const error = new FieldError('not-https', 'Not a HTTPS url');
+    return Promise.resolve(error);
   }
 };
