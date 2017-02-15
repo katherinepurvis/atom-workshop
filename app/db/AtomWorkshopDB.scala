@@ -43,7 +43,7 @@ object AtomWorkshopDB {
     try {
       val result = datastore.updateAtom(atom)
       Logger.info(s"Successfully updated atom of type ${atom.atomType.name} with id ${atom.id}")
-      Right(transformAtomLibResult(result))
+      transformAtomLibResult(result)
     } catch {
       case e: Exception => processException(e)
     }
