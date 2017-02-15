@@ -8,7 +8,7 @@ export const ManagedField = (props) => {
     const newData = Object.assign({}, props.data);
     _set(newData, props.fieldLocation, e.target.value);
     props.updateData(newData);
-    validateField(props.fieldId, _get(props.data, props.fieldLocation), props.isRequired, props.customValidation);
+    validateField(e.target.value, props.isRequired, props.customValidation);
   };
 
   const hydratedChildren = React.Children.map(props.children, (child) => {
@@ -20,7 +20,6 @@ export const ManagedField = (props) => {
     });
   });
 
-  console.log(hydratedChildren);
   return <div>{hydratedChildren}</div>;
 };
 

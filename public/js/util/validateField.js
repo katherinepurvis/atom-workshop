@@ -1,7 +1,7 @@
 import FieldError from '../constants/FieldError';
 import {logError} from './logger';
 
-const validateField = (fieldName, fieldValue, isRequired: false, customValidation) => {
+const validateField = (fieldValue, isRequired: false, customValidation) => {
   const errors = [];
   // isRequired check
   if(isRequired && !fieldValue) {
