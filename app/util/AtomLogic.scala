@@ -1,7 +1,6 @@
 package util
 
-import com.gu.contentatom.thrift._
-import models._
+import com.gu.contentatom.thrift.{Atom, AtomType}
 import io.circe.{DecodingFailure, ParsingFailure, parser}
 import cats.syntax.either._
 import com.amazonaws.services.dynamodbv2.model.AmazonDynamoDBException
@@ -11,8 +10,9 @@ import io.circe.syntax._
 import io.circe._
 import io.circe.parser.decode
 import io.circe.generic.auto._
+import models._
 
-object HelperFunctions {
+object AtomLogic {
   def getVersion(version: String): Version = version match {
     case "preview" => Preview
     case "live" => Live
@@ -22,6 +22,9 @@ object HelperFunctions {
     val t = AtomType.valueOf(atomType)
     Either.cond(t.isDefined, t.get, InvalidAtomTypeError)
   }
+
+  def checkAtomCanBeDeletedFromPreview(responseFromLiveDatastore:Either[AtomAPIError, Atom]): Either[AtomAPIError, String] =
+    responseFromLiveDatastore.fold(_ => Right("Atom does not exist on live"), _ => Left(DeleteAtomFromPreviewError))
 
   def processException(exception: Exception): Either[AtomAPIError, Nothing] = {
     val atomApiError = exception match {

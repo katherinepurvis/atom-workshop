@@ -7,21 +7,42 @@ import com.gu.contentatom.thrift.atom.explainer.ExplainerAtom
 import com.gu.contentatom.thrift.atom.media.MediaAtom
 import play.api.Logger
 import cats.syntax.either._
-import models.{AtomAPIError, AtomWorkshopDynamoDatastoreError, UnsupportedAtomTypeError}
+import models.{AtomAPIError, AtomWorkshopDynamoDatastoreError}
 import com.gu.fezziwig.CirceScroogeMacros._
 import io.circe._
 import util.AtomElementBuilders._
 import com.gu.pandomainauth.model.User
-import util.HelperFunctions._
+import util.AtomLogic._
 
-object AtomWorkshopDB {
+trait AtomWorkshopDBAPI {
 
   def buildKey(atomType: AtomType, id: String) = DynamoCompositeKey(atomType.name, Some(id))
 
   def transformAtomLibResult[T](result: DataStoreResult.DataStoreResult[T]): Either[AtomAPIError, T] = result match {
     case Left(e) => Left(AtomWorkshopDynamoDatastoreError(e.msg))
-    case Right(r:T) => Right(r)
+    case Right(r) => Right(r)
   }
+
+  def createAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atomType: AtomType, user: User): Either[AtomAPIError, Atom]
+
+  def getAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atomType: AtomType, id: String): Either[AtomAPIError, Atom]
+
+  def deleteAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atomType: AtomType, id: String): Either[AtomAPIError, Atom]
+
+  def updateAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom],
+                 atomType: AtomType,
+                 user: User,
+                 currentVersion: Atom,
+                 newAtom: Atom): Either[AtomAPIError, Unit]
+
+  def updateAtomByPath(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom],
+                       atomType: AtomType,
+                       user: User,
+                       currentJson: Json,
+                       newJson: Json): Either[AtomAPIError, Unit]
+}
+
+class AtomWorkshopDB() extends AtomWorkshopDBAPI {
 
   def createAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atomType: AtomType, user: User) = {
     val defaultAtom = buildDefaultAtom(atomType, user)
@@ -35,9 +56,12 @@ object AtomWorkshopDB {
     }
   }
 
-  def getAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atomType: AtomType, id: String): Either[AtomAPIError, Atom] = {
-    transformAtomLibResult(datastore.getAtom(AtomWorkshopDB.buildKey(atomType, id)))
-  }
+  def getAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atomType: AtomType, id: String) =
+    transformAtomLibResult(datastore.getAtom(buildKey(atomType, id)))
+
+
+  def deleteAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atomType: AtomType, id: String) =
+    transformAtomLibResult(datastore.deleteAtom(buildKey(atomType, id)))
 
   private def updateAtomInDatastore(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atom: Atom): Either[AtomAPIError, Unit] = {
     try {
@@ -81,6 +105,4 @@ object AtomWorkshopDB {
 
     updatedAtom.fold(err => Left(err), updateAtomInDatastore(datastore, _))
   }
-
-
 }

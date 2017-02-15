@@ -19,6 +19,7 @@ object Config extends AwsInstanceTags {
     new InstanceProfileCredentialsProvider(false)
   )
 
+  //CODE uses Configuration Mode PROD so that we can use dynamo to get config. Configuration Magic currently has no CODE mode SC 15/2/17
   val configMagicMode = stage match {
     case "DEV" => Mode.Dev
     case "CODE" => Mode.Prod
