@@ -34,7 +34,7 @@ class AtomEdit extends React.Component {
   render () {
 
     if (!this.props.atom) {
-      return <div>Loading...</div>
+      return <div>Loading...</div>;
     }
 
     const atomType = this.props.atom.atomType.toLowerCase();
@@ -44,7 +44,7 @@ class AtomEdit extends React.Component {
         return <CTAEditor atom={this.props.atom} onUpdate={this.updateAtom}/>;
       default:
         return (
-          <div>Unrecognised Atom Type, please add an editor</div>
+          <div>Atom Workshop cannot edit this type of atom currently</div>
         );
     }
   }
