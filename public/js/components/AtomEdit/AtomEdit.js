@@ -37,6 +37,7 @@ class AtomEdit extends React.Component {
       return <div>Loading...</div>;
     }
 
+    //TODO: This is brittle, can we improve?
     const atomType = this.props.atom.atomType.toLowerCase();
 
     switch (atomType) {
