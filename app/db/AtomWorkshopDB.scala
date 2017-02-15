@@ -5,6 +5,7 @@ import com.gu.atom.data.{DynamoCompositeKey, DynamoDataStore, DataStoreResult}
 import com.gu.contentatom.thrift.atom.cta.CTAAtom
 import com.gu.contentatom.thrift.atom.explainer.{DisplayType, ExplainerAtom}
 import com.gu.contentatom.thrift.atom.media.MediaAtom
+import com.gu.contentatom.thrift.atom.recipe.RecipeAtom
 import play.api.Logger
 import cats.syntax.either._
 import models.{AtomAPIError, AtomWorkshopDynamoDatastoreError}
@@ -25,7 +26,7 @@ object AtomWorkshopDB {
     case Right(r:T) => Right(r)
   }
 
-  def createAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atomType: AtomType, user: User) = {
+  def createAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom with RecipeAtom], atomType: AtomType, user: User) = {
     val defaultAtom = buildDefaultAtom(atomType, user)
     Logger.info(s"Attempting to create atom of type ${atomType.name} with id ${defaultAtom.id}")
     try {
@@ -37,11 +38,11 @@ object AtomWorkshopDB {
     }
   }
 
-  def getAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atomType: AtomType, id: String) = {
+  def getAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom with RecipeAtom], atomType: AtomType, id: String) = {
     transformAtomLibResult(datastore.getAtom(AtomWorkshopDB.buildKey(atomType, id)))
   }
 
-  def updateAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom], atomType: AtomType, user: User, currentVersion: Atom, newAtom: Atom): Either[AtomAPIError, Unit]  = {
+  def updateAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom with RecipeAtom], atomType: AtomType, user: User, currentVersion: Atom, newAtom: Atom): Either[AtomAPIError, Unit]  = {
     val updatedAtom = currentVersion.copy(
       contentChangeDetails = buildContentChangeDetails(user, Some(currentVersion.contentChangeDetails), updateLastModified = true),
       defaultHtml = buildDefaultHtml(atomType, currentVersion.data, Some(currentVersion.defaultHtml)),

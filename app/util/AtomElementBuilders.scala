@@ -2,6 +2,8 @@ package util
 
 import com.gu.contentatom.thrift.atom.cta.CTAAtom
 import com.gu.contentatom.thrift.atom.explainer.{DisplayType, ExplainerAtom}
+import com.gu.contentatom.thrift.atom.recipe.{RecipeAtom, Tags => RecipeTags, Time => RecipeTime}
+
 import com.gu.contentatom.thrift.{User, _}
 import com.gu.pandomainauth.model.{User => PandaUser}
 import org.joda.time.DateTime
@@ -30,7 +32,8 @@ object AtomElementBuilders {
   def buildDefaultAtom(atomType: AtomType, user: PandaUser) = {
     val defaultAtoms: Map[AtomType, AtomData] = Map(
       AtomType.Explainer -> AtomData.Explainer(ExplainerAtom("-", "-", DisplayType.Flat)),
-      AtomType.Cta -> AtomData.Cta(CTAAtom("-"))
+      AtomType.Cta -> AtomData.Cta(CTAAtom("-")),
+      AtomType.Recipe -> AtomData.Recipe(RecipeAtom("-", RecipeTags(), RecipeTime()))
     )
 
     Atom(id = java.util.UUID.randomUUID.toString,
