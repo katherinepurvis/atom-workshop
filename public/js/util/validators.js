@@ -4,7 +4,7 @@
  *
  * {
  *    error: 'ERROR_NAME',
- *    message: 'ERROR MESSAGE'
+ *    message: 'ERROR_MESSAGE'
  * }
  *
  **/
