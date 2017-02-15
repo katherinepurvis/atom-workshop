@@ -15,11 +15,12 @@ const validateField = (fieldValue, isRequired: false, customValidation) => {
       const result = validator(fieldValue);
 
       if (result !== true) {
+
         if (!(result instanceof FieldError)) {
           logError('Unexpected error format', result);
-        } else {
-          errors.push(result);
+          return;
         }
+        errors.push(result);
       }
     })
   }
