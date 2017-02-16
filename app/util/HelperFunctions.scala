@@ -1,5 +1,6 @@
 package util
 
+import cats.data.{NonEmptyList, Validated}
 import com.gu.contentatom.thrift._
 import com.gu.pandomainauth.model.{User => PandaUser}
 import models._
@@ -8,7 +9,7 @@ import io.circe.{DecodingFailure, ParsingFailure, parser}
 import cats.syntax.either._
 import com.amazonaws.services.dynamodbv2.model.AmazonDynamoDBException
 import play.api.Logger
-import com.gu.fezziwig.CirceScroogeMacros._
+import com.gu.fezziwig.CirceScrooge.AccumulatingMacros._
 import io.circe.syntax._
 import io.circe._
 import io.circe.parser.decode
@@ -35,19 +36,30 @@ object HelperFunctions {
     Left(atomApiError)
   }
 
+  def processExceptionList(errorList:NonEmptyList[DecodingFailure]) = {
+    AtomThriftDeserialisingError(errorList.foldLeft("Unable to deserialise payload: ")((acc, error)=>{
+      acc + s"\n\t${error.toString}"
+    }))
+  }
+
   def extractRequestBody(body: Option[String]): Either[AtomAPIError, String]= {
     Either.cond(body.isDefined, body.get, BodyRequiredForUpdateError)
   }
 
   def parseAtomJson(atomJson: String): Either[AtomAPIError, Atom] = {
     println(atomJson)
-    val parsingResult = for {
-      parsedAtom <- parser.parse(atomJson)
-      decodedAtom <- parsedAtom.as[Atom]
-    } yield {
-      decodedAtom
+
+    parser.parse(atomJson) match {
+      case Right(atomJsonContent)=>
+        val decoder = AccumulatingDecoder[Atom]
+        decoder.apply(atomJsonContent.hcursor) match {
+          case Validated.Valid(atom)=>Right(atom)
+          case Validated.Invalid(errorList)=>Left(processExceptionList(errorList))
+        }
+      case Left(parserError)=>
+        processException(parserError)
     }
-    parsingResult.fold(processException, a => Right(a))
+
   }
 
 }

@@ -8,7 +8,7 @@ import com.gu.contentatom.thrift.atom.media.MediaAtom
 import play.api.Logger
 import cats.syntax.either._
 import models.{AtomAPIError, AtomWorkshopDynamoDatastoreError}
-import com.gu.fezziwig.CirceScroogeMacros._
+import com.gu.fezziwig.CirceScrooge.Macros._
 import io.circe._
 import io.circe.syntax._
 import util.AtomElementBuilders._
