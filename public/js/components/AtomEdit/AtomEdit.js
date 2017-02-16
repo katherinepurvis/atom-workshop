@@ -45,7 +45,7 @@ class AtomEdit extends React.Component {
       case ("cta"):
         return <CTAEditor atom={this.props.atom} onUpdate={this.updateAtom}/>;
       case ("recipe"):
-        return <RecipeEditor atom={this.props.atom} onUpdate={this.updateAtom}/>;
+        return <RecipeEditor atom={this.props.atom} onUpdate={this.updateAtom} config={this.props.config}/>;
       default:
         return (
           <div>Atom Workshop cannot edit this type of atom currently</div>
