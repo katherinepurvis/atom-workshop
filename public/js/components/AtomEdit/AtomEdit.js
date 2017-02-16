@@ -21,7 +21,10 @@ class AtomEdit extends React.Component {
       getAtom: PropTypes.func.isRequired,
       updateAtom: PropTypes.func.isRequired
     }).isRequired,
-    atom: atomPropType
+    atom: atomPropType,
+    config: PropTypes.shape({
+      gridUrl: PropTypes.string
+    })
   }
 
   componentWillMount() {
