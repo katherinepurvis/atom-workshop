@@ -10,8 +10,8 @@ const validateField = (fieldValue, isRequired: false, customValidation) => {
       reject(err);
     }
     return err !== true ? err : false;
-  }
-  
+  };
+
   // isRequired check
   if(isRequired && !fieldValue) {
     const error = new FieldError('required', 'This field is required');
@@ -21,18 +21,7 @@ const validateField = (fieldValue, isRequired: false, customValidation) => {
   // Custom validators
   if(customValidation) {
 
-    const customValidationResults = customValidation.map((validator) => {
-      const result = validator(fieldValue);
-
-      if (result !== true) {
-
-        if (!(result instanceof FieldError)) {
-
-
-        }
-        return result;
-      }
-    })
+    const customValidationResults = customValidation.map((validator) => validator(fieldValue));
 
     Promise.all(customValidationResults)
       .then(res => res.filter(checkError))

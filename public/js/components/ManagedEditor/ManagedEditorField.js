@@ -12,7 +12,7 @@ export class ManagedField extends React.Component {
     data: PropTypes.object.isRequired,
     name: PropTypes.string,
     isRequired: PropTypes.bool,
-    customValidation: PropTypes.func
+    customValidation: PropTypes.arrayOf(PropTypes.func)
   };
 
   updateFn = (newValue) => {
