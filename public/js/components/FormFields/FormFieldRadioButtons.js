@@ -3,11 +3,11 @@ import React from 'react';
 export default class FormFieldRadioButtons extends React.Component {
 
   static propTypes = {
-    fieldLabel: React.PropTypes.string.isRequired,
-    fieldName: React.PropTypes.string.isRequired,
+    fieldLabel: React.PropTypes.string,
+    fieldName: React.PropTypes.string,
     selectValues: React.PropTypes.array.isRequired,
     fieldValue: React.PropTypes.string,
-    onUpdateField: React.PropTypes.func.isRequired
+    onUpdateField: React.PropTypes.func
   };
 
   onUpdate = (e) => {

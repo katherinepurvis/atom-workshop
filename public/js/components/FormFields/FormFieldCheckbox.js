@@ -5,7 +5,7 @@ export default class FormFieldCheckbox extends React.Component {
   static propTypes = {
     fieldLabel: React.PropTypes.string.isRequired,
     fieldName: React.PropTypes.string.isRequired,
-    fieldValues: React.PropTypes.array.isRequired,
+    fieldValue: React.PropTypes.array.isRequired,
     onUpdateField: React.PropTypes.func.isRequired
   };
 
@@ -23,7 +23,7 @@ export default class FormFieldCheckbox extends React.Component {
   }
 
   renderCheckboxes() {
-    return this.props.fieldValues.map(this.renderCheckbox, this);
+    return this.props.fieldValue.map(this.renderCheckbox, this);
   }
 
   render() {
