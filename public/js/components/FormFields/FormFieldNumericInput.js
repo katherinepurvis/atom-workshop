@@ -3,11 +3,11 @@ import React from 'react';
 export default class FormFieldNumericInput extends React.Component {
 
   static propTypes = {
-    fieldLabel: React.PropTypes.string.isRequired,
-    fieldName: React.PropTypes.string.isRequired,
-    fieldValue: React.PropTypes.string.isRequired,
+    fieldLabel: React.PropTypes.string,
+    fieldName: React.PropTypes.string,
+    fieldValue: React.PropTypes.number,
     fieldPlaceholder: React.PropTypes.string,
-    onUpdateField: React.PropTypes.func.isRequired
+    onUpdateField: React.PropTypes.func
   };
 
   onUpdate = (e) => {
@@ -25,7 +25,7 @@ export default class FormFieldNumericInput extends React.Component {
     return (
         <div>
           <label htmlFor={this.props.fieldName} className="form__label">{this.props.fieldLabel}</label>
-          <input type="number" className="form__field" id={this.props.fieldName} placeholder={this.props.fieldPlaceholder || ''} value={this.props.fieldValue || 0} onChange={this.onUpdate}/>
+          <input type="number" className="form__field" id={this.props.fieldName} placeholder={this.props.fieldPlaceholder || ''} value={this.props.fieldValue || ''} onChange={this.onUpdate}/>
         </div>
 
     );
