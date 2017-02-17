@@ -4,7 +4,7 @@ version := "1.0"
 scalaVersion := "2.11.8"
 
 lazy val awsVersion = "1.11.8"
-lazy val atomLibVersion = "0.1.11"
+lazy val atomLibVersion = "0.1.12"
 
 libraryDependencies ++= Seq(
   ws,
