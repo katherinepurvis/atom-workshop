@@ -62,8 +62,7 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
         datastore <- AtomDataStores.getDataStore(atomType, Preview)
         currentAtom <- atomWorkshopDB.getAtom(datastore, atomType, id)
         updated <- atomWorkshopDB.updateAtom(datastore, atomType, req.user, currentAtom,newAtom)
-        updatedAtom <- atomWorkshopDB.getAtom(datastore, atomType, id)
-      } yield updatedAtom
+      } yield updated
     }
   }
 
