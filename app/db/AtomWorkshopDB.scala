@@ -18,8 +18,6 @@ import util.Parser._
 
 trait AtomWorkshopDBAPI {
 
-  def buildKey(atomType: AtomType, id: String) = DynamoCompositeKey(atomType.name, Some(id))
-
   def transformAtomLibResult[T](result: DataStoreResult.DataStoreResult[T]): Either[AtomAPIError, T] = result match {
     case Left(e) => Left(AtomWorkshopDynamoDatastoreError(e.msg))
     case Right(r) => Right(r)
@@ -46,8 +44,8 @@ trait AtomWorkshopDBAPI {
 
 class AtomWorkshopDB() extends AtomWorkshopDBAPI {
 
-  def createAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom with RecipeAtom], atomType: AtomType, user: User) = {
-    val defaultAtom = buildDefaultAtom(atomType, user)
+  def createAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom with RecipeAtom], atomType: AtomType, user: User, atom: Option[Atom] = None) = {
+    val defaultAtom = atom.getOrElse(buildDefaultAtom(atomType, user))
     Logger.info(s"Attempting to create atom of type ${atomType.name} with id ${defaultAtom.id}")
     try {
       val r = datastore.createAtom(buildKey(atomType, defaultAtom.id), defaultAtom)
@@ -106,5 +104,16 @@ class AtomWorkshopDB() extends AtomWorkshopDBAPI {
     } yield createAtomFromUpdatedAtom(atom, updAtom, user)
 
     updatedAtom.fold(err => Left(err), updateAtomInDatastore(datastore, _))
+  }
+
+  def createOrUpdateAtom(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom with RecipeAtom],
+                         atomType: AtomType,
+                         user: User,
+                         newVersion: Atom): Either[AtomAPIError, Atom] = {
+
+    checkAtomExistsInDatastore(datastore, atomType, newVersion.id).fold(err => Left(err), result => {
+      if (result) updateAtom(datastore, atomType, user, newVersion)
+      else createAtom(datastore, atomType, user, Some(newVersion))
+    })
   }
 }
