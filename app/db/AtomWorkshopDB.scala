@@ -35,7 +35,7 @@ trait AtomWorkshopDBAPI {
                  atomType: AtomType,
                  user: User,
                  currentVersion: Atom,
-                 newAtom: Atom): Either[AtomAPIError, Unit]
+                 newAtom: Option[Atom] = None): Either[AtomAPIError, Unit]
 
   def updateAtomByPath(datastore: DynamoDataStore[_ >: ExplainerAtom with CTAAtom with MediaAtom with RecipeAtom],
                        atomType: AtomType,
@@ -86,9 +86,9 @@ class AtomWorkshopDB() extends AtomWorkshopDBAPI {
                  atomType: AtomType,
                  user: User,
                  currentVersion: Atom,
-                 newAtom: Atom): Either[AtomAPIError, Unit] = {
+                 newAtom: Option[Atom] = None): Either[AtomAPIError, Unit] = {
 
-    val updatedAtom: Atom = createAtomFromUpdatedAtom(currentVersion, newAtom, user)
+    val updatedAtom: Atom = createAtomFromUpdatedAtom(currentVersion, newAtom.getOrElse(currentVersion), user)
     updateAtomInDatastore(datastore, updatedAtom)
   }
 

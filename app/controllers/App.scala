@@ -6,6 +6,7 @@ import play.api.Logger
 import play.api.libs.ws.WSClient
 import play.api.mvc.Controller
 import cats.syntax.either._
+import com.gu.contentatom.thrift.EventType
 import db.{AtomDataStores, AtomWorkshopDBAPI}
 import com.gu.fezziwig.CirceScroogeMacros._
 import io.circe.syntax._
@@ -13,6 +14,7 @@ import io.circe._
 import io.circe.generic.auto._
 import util.AtomLogic._
 import util.Parser._
+import services.AtomPublishers._
 
 class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends Controller with PanDomainAuthActions {
 
@@ -48,7 +50,22 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
         atomType <- validateAtomType(atomType)
         ds <- AtomDataStores.getDataStore(atomType, Preview)
         atom <- atomWorkshopDB.createAtom(ds, atomType, req.user)
+        _ <- sendKinesisEvent(atom, previewAtomPublisher, EventType.Update)
       } yield atom
+    }
+  }
+
+  def publishAtom(atomType: String, id: String) = AuthAction { req =>
+    APIResponse {
+      for {
+        atomType <- validateAtomType(atomType)
+        previewDs <- AtomDataStores.getDataStore(atomType, Live)
+        liveDs <- AtomDataStores.getDataStore(atomType, Live)
+        currentAtom <- atomWorkshopDB.getAtom(previewDs, atomType, id)
+        updated <- atomWorkshopDB.updateAtom(liveDs, atomType, req.user, currentAtom)
+        updatedAtom <- atomWorkshopDB.getAtom(liveDs, atomType, id) // TODO: remove this once updateAtom returns the updated atom
+        _ <- sendKinesisEvent(updatedAtom, liveAtomPublisher, EventType.Update)
+      } yield updated
     }
   }
 
@@ -60,8 +77,9 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
         newAtom <- stringToAtom(payload)
         datastore <- AtomDataStores.getDataStore(atomType, Preview)
         currentAtom <- atomWorkshopDB.getAtom(datastore, atomType, id)
-        updated <- atomWorkshopDB.updateAtom(datastore, atomType, req.user, currentAtom,newAtom)
+        updated <- atomWorkshopDB.updateAtom(datastore, atomType, req.user, currentAtom, Some(newAtom))
         updatedAtom <- atomWorkshopDB.getAtom(datastore, atomType, id)
+        _ <- sendKinesisEvent(updatedAtom, previewAtomPublisher, EventType.Update)
       } yield updatedAtom
     }
   }
@@ -76,6 +94,7 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
         currentAtom <- atomWorkshopDB.getAtom(datastore, atomType, id)
         update <- atomWorkshopDB.updateAtomByPath(datastore, atomType, req.user, currentAtom.asJson, newJson)
         updatedAtom <- atomWorkshopDB.getAtom(datastore, atomType, id)
+        _ <- sendKinesisEvent(updatedAtom, previewAtomPublisher, EventType.Update)
       } yield updatedAtom
     }
   }
@@ -84,11 +103,13 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
     APIResponse {
       for {
         atomType <- validateAtomType(atomType)
-        liveDataStore <- AtomDataStores.getDataStore(atomType, getVersion("live"))
+        liveDataStore <- AtomDataStores.getDataStore(atomType, Live)
         liveAtom = atomWorkshopDB.getAtom(liveDataStore, atomType, id)
         _ <- checkAtomCanBeDeletedFromPreview(liveAtom)
-        previewDataStore <- AtomDataStores.getDataStore(atomType, getVersion("preview"))
+        previewDataStore <- AtomDataStores.getDataStore(atomType, Preview)
         result <- atomWorkshopDB.deleteAtom(previewDataStore, atomType, id)
+        atom <- liveAtom
+        _ <- sendKinesisEvent(atom, previewAtomPublisher, EventType.Takedown)
       } yield AtomWorkshopAPIResponse("Atom deleted from preview")
     }
   }
@@ -97,8 +118,10 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
     APIResponse {
       for {
         atomType <- validateAtomType(atomType)
-        ds <- AtomDataStores.getDataStore(atomType, getVersion("live"))
+        ds <- AtomDataStores.getDataStore(atomType, Live)
+        atom <- atomWorkshopDB.getAtom(ds, atomType, id)
         result <- atomWorkshopDB.deleteAtom(ds, atomType, id)
+        _ <- sendKinesisEvent(atom, liveAtomPublisher, EventType.Takedown)
       } yield AtomWorkshopAPIResponse("Atom taken down")
     }
   }
