@@ -6,7 +6,6 @@ import play.api.Logger
 import play.api.libs.ws.WSClient
 import play.api.mvc.Controller
 import cats.syntax.either._
-import com.gu.contentatom.thrift.Atom
 import db.{AtomDataStores, AtomWorkshopDBAPI}
 import com.gu.fezziwig.CirceScroogeMacros._
 import io.circe.syntax._
@@ -29,7 +28,6 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
 
     val jsLocation = sys.env.get("JS_ASSET_HOST").map(_ + jsFileName)
       .getOrElse(routes.Assets.versioned(jsFileName).toString)
-
 
     Ok(views.html.index("AtomMcAtomFace", jsLocation, clientConfig.asJson.noSpaces))
   }
