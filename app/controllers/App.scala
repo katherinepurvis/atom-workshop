@@ -13,6 +13,7 @@ import io.circe.syntax._
 import io.circe._
 import io.circe.generic.auto._
 import util.AtomLogic._
+import util.Parser._
 
 class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends Controller with PanDomainAuthActions {
 
@@ -58,7 +59,7 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
       for {
         atomType <- validateAtomType(atomType)
         payload <- extractRequestBody(req.body.asText)
-        newAtom <- parseStringToAtom(payload)
+        newAtom <- stringToAtom(payload)
         datastore <- AtomDataStores.getDataStore(atomType, Preview)
         currentAtom <- atomWorkshopDB.getAtom(datastore, atomType, id)
         updated <- atomWorkshopDB.updateAtom(datastore, atomType, req.user, currentAtom,newAtom)
@@ -72,10 +73,10 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
       for {
         atomType <- validateAtomType(atomType)
         payload <- extractRequestBody(req.body.asJson.map(_.toString))
-        newJson <- parseBody(payload)
+        newJson <- stringToJson(payload)
         datastore <- AtomDataStores.getDataStore(atomType, Preview)
         currentAtom <- atomWorkshopDB.getAtom(datastore, atomType, id)
-        update <- atomWorkshopDB.updateAtomByPath(datastore, atomType, req.user, parseAtomToJson(currentAtom), newJson)
+        update <- atomWorkshopDB.updateAtomByPath(datastore, atomType, req.user, currentAtom.asJson, newJson)
         updatedAtom <- atomWorkshopDB.getAtom(datastore, atomType, id)
       } yield updatedAtom
     }
