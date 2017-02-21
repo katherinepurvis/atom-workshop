@@ -62,10 +62,9 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
         previewDs <- AtomDataStores.getDataStore(atomType, Live)
         liveDs <- AtomDataStores.getDataStore(atomType, Live)
         currentAtom <- atomWorkshopDB.getAtom(previewDs, atomType, id)
-        updated <- atomWorkshopDB.updateAtom(liveDs, atomType, req.user, currentAtom)
-        updatedAtom <- atomWorkshopDB.getAtom(liveDs, atomType, id) // TODO: remove this once updateAtom returns the updated atom
+        updatedAtom <- atomWorkshopDB.updateAtom(liveDs, atomType, req.user, currentAtom)
         _ <- sendKinesisEvent(updatedAtom, liveAtomPublisher, EventType.Update)
-      } yield updated
+      } yield updatedAtom
     }
   }
 
@@ -77,8 +76,7 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
         newAtom <- stringToAtom(payload)
         datastore <- AtomDataStores.getDataStore(atomType, Preview)
         currentAtom <- atomWorkshopDB.getAtom(datastore, atomType, id)
-        updated <- atomWorkshopDB.updateAtom(datastore, atomType, req.user, currentAtom, Some(newAtom))
-        updatedAtom <- atomWorkshopDB.getAtom(datastore, atomType, id)
+        updatedAtom <- atomWorkshopDB.updateAtom(datastore, atomType, req.user, currentAtom, Some(newAtom))
         _ <- sendKinesisEvent(updatedAtom, previewAtomPublisher, EventType.Update)
       } yield updatedAtom
     }
@@ -92,8 +90,7 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
         newJson <- stringToJson(payload)
         datastore <- AtomDataStores.getDataStore(atomType, Preview)
         currentAtom <- atomWorkshopDB.getAtom(datastore, atomType, id)
-        update <- atomWorkshopDB.updateAtomByPath(datastore, atomType, req.user, currentAtom.asJson, newJson)
-        updatedAtom <- atomWorkshopDB.getAtom(datastore, atomType, id)
+        updatedAtom <- atomWorkshopDB.updateAtomByPath(datastore, atomType, req.user, currentAtom.asJson, newJson)
         _ <- sendKinesisEvent(updatedAtom, previewAtomPublisher, EventType.Update)
       } yield updatedAtom
     }
