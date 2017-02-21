@@ -1,13 +1,18 @@
 package services
 
-import com.gu.atom.publish.{AtomPublisher, PreviewKinesisAtomPublisher, LiveKinesisAtomPublisher}
-import com.gu.contentatom.thrift.{ContentAtomEvent, EventType, Atom}
+import com.gu.atom.publish._
+import com.gu.contentatom.thrift.{Atom, ContentAtomEvent, EventType}
 import config.Config._
-import models.{KinesisPublishingFailed, AtomAPIError}
+import models.{AtomAPIError, KinesisPublishingFailed}
 import org.joda.time.DateTime
 import play.api.Logger
 
 import scala.util.{Failure, Success}
+
+object AtomReindexers {
+  val previewKinesisAtomReindexer = new PreviewKinesisAtomReindexer(previewReindexKinesisStreamName, kinesisClient)
+  val liveKinesisAtomReindexer = new PublishedKinesisAtomReindexer(liveReindexKinesisStreamName, kinesisClient)
+}
 
 object AtomPublishers {
   val liveAtomPublisher = new LiveKinesisAtomPublisher(liveKinesisStreamName, kinesisClient)

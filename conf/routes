@@ -27,3 +27,10 @@ POST  /api/live/:atomType/:id                    controllers.App.publishAtom(ato
 
 PATCH /api/preview/:atomType/:id                 controllers.App.updateAtomByPath(atomType: String, id: String)
 PUT   /api/preview/:atomType/:id                 controllers.App.updateEntireAtom(atomType: String, id: String)
+
+
+# reindex
+POST    /reindex-preview                    com.gu.atom.play.ReindexController.newPreviewReindexJob()
+POST    /reindex-publish                    com.gu.atom.play.ReindexController.newPublishedReindexJob()
+GET     /reindex-preview                    com.gu.atom.play.ReindexController.previewReindexJobStatus()
+GET     /reindex-publish                    com.gu.atom.play.ReindexController.publishedReindexJobStatus()

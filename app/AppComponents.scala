@@ -4,6 +4,7 @@ import play.api.ApplicationLoader.Context
 import play.api.libs.ws.ahc.AhcWSComponents
 import router.Routes
 import db.AtomWorkshopDB
+import com.gu.atom.play.ReindexController
 
 class AppComponents(context: Context)
   extends BuiltInComponentsFromContext(context) with AhcWSComponents {
@@ -15,6 +16,8 @@ class AppComponents(context: Context)
   lazy val appController = new controllers.App(wsClient, atomWorkshopDB)
   lazy val loginController = new controllers.Login(wsClient)
   lazy val healthcheckController = new controllers.Healthcheck()
+
+  lazy val reindexController = new ReindexController(???)
 
   lazy val atomWorkshopDB = new AtomWorkshopDB()
 }
