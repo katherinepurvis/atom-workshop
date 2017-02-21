@@ -7,7 +7,7 @@ import play.api.libs.ws.WSClient
 import play.api.mvc.Controller
 import cats.syntax.either._
 import db.{AtomDataStores, AtomWorkshopDB}
-import com.gu.fezziwig.CirceScrooge.Macros._
+import com.gu.fezziwig.CirceScroogeMacros._
 import io.circe._
 import io.circe.syntax._
 import util.HelperFunctions._

@@ -9,7 +9,7 @@ import io.circe.{DecodingFailure, ParsingFailure, parser}
 import cats.syntax.either._
 import com.amazonaws.services.dynamodbv2.model.AmazonDynamoDBException
 import play.api.Logger
-import com.gu.fezziwig.CirceScrooge.AccumulatingMacros._
+import com.gu.fezziwig.CirceScroogeMacros._
 import io.circe.syntax._
 import io.circe._
 import io.circe.parser.decode
