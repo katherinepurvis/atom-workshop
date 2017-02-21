@@ -59,10 +59,10 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
     APIResponse {
       for {
         atomType <- validateAtomType(atomType)
-        previewDs <- AtomDataStores.getDataStore(atomType, Live)
+        previewDs <- AtomDataStores.getDataStore(atomType, Preview)
         liveDs <- AtomDataStores.getDataStore(atomType, Live)
         currentAtom <- atomWorkshopDB.getAtom(previewDs, atomType, id)
-        updatedAtom <- atomWorkshopDB.updateAtom(liveDs, atomType, req.user, currentAtom)
+        updatedAtom <- atomWorkshopDB.createOrUpdateAtom(liveDs, atomType, req.user, currentAtom)
         _ <- sendKinesisEvent(updatedAtom, liveAtomPublisher, EventType.Update)
       } yield updatedAtom
     }

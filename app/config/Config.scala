@@ -29,14 +29,14 @@ object Config extends AwsInstanceTags {
   }
   val config = ConfigurationMagic(appName, configMagicMode).load
 
-  def getOptionalProperty[T](path: String, getVal: String => T) = {
+  def getOptionalProperty[T](path: String, getVal: String => T): Option[T] = {
     if (config.hasPath(path)) Some(getVal(path))
     else None
   }
 
-  def getPropertyIfEnabled(enabled: Boolean, path: String) =
+  def getPropertyIfEnabled(enabled: Boolean, path: String): String =
     if (enabled) getOptionalProperty(path, config.getString).getOrElse(sys.error(s"Property $path is required"))
-    else ""
+    else s"feature requiring $path is disabled"
 
   val kinesisEnabled = getOptionalProperty("aws.kinesis.publish.enabled", config.getBoolean).getOrElse(true)
 

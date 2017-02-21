@@ -29,7 +29,7 @@ object AtomElementBuilders {
     )
   }
 
-  def buildDefaultAtom(atomType: AtomType, user: PandaUser) = {
+  def buildDefaultAtom(atomType: AtomType, user: PandaUser): Atom = {
     val defaultAtoms: Map[AtomType, AtomData] = Map(
       AtomType.Explainer -> AtomData.Explainer(ExplainerAtom("-", "-", DisplayType.Flat)),
       AtomType.Cta -> AtomData.Cta(CTAAtom("-")),
