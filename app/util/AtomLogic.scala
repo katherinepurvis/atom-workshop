@@ -1,11 +1,13 @@
 package util
 
+import com.gu.atom.data.DynamoCompositeKey
 import com.gu.contentatom.thrift.{Atom, AtomType}
 import io.circe.{DecodingFailure, ParsingFailure, parser}
 import cats.syntax.either._
 import com.amazonaws.services.dynamodbv2.model.AmazonDynamoDBException
 import play.api.Logger
 import com.gu.fezziwig.CirceScroogeMacros._
+import db.AtomDataStores
 import io.circe.syntax._
 import io.circe._
 import io.circe.parser.decode
@@ -13,6 +15,9 @@ import io.circe.generic.auto._
 import models._
 
 object AtomLogic {
+
+  def buildKey(atomType: AtomType, id: String) = DynamoCompositeKey(atomType.name, Some(id))
+
   def getVersion(version: String): Version = version match {
     case "preview" => Preview
     case "live" => Live
@@ -37,9 +42,8 @@ object AtomLogic {
     Left(atomApiError)
   }
 
-  def extractRequestBody(body: Option[String]): Either[AtomAPIError, String]= {
+  def extractRequestBody(body: Option[String]): Either[AtomAPIError, String] =
     Either.cond(body.isDefined, body.get, BodyRequiredForUpdateError)
-  }
 }
 
 object Parser {

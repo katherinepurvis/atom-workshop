@@ -4,7 +4,7 @@ version := "1.0"
 scalaVersion := "2.11.8"
 
 lazy val awsVersion = "1.11.8"
-lazy val atomLibVersion = "0.1.11"
+lazy val atomLibVersion = "0.1.12-SNAPSHOT"
 
 libraryDependencies ++= Seq(
   ws,
@@ -30,7 +30,7 @@ routesGenerator := InjectedRoutesGenerator
 import com.typesafe.sbt.packager.archetypes.ServerLoader.Systemd
 serverLoading in Debian := Systemd
 
-lazy val root = (project in file(".")).enablePlugins(PlayScala, RiffRaffArtifact, JDebPackaging)
+lazy val root = (project in file(".")).enablePlugins(PlayScala, RiffRaffArtifact, JDebPackaging, net.virtualvoid.optimizer.SbtOptimizerPlugin)
   .settings(Defaults.coreDefaultSettings: _*)
   .settings(
     name in Universal := normalizedName.value,
