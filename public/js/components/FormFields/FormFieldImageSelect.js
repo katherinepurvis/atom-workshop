@@ -25,10 +25,10 @@ const gridImagePropType = PropTypes.shape({
 class FormFieldImageSelect extends React.Component {
 
   static propTypes = {
-    onUpdateField: PropTypes.func.isRequired,
+    onUpdateField: PropTypes.func,
     fieldValue: gridImagePropType,
-    fieldName: PropTypes.string.isRequired,
-    fieldLabel: PropTypes.string.isRequired,
+    fieldName: PropTypes.string,
+    fieldLabel: PropTypes.string,
     fieldErrors: PropTypes.arrayOf(errorPropType),
     formRowClass: PropTypes.string,
     gridUrl: PropTypes.string.isRequired
