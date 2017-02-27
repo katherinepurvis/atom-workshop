@@ -39,11 +39,11 @@ export default class AtomEditHeader extends React.Component {
               <FormFieldTextInput/>
             </ManagedField>
           </ManagedForm>
-          <div className="atom-card__description">
-            <div><b>Created: </b>{this.renderDate('created')}</div>
-            <div><b>Last Modified: </b>{this.renderDate('lastModified')}</div>
-            <div><b>Published: </b>{this.renderDate('published')}</div>
-          </div>
+          <ul className="atom-card__dates">
+            <li><b>Created: </b>{this.renderDate('created')}</li>
+            <li><b>Last Modified: </b>{this.renderDate('lastModified')}</li>
+            <li><b>Published: </b>{this.renderDate('published')}</li>
+          </ul>
         </div>
       </div>
     );
