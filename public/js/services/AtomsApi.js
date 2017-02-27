@@ -15,13 +15,17 @@ export default {
   },
 
 
-  createAtom: (atomType) => {
+  createAtom: (atomType, atomInfo) => {
     return pandaFetch(
       new Request(
         `/api/preview/${atomType}`,
         {
           method: 'post',
-          credentials: 'same-origin'
+          credentials: 'same-origin',
+          body: JSON.stringify(atomInfo),
+          headers: {
+            'Content-Type': 'application/json'
+          }
         }
       )
     );
@@ -34,7 +38,10 @@ export default {
         {
           method: 'put',
           credentials: 'same-origin',
-          body: JSON.stringify(atom)
+          body: JSON.stringify(atom),
+          headers: {
+            'Content-Type': 'application/json'
+          }
         }
       )
     );
