@@ -39,5 +39,19 @@ export default {
         }
       }
     );
+  },
+
+  publishAtom: (atom) => {
+    return pandaFetch(
+      `/api/live/${atom.atomType}/${atom.id}`,
+      {
+        method: 'post',
+        credentials: 'same-origin',
+        body: JSON.stringify(atom),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
   }
 };
