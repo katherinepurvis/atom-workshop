@@ -2,6 +2,7 @@ package util
 
 import com.gu.atom.data.DynamoCompositeKey
 import com.gu.contentatom.thrift.{Atom, AtomType}
+import com.gu.pandomainauth.model.User
 import io.circe.{DecodingFailure, ParsingFailure, parser}
 import cats.syntax.either._
 import com.amazonaws.services.dynamodbv2.model.AmazonDynamoDBException
@@ -14,6 +15,7 @@ import io.circe.parser.decode
 import io.circe.generic.auto._
 import io.circe.generic.semiauto._
 import models._
+import util.AtomElementBuilders._
 
 object AtomLogic {
 
@@ -55,6 +57,8 @@ object AtomLogic {
     }.getOrElse(Right(None))
   }
 
+  def updateTakenDownChangeRecord(atom: Atom, user: User): Atom =
+    atom.copy(contentChangeDetails = buildContentChangeDetails(user, Some(atom.contentChangeDetails), updateTakenDown = true))
 }
 
 object Parser {

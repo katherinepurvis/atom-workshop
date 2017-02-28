@@ -11,7 +11,7 @@ import org.joda.time.DateTime
 object AtomElementBuilders {
 
   def buildContentChangeDetails(user: PandaUser, existingContentChangeDetails: Option[ContentChangeDetails], updateCreated: Boolean = false,
-    updateLastModified: Boolean = false, updatePublished: Boolean = false): ContentChangeDetails = {
+    updateLastModified: Boolean = false, updatePublished: Boolean = false, updateTakenDown: Boolean = false): ContentChangeDetails = {
 
     def pandaUserToAtomUser(user: PandaUser): User = {
       User(user.email, Some(user.firstName), Some(user.lastName))
@@ -25,6 +25,7 @@ object AtomElementBuilders {
       created      = buildChangeRecord(existingContentChangeDetails.flatMap(_.created)     , updateCreated),
       lastModified = buildChangeRecord(existingContentChangeDetails.flatMap(_.lastModified), updateLastModified),
       published    = buildChangeRecord(existingContentChangeDetails.flatMap(_.published)   , updatePublished),
+      takenDown    = buildChangeRecord(existingContentChangeDetails.flatMap(_.takenDown)   , updateTakenDown),
       revision     = existingContentChangeDetails.map(_.revision).getOrElse(0L) + 1
     )
   }
