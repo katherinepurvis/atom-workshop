@@ -120,11 +120,12 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
     APIResponse {
       for {
         atomType <- validateAtomType(atomType)
-        ds <- AtomDataStores.getDataStore(atomType, Live)
-        atom <- atomWorkshopDB.getAtom(ds, atomType, id)
+        liveDataStore <- AtomDataStores.getDataStore(atomType, Live)
+        atom <- atomWorkshopDB.getAtom(liveDataStore, atomType, id)
         updatedAtom = updateTakenDownChangeRecord(atom, req.user)
-        result <- atomWorkshopDB.deleteAtom(ds, atomType, id)
+        result <- atomWorkshopDB.deleteAtom(liveDataStore, atomType, id)
         _ <- sendKinesisEvent(updatedAtom, liveAtomPublisher, EventType.Takedown)
+        _ <- sendKinesisEvent(updatedAtom, previewAtomPublisher, EventType.Update)
       } yield AtomWorkshopAPIResponse("Atom taken down")
     }
   }
