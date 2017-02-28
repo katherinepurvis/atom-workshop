@@ -30,9 +30,7 @@ class Support(val wsClient: WSClient) extends Controller with PanDomainAuthActio
 
       httpClient.newCall(req).execute
     }
-
-    println(resp)
-
+    
     resp match {
       case None =>
         InternalServerError("Could not construct CAPI request, check config has capi information")
