@@ -6,7 +6,7 @@ import validateField from '../../util/validateField';
 export class ManagedField extends React.Component {
 
   state = {
-    fieldErrors: []
+    fieldErrors: [],
   };
 
   static propTypes = {
@@ -29,8 +29,8 @@ export class ManagedField extends React.Component {
           fieldErrors: fieldErrors
         });
       });
-
-    this.props.updateData(_set(this.props.fieldLocation, newValue, this.props.data));
+      
+      this.props.updateData(_set(this.props.fieldLocation, newValue, this.props.data));
   }
 
   render () {
