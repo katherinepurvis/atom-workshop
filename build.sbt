@@ -17,8 +17,7 @@ libraryDependencies ++= Seq(
   "com.gu"                   %  "kinesis-logback-appender"    % "1.3.0",
   "com.gu"                   %% "pan-domain-auth-play_2-5"    % "0.4.1",
   "io.circe"                 %% "circe-parser"                % "0.7.0",
-  "net.logstash.logback"     %  "logstash-logback-encoder"    % "4.2",
-  "com.squareup.okhttp"      % "okhttp"                       % "2.4.0"
+  "net.logstash.logback"     %  "logstash-logback-encoder"    % "4.2"
 )
 
 resolvers ++= Seq(
