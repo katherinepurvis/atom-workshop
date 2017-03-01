@@ -17,7 +17,7 @@ export default class FormFieldTagPicker extends React.Component {
   };
 
   state = {
-    suggestions: undefined,
+    suggestions: null,
     searchText: ""
   };
 
@@ -25,7 +25,7 @@ export default class FormFieldTagPicker extends React.Component {
     this.props.onUpdateField(id);
 
     this.setState({
-      suggestions: undefined,
+      suggestions: null,
       searchText: ""
     });
   }
@@ -49,7 +49,7 @@ export default class FormFieldTagPicker extends React.Component {
     })
     .catch(() => {
       this.setState({
-        suggestions: undefined
+        suggestions: null
       });
     });
 
@@ -79,7 +79,6 @@ export default class FormFieldTagPicker extends React.Component {
   }
 
   render() {
-
 
     if (this.props.fieldValue) {
       return (
