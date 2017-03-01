@@ -20,9 +20,7 @@ class Support(val wsClient: WSClient) extends Controller with PanDomainAuthActio
       capiUrl <- Config.capiPreviewUrl
     } yield {
       val url = s"$capiUrl/$path?${request.rawQueryString}"
-
-      println(url)
-
+      
       val req = new Request.Builder()
         .url(url)
         .header("Authorization", Credentials.basic(capiPreviewUser, capiPreviewPassword))
@@ -30,7 +28,7 @@ class Support(val wsClient: WSClient) extends Controller with PanDomainAuthActio
 
       httpClient.newCall(req).execute
     }
-    
+
     resp match {
       case None =>
         InternalServerError("Could not construct CAPI request, check config has capi information")
