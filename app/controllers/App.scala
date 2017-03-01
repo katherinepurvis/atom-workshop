@@ -116,14 +116,16 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
     }
   }
 
-  def takedownAtom(atomType: String, id: String) = AuthAction {
+  def takedownAtom(atomType: String, id: String) = AuthAction { req =>
     APIResponse {
       for {
         atomType <- validateAtomType(atomType)
-        ds <- AtomDataStores.getDataStore(atomType, Live)
-        atom <- atomWorkshopDB.getAtom(ds, atomType, id)
-        result <- atomWorkshopDB.deleteAtom(ds, atomType, id)
-        _ <- sendKinesisEvent(atom, liveAtomPublisher, EventType.Takedown)
+        liveDataStore <- AtomDataStores.getDataStore(atomType, Live)
+        atom <- atomWorkshopDB.getAtom(liveDataStore, atomType, id)
+        updatedAtom = updateTakenDownChangeRecord(atom, req.user)
+        result <- atomWorkshopDB.deleteAtom(liveDataStore, atomType, id)
+        _ <- sendKinesisEvent(updatedAtom, liveAtomPublisher, EventType.Takedown)
+        _ <- sendKinesisEvent(updatedAtom, previewAtomPublisher, EventType.Update)
       } yield AtomWorkshopAPIResponse("Atom taken down")
     }
   }

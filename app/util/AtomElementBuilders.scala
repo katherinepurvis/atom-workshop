@@ -3,6 +3,7 @@ package util
 import com.gu.contentatom.thrift.atom.cta.CTAAtom
 import com.gu.contentatom.thrift.atom.explainer.{DisplayType, ExplainerAtom}
 import com.gu.contentatom.thrift.atom.recipe.{RecipeAtom, Tags => RecipeTags, Time => RecipeTime}
+import com.gu.contentatom.thrift.atom.storyquestions.{StoryQuestionsAtom, RelatedStoryLinkType}
 import com.gu.contentatom.thrift.{User, _}
 import com.gu.pandomainauth.model.{User => PandaUser}
 import models.CreateAtomFields
@@ -11,7 +12,7 @@ import org.joda.time.DateTime
 object AtomElementBuilders {
 
   def buildContentChangeDetails(user: PandaUser, existingContentChangeDetails: Option[ContentChangeDetails], updateCreated: Boolean = false,
-    updateLastModified: Boolean = false, updatePublished: Boolean = false): ContentChangeDetails = {
+    updateLastModified: Boolean = false, updatePublished: Boolean = false, updateTakenDown: Boolean = false): ContentChangeDetails = {
 
     def pandaUserToAtomUser(user: PandaUser): User = {
       User(user.email, Some(user.firstName), Some(user.lastName))
@@ -25,6 +26,7 @@ object AtomElementBuilders {
       created      = buildChangeRecord(existingContentChangeDetails.flatMap(_.created)     , updateCreated),
       lastModified = buildChangeRecord(existingContentChangeDetails.flatMap(_.lastModified), updateLastModified),
       published    = buildChangeRecord(existingContentChangeDetails.flatMap(_.published)   , updatePublished),
+      takenDown    = buildChangeRecord(existingContentChangeDetails.flatMap(_.takenDown)   , updateTakenDown),
       revision     = existingContentChangeDetails.map(_.revision).getOrElse(0L) + 1
     )
   }
@@ -34,7 +36,8 @@ object AtomElementBuilders {
     val defaultAtoms: Map[AtomType, AtomData] = Map(
       AtomType.Explainer -> AtomData.Explainer(ExplainerAtom(title, "-", DisplayType.Flat)),
       AtomType.Cta -> AtomData.Cta(CTAAtom("-")),
-      AtomType.Recipe -> AtomData.Recipe(RecipeAtom(title, RecipeTags(), RecipeTime()))
+      AtomType.Recipe -> AtomData.Recipe(RecipeAtom(title, RecipeTags(), RecipeTime())),
+      AtomType.Storyquestions -> AtomData.Storyquestions(StoryQuestionsAtom("-", RelatedStoryLinkType.Tag, title))
     )
 
     Atom(

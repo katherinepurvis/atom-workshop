@@ -6,7 +6,7 @@ import validateField from '../../util/validateField';
 export class ManagedField extends React.Component {
 
   state = {
-    fieldErrors: []
+    fieldErrors: [],
   };
 
   static propTypes = {
@@ -16,6 +16,7 @@ export class ManagedField extends React.Component {
       PropTypes.arrayOf(PropTypes.element)
     ]),
     updateData: PropTypes.func,
+    updateFormErrors: PropTypes.func,
     data: PropTypes.object,
     name: PropTypes.string,
     isRequired: PropTypes.bool,
@@ -25,12 +26,10 @@ export class ManagedField extends React.Component {
   updateFn = (newValue) => {
     Promise.resolve(validateField(newValue, this.props.isRequired, this.props.customValidation))
       .then(fieldErrors => {
-        this.setState({
-          fieldErrors: fieldErrors
-        });
+        this.props.updateFormErrors(fieldErrors, this.props.name);
       });
 
-    this.props.updateData(_set(this.props.fieldLocation, newValue, this.props.data));
+      this.props.updateData(_set(this.props.fieldLocation, newValue, this.props.data));
   }
 
   render () {
