@@ -1,22 +1,28 @@
 package controllers
 
-import play.api.libs.ws.WSClient
+import config.Config
+import play.api.libs.ws.{WSAuthScheme, WSClient}
 import play.api.mvc.Controller
-import services.ContentApi
+import play.api.libs.concurrent.Execution.Implicits._
 
 class Support(val wsClient: WSClient) extends Controller with PanDomainAuthActions {
 
-  def previewCapiProxy(path: String) = APIAuthAction { request =>
+  def previewCapiProxy(path: String) = APIAuthAction.async { request =>
 
-    val capiPath = s"$path?${request.rawQueryString}"
+    val capiPreviewUser = Config.capiUsername
+    val capiPreviewPassword = Config.capiPassword
+    val capiUrl = Config.capiPreviewUrl
 
-    ContentApi.requestPreviewPath(capiPath) match {
-      case None =>
-        InternalServerError("Could not construct CAPI request, check config has capi information")
-      case Some(r) if r.code() == 200 =>
-        Ok(r.body.string).as(JSON)
-      case Some(r) =>
-        BadRequest(s"CAPI returned status: ${r.code()}")
-    }
+    val url = s"$capiUrl/$path?${request.rawQueryString}"
+
+    val req = wsClient
+      .url(url)
+      .withAuth(capiPreviewUser, capiPreviewPassword, WSAuthScheme.BASIC)
+      .get()
+
+    req.map(response => response.status match {
+      case 200 => Ok(response.json)
+      case _ => BadGateway(s"CAPI returned error code ${response.status}")
+    })
   }
 }
