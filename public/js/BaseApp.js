@@ -7,6 +7,7 @@ import {AtomCreateTypeSelect} from './components/AtomCreate/AtomCreateTypeSelect
 import AtomCreateGenericInfo from './components/AtomCreate/AtomCreateGenericInfo';
 import AtomEdit from './components/AtomEdit/AtomEdit';
 import {AtomStats} from './components/AtomStats/AtomStats';
+import AtomList from './components/AtomList/AtomList';
 
 export class BaseApp extends React.Component {
 
@@ -19,6 +20,7 @@ export class BaseApp extends React.Component {
       <Provider store={this.props.store}>
         <Router history={browserHistory}>
           <Route path="/" component={Page}>
+            <Route path="/list" component={AtomList} />
             <Route path="/create" component={AtomCreateTypeSelect} />
             <Route path="/create/:atomType" component={AtomCreateGenericInfo} />
             <Route path="/atoms/:atomType/:id/edit" component={AtomEdit} />
