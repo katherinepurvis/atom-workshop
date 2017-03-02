@@ -6,6 +6,7 @@ import {Page} from './components/Page';
 import {AtomCreateTypeSelect} from './components/AtomCreate/AtomCreateTypeSelect';
 import AtomCreateGenericInfo from './components/AtomCreate/AtomCreateGenericInfo';
 import AtomEdit from './components/AtomEdit/AtomEdit';
+import AtomRoot from './components/AtomRoot/AtomRoot';
 
 export class BaseApp extends React.Component {
 
@@ -20,7 +21,9 @@ export class BaseApp extends React.Component {
           <Route path="/" component={Page}>
             <Route path="/create" component={AtomCreateTypeSelect} />
             <Route path="/create/:atomType" component={AtomCreateGenericInfo} />
-            <Route path="/atoms/:atomType/:id/edit" component={AtomEdit} />
+            <Route path="/atoms/:atomType/:id" component={AtomRoot}>
+              <Route path="/atoms/:atomType/:id/edit" component={AtomEdit} />
+            </Route>
             <IndexRedirect to="/create" />
           </Route>
         </Router>

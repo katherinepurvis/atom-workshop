@@ -5,7 +5,8 @@ import io.circe.generic.semiauto._
 
 case class ClientConfig(
                          username: String,
-                         gridUrl: String
+                         gridUrl: String,
+                         capiLiveUrl: String
                        )
 
 object ClientConfig {

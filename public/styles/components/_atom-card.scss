@@ -5,6 +5,11 @@
   height: 100%;
 }
 
+.atom-card--header {
+  @extend .atom-card;
+  height: auto;
+}
+
 .atom-card__details {
   width: 100%;
   padding: 10px;
