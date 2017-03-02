@@ -11,23 +11,15 @@ import {atomPropType} from '../../constants/atomPropType.js';
 class AtomEdit extends React.Component {
 
   static propTypes = {
-    routeParams: PropTypes.shape({
-      atomType: PropTypes.string.isRequired,
-      id: PropTypes.string.isRequired
-    }).isRequired,
     atomActions: PropTypes.shape({
-      getAtom: PropTypes.func.isRequired,
       updateAtom: PropTypes.func.isRequired
     }).isRequired,
     atom: atomPropType,
     config: PropTypes.shape({
-      gridUrl: PropTypes.string
+      gridUrl: PropTypes.string,
     })
   }
 
-  componentWillMount() {
-    this.props.atomActions.getAtom(this.props.routeParams.atomType, this.props.routeParams.id);
-  }
 
   updateAtom = (newAtom) => {
     this.props.atomActions.updateAtom(newAtom);
@@ -60,12 +52,12 @@ class AtomEdit extends React.Component {
     }
 
     return (
-      <div className="atom-editor">
-        <AtomEditHeader atom={this.props.atom} onUpdate={this.updateAtom}/>
-        <div className="atom-editor__form">
-          {this.renderSpecificEditor()}
+        <div className="atom-editor">
+          <AtomEditHeader atom={this.props.atom} onUpdate={this.updateAtom}/>
+          <div className="atom-editor__form">
+            {this.renderSpecificEditor()}
+          </div>
         </div>
-      </div>
     );
   }
 }
