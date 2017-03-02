@@ -13,12 +13,7 @@ class AtomStats extends React.Component {
     atom: atomPropType
   }
 
-  componentWillMount() {
-    this.props.atomActions.getAtom(this.props.routeParams.atomType, this.props.routeParams.id);
-  }
-
   render() {
-    console.log(this.props.atom);
     return (
       <p>STATS</p>
     );
@@ -36,10 +31,4 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    atomActions: bindActionCreators(Object.assign({}, getAtomActions), dispatch)
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(AtomStats);
+export default connect(mapStateToProps)(AtomStats);
