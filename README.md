@@ -12,6 +12,7 @@ for the composer AWS account from [janus](https://janus.gutools.co.uk). You'll a
  - Setup the nginx mapping by following the instructions in the
  [dev-nginx readme](https://github.com/guardian/dev-nginx#install-config-for-an-application).
  - Install Client Side Dependencies with `./scripts/setup.sh`
+ - Run app with: `./scripts/start.sh`
  - Run using sbt: `sbt "run 9050"`. (For quick restart you should run `sbt` and then `run 9050`, so that you can exit
   the application without exiting sbt.)
 
