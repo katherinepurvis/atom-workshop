@@ -64,18 +64,19 @@ export default class FormFieldTagPicker extends React.Component {
       return <div>No tags found</div>;
     }
 
-    return this.state.suggestions.map((suggestion) => {
+    return (
+      <div className="form__field__suggestions">
+        {this.state.suggestions.map((suggestion) => {
+          const updateFn = () => {
+            this.selectTag(suggestion.id);
+          };
 
-      const updateFn = () => {
-        this.selectTag(suggestion.id);
-      };
-
-      return (
-        <div>
-          <a onClick={updateFn}>{suggestion.id}</a>
-        </div>
-      );
-    });
+          return (
+            <a className="form__field__suggestion" title={suggestion.id} onClick={updateFn}>{suggestion.webTitle} ({suggestion.type})</a>
+          );
+        })}
+      </div>
+    );
   }
 
   render() {
@@ -84,8 +85,8 @@ export default class FormFieldTagPicker extends React.Component {
       return (
         <div className={this.props.formRowClass || "form__row"}>
           {this.props.fieldLabel ? <label htmlFor={this.props.fieldName} className="form__label">{this.props.fieldLabel}</label> : false}
-          <input className="form__field" value={this.props.fieldValue} disabled={true} />
-          <a onClick={this.resetTag}>Change Tag</a>
+          <input className="form__field" value={`Currently selected tag: ${this.props.fieldValue}`} disabled={true} />
+          <button className="btn" onClick={this.resetTag}>Change Tag</button>
         </div>
       );
     }

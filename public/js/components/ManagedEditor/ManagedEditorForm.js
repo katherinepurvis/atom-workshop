@@ -41,6 +41,6 @@ export class ManagedForm extends React.Component {
       });
     });
 
-    return <form className="form">{hydratedChildren}</form>;
+    return <div className="form">{hydratedChildren}</div>;
   }
 }
