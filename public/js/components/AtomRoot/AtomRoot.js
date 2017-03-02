@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react'
+import React, { PropTypes } from 'react';
 import AtomEmbed from '../AtomEmbed/AtomEmbed';
 
 import {atomPropType} from '../../constants/atomPropType.js';
