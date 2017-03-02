@@ -70,6 +70,7 @@
     "scribe-plugin-link-prompt-command": "^1.0.0",
     "scribe-plugin-sanitizer": "^0.1.10",
     "scribe-plugin-toolbar": "^1.0.0",
-    "unfetch": "^1.0.1"
+    "unfetch": "^1.0.1",
+    "uuid": "^3.0.1"
   }
 }

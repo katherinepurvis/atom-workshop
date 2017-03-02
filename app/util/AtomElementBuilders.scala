@@ -37,7 +37,7 @@ object AtomElementBuilders {
       AtomType.Explainer -> AtomData.Explainer(ExplainerAtom(title, "-", DisplayType.Flat)),
       AtomType.Cta -> AtomData.Cta(CTAAtom("-")),
       AtomType.Recipe -> AtomData.Recipe(RecipeAtom(title, RecipeTags(), RecipeTime())),
-      AtomType.Storyquestions -> AtomData.Storyquestions(StoryQuestionsAtom("-", RelatedStoryLinkType.Tag, title))
+      AtomType.Storyquestions -> AtomData.Storyquestions(StoryQuestionsAtom("(None)", RelatedStoryLinkType.Tag, title))
     )
 
     Atom(
