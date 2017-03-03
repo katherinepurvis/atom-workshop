@@ -15,22 +15,22 @@ export default {
         .then((json) => Promise.resolve(json.response.results));
     },
 
+    sanitiseQuery: function(query) {
+      return Object.keys(query)
+          .filter(k => (query[k] && query[k].length != 0))
+          .reduce( (res, key) => (res[key] = query[key], res), {} );
+    },
+
     searchAtoms: function(query) {
-        console.log(`/support/previewCapi/atoms?${uriEncodeParams(query)}`);
         return pandaFetch(
-            `/support/previewCapi/atoms?${uriEncodeParams(query)}`,
+            `/support/previewCapi/atoms?${uriEncodeParams(this.sanitiseQuery(query))}`,
             {
                 method: 'get',
                 credentials: 'same-origin'
             }
         )
         .then((res) => res.json())
-        .then((json) => {
-            console.log(json)
-            return Promise.resolve(json.response.results)});
+        .then((json) => Promise.resolve(json.response.results));
     }
 
-}
-
-
-
+};

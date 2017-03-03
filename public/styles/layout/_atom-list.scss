@@ -68,7 +68,7 @@
   }
 
   &__editor-link {
-    width: 250px;
+    width: 200px;
   }
 
   &__delete {
@@ -78,5 +78,26 @@
     & button {
       vertical-align: middle;
     }
+  }
+}
+
+.atom-list-filters {
+
+  &__search-box {
+    width: 45%;
+    float: left;
+    padding: 10px;
+  }
+
+  &__types-filter {
+    width:45%;
+    float:left;
+    padding: 10px;
+
+  }
+
+  &__page-size {
+    width: 10%;
+    float:left;
   }
 }

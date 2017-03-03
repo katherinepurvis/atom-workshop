@@ -25,7 +25,8 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
 
     val clientConfig = ClientConfig(
       username = req.user.email,
-      gridUrl = Config.gridUrl
+      gridUrl = Config.gridUrl,
+      atomEditorUrls = Config.atomEditorUrls
     )
 
     val jsFileName = "build/app.js"

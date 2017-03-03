@@ -6,7 +6,6 @@ import {Page} from './components/Page';
 import {AtomCreateTypeSelect} from './components/AtomCreate/AtomCreateTypeSelect';
 import AtomCreateGenericInfo from './components/AtomCreate/AtomCreateGenericInfo';
 import AtomEdit from './components/AtomEdit/AtomEdit';
-import {AtomStats} from './components/AtomStats/AtomStats';
 import AtomList from './components/AtomList/AtomList';
 
 export class BaseApp extends React.Component {

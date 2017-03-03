@@ -32,7 +32,7 @@ export function getAtomList(searchParams) {
     return dispatch => {
         dispatch(requestAtomList(searchParams));
         return capi.searchAtoms(searchParams)
-            .then(atomList => {return dispatch(receiveAtomList(atomList))})
+            .then(atomList => dispatch(receiveAtomList(atomList)))
             .catch(error => dispatch(errorReceivingAtomList(error)));
     };
 }
