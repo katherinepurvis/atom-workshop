@@ -6,6 +6,8 @@ import io.circe.generic.semiauto._
 case class ClientConfig(
                          username: String,
                          gridUrl: String,
+                         composerUrl: String,
+                         viewerUrl: String,
                          capiLiveUrl: String
                        )
 

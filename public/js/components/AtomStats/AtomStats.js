@@ -43,6 +43,9 @@ class AtomStats extends React.Component {
   }
 
   renderAtomUsage = (usage, i) => {
+    const composerLink = `${this.config.composerUrl}/content/${usage.fields.internalComposerCode}`;
+    const viewerLink = `${this.config.viewerUrl}/preview/${usage.id}`;
+    const websiteLink = `https://www.theguardian.com/${usage.id}`;
 
     return (
       <li className="usages-list__item" key={`usage-${i}`}>
