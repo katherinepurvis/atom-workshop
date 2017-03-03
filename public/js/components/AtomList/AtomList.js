@@ -22,13 +22,13 @@ class AtomList extends React.Component {
         atomListActions: PropTypes.shape({
             getAtomList: PropTypes.func.isRequired
         }).isRequired,
-        atomList: PropTypes.array.isRequired
+        atomList: PropTypes.array
     };
     
     state = {
         params: {
             types:[],
-            "page-size": 20,
+            "page-size": "20",
             q: "",
             searchFields: "data.title,data.label,title,labels,data.body"
         }
@@ -58,7 +58,7 @@ class AtomList extends React.Component {
 
     renderEditorLink = (atom) => {
         const title = atomTitleExtractor(atom);
-        if (supportedAtomTypes.indexOf(atom.atomType) !== -1) {
+        if (supportedAtomTypes.map((t)=>t.type).indexOf(atom.atomType) !== -1) {
             return <Link to={`/atoms/${atom.atomType}/${atom.id}/edit`}
                          className="atom-list__link atom-list__editor-link"
                          key={atom.id}>
@@ -94,10 +94,14 @@ class AtomList extends React.Component {
                             </ManagedField>
                         </div>
                         <div className="atom-list-filters__types-filter">
-                            <ManagedField data={this.state.params} updateData={this.updateAtomList} fieldLocation="types" name="Atom Types:">
+                            <ManagedField data={this.state.params}
+                                          updateData={this.updateAtomList}
+                                          fieldLocation="types"
+                                          name="Atom Types:">
                                 <FormFieldCheckboxGroup
                                     fieldLabel="Atom Types:"
                                     fieldName="Atom Types"
+                                    fieldValue={[]}
                                     checkValues={allAtomTypes.map((t)=>t.type)}/>
                             </ManagedField>
                         </div>
