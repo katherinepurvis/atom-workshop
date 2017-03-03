@@ -13,6 +13,8 @@ case class ClientConfig(
                          username: String,
                          gridUrl: String,
                          atomEditorUrls: AtomEditorUrls,
+                         composerUrl: String,
+                         viewerUrl: String,
                          capiLiveUrl: String
                        )
 

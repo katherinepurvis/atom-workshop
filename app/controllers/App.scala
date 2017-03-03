@@ -27,6 +27,8 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
       username = req.user.email,
       gridUrl = Config.gridUrl,
       atomEditorUrls = Config.atomEditorUrls,
+      composerUrl = Config.composerUrl,
+      viewerUrl = Config.viewerUrl,
       capiLiveUrl = Config.capiLiveUrl
     )
 
