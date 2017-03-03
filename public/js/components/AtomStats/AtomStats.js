@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import {atomPropType} from '../../constants/atomPropType';
-import distanceInWordsToNow from 'date-fns/distance_in_words_to_now'
+import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 
 class AtomStats extends React.Component {
   static propTypes = {
