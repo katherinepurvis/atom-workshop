@@ -49,8 +49,15 @@ class AtomStats extends React.Component {
 
     return (
       <li className="usages-list__item" key={`usage-${i}`}>
-        <a className="usages-list__item__link" href={usage.webUrl}>{usage.fields.headline}</a>
-        <p className="usages-list__item__date">Created: {distanceInWordsToNow(usage.fields.creationDate, {addSuffix: true})}</p>
+        <div className="usages-list__details">
+          <a className="usages-list__item__link" href={usage.webUrl}>{usage.fields.headline}</a>
+          <p className="usages-list__item__date">Created: {distanceInWordsToNow(usage.fields.creationDate, {addSuffix: true})}</p>
+        </div>
+        <div className="usages-list__links">
+          <a href={composerLink}>Composer</a>
+          <a href={viewerLink}>Viewer</a>
+          <a href={websiteLink}>Website</a>
+        </div>
       </li>
     );
   }
