@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import {atomPropType} from '../../constants/atomPropType.js';
+import {allAtomTypes} from '../../constants/atomData.js';
 
 import {ManagedForm, ManagedField} from '../ManagedEditor';
 import FormFieldTextInput from '../FormFields/FormFieldTextInput';
@@ -27,13 +28,20 @@ export default class AtomEditHeader extends React.Component {
 
 
   render () {
+
+    const atomTypeData = allAtomTypes.filter(atomData => {
+      return atomData.type.toLowerCase() === this.props.atom.atomType.toLowerCase();
+    })[0];
+
+    const atomTypeName = atomTypeData ? atomTypeData.fullName : this.props.atom.atomType;
+
     return (
-      <div className="atom-card" key={this.props.atom.atomType}>
+      <div className="atom-card--header" key={this.props.atom.atomType}>
         <div className="atom-card__icon">
           <img src={`/assets/images/typeicons/${this.props.atom.atomType}-icon.svg`} />
         </div>
         <div className="atom-card__details">
-          <h3 className="atom-card__heading">{this.props.atom.atomType} Atom</h3>
+          <h3 className="atom-card__heading">{atomTypeName} Atom</h3>
           <ManagedForm data={this.props.atom} updateData={this.props.onUpdate}>
             <ManagedField fieldLocation="title" name="Title:">
               <FormFieldTextInput/>

@@ -65,6 +65,7 @@ object Config extends AwsInstanceTags {
   val previewReindexKinesisStreamName = getPropertyIfEnabled(kinesisEnabled, "aws.kinesis.reindex.preview")
 
   val capiPreviewUrl = config.getString("capi.previewUrl")
+  val capiLiveUrl = config.getString("capi.liveUrl")
   val capiUsername = config.getString("capi.previewUsername")
   val capiPassword = config.getString("capi.previewPassword")
 

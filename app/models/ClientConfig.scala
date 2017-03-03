@@ -12,7 +12,8 @@ object AtomEditorUrls {
 case class ClientConfig(
                          username: String,
                          gridUrl: String,
-                         atomEditorUrls: AtomEditorUrls
+                         atomEditorUrls: AtomEditorUrls,
+                         capiLiveUrl: String
                        )
 
 object ClientConfig {

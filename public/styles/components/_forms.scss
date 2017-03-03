@@ -97,3 +97,17 @@
   margin-bottom: 10px;
   border-bottom: 1px solid $color300Grey;
 }
+
+.form__field__suggestions {
+  border-top: 1px solid $color400Grey;
+}
+
+.form__field__suggestion {
+  display: block;
+  background-color: $color100Grey;
+  border: 1px solid $color400Grey;
+  border-top: 0;
+  width: 100%;
+  padding: 5px 10px;
+  cursor: pointer;
+}
