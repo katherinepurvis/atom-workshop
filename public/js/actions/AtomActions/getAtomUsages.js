@@ -34,11 +34,10 @@ export function getAtomUsages(atomId, atomType) {
     dispatch(requestAtomUsages());
     return capi.getAtomUsages(atomId, atomType)
     .then(res => {
-      const usagePaths = res.response.results;
 
       // the atom usage endpoint in capi only returns article paths,
       // lookup the articles in capi to get their fields
-      Promise.all(usagePaths.map(capi.getByPath))
+      Promise.all(res.map(capi.getByPath))
         .then(capiResponse => {
           const usages = capiResponse.reduce((all, item) => {
             all.push(item.response.content);
