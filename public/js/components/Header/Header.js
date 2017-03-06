@@ -83,7 +83,7 @@ class Header extends React.Component {
   }
 
   renderCreateNewButton = () => {
-    if(location.pathname === "/list") {
+    if(location.pathname === "/find") {
       return (
           <div className="toolbar__container">
             <Link to="/create" className="toolbar__item toolbar__button">
