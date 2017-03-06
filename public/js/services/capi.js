@@ -32,7 +32,7 @@ export const searchAtoms = (query) => {
   .then((json) => Promise.resolve(json.response.results));
 };
 
-export const getAtomUsages = (atomId, atomType) => {
+export const fetchAtomUsages = (atomId, atomType) => {
   return pandaFetch(
     `/support/previewCapi/atom/${atomType}/${atomId}/usage`,
     {
