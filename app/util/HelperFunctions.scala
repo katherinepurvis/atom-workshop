@@ -10,6 +10,7 @@ import cats.syntax.either._
 import com.amazonaws.services.dynamodbv2.model.AmazonDynamoDBException
 import play.api.Logger
 import com.gu.fezziwig.CirceScroogeMacros._
+import io.circe.CursorOp.DownField
 import io.circe.syntax._
 import io.circe._
 import io.circe.parser.decode
@@ -37,9 +38,23 @@ object HelperFunctions {
   }
 
   def processExceptionList(errorList:NonEmptyList[DecodingFailure]) = {
-    AtomThriftDeserialisingError(errorList.foldLeft("Unable to deserialise payload: ")((acc, error)=>{
-      acc + s"\n\t${error.toString}"
-    }))
+    val niceErrorList = errorList.map(error=>{
+      val errorPath = error.history.reverse.foldLeft("") { (accum:String, history:CursorOp)=>history match {
+        case DownField(f)=>accum + "." + f
+        case _=>accum + "." + history.toString
+      }
+
+      }
+      val xtractor = "Missing field: (\\S+)$".r
+      val fieldname = xtractor.findFirstIn(error.message).getOrElse(error.message)
+
+      s"""{"$fieldname$errorPath":"${error.message}"}"""
+    })
+
+    AtomThriftDeserialisingError(niceErrorList.toList.mkString("[",",","]"))
+//    AtomThriftDeserialisingError(niceErrorList.foldLeft("[")((acc, error:String)=>{
+//      acc + error + ","
+//    }))
   }
 
   def extractRequestBody(body: Option[String]): Either[AtomAPIError, String]= {
@@ -51,8 +66,8 @@ object HelperFunctions {
 
     parser.parse(atomJson) match {
       case Right(atomJsonContent)=>
-        val decoder = AccumulatingDecoder[Atom]
-        decoder.apply(atomJsonContent.hcursor) match {
+        val decoder = Decoder[Atom]
+        decoder.accumulating(atomJsonContent.hcursor) match {
           case Validated.Valid(atom)=>Right(atom)
           case Validated.Invalid(errorList)=>Left(processExceptionList(errorList))
         }
