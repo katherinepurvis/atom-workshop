@@ -2,8 +2,12 @@
 //typeName - should match name in thrift definition
 //fullName - The human readable name (Don't include "Atom")
 //description - A brief description of what they are and when you use them
+//editorUri - a lodash template that will be passed gutoolsDomain, atomId, atomType
+//createUri - the url to be taken to for creation.
+
 
 import {PropTypes} from 'react';
+import _template from 'lodash/fp/template';
 
 export const cta = {
   type: "cta",
@@ -15,6 +19,7 @@ export const explainer = {
   type: "explainer",
   fullName: "Explainer Text",
   description: "Provide extra context to any article with an Explainer Text Box",
+  editorUri: _template("https://explainers.${gutoolsDomain}/explain/${atomId}")
 };
 
 export const recipe = {
@@ -29,8 +34,22 @@ export const storyQuestions = {
   description: "Pose further questions to the audience and gather interest",
 };
 
-export const allAtomTypes = [cta, explainer, recipe, storyQuestions];
-export const supportedAtomTypes = [cta, storyQuestions, recipe];
+export const quiz = {
+  type: "quiz",
+  fullName: "Quiz",
+  description: "Questions and Answer format, allowing both knowledge and personality type quizzes",
+  editorUri: _template("https://quizzes.${gutoolsDomain}/quiz/${atomId}")
+};
+
+export const media = {
+  type: "media",
+  fullName: "Video",
+  description: "A Guardian produced video, with rich tracking and thumbnail. Generally hosted on YouTube",
+  editorUri: _template("https://video.${gutoolsDomain}/videos/${atomId}")
+};
+
+export const allAtomTypes = [cta, explainer, recipe, storyQuestions, quiz, media];
+export const workshopEditableAtomTypes = [cta, storyQuestions, recipe];
 
 export function getAtomByType(type) {
   return allAtomTypes.filter((atomData) => atomData.type.toLowerCase() === type.toLowerCase())[0];

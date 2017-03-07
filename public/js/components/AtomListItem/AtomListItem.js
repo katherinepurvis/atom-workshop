@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 import {atomPropType} from '../../constants/atomPropType.js';
-import {atomTitleExtractor} from '../../util/atomTitleExtractor';
+import {getTitleForAtom, getAtomEditorUrl, isAtomWorkshopEditable} from '../../util/atomDataExtractors';
 import publishState from '../../util/publishState';
-import {supportedAtomTypes} from '../../constants/atomData';
+import {workshopEditableAtomTypes} from '../../constants/atomData';
 import format from 'date-fns/format';
 import {Link} from 'react-router';
 
@@ -31,26 +31,24 @@ export default class AtomListItem extends React.Component {
     };
 
     renderEditorLink = (atom) => {
-        const title = atomTitleExtractor(atom);
-        if (supportedAtomTypes.map((t)=>t.type).indexOf(atom.atomType) !== -1) {
-            return <Link to={`/atoms/${atom.atomType}/${atom.id}/edit`}
-                         className="atom-list__link atom-list__editor-link"
-                         key={atom.id}>
-                {title}</Link>;
-        }
-        function externalEditorUrl(editorUrls) {
-            switch (atom.atomType) {
-                case ("explainer"):
-                    return `${editorUrls.explainer}/explain/${atom.id}`;
-                case ("media"):
-                    return `${editorUrls.media}/videos/${atom.id}`;
-            }
+        const title = getTitleForAtom(atom);
+        if (isAtomWorkshopEditable(atom)) {
+            return (
+              <Link to={`/atoms/${atom.atomType}/${atom.id}/edit`}
+                className="atom-list__link atom-list__editor-link"
+                key={atom.id}>
+                {title}
+              </Link>
+            );
         }
 
-        return <a target="_blank"
-                  href={externalEditorUrl(this.props.config.atomEditorUrls)}
-                  className="atom-list__link atom-list__editor-link">
-            {title}</a>;
+        return (
+          <a target="_blank"
+            href={getAtomEditorUrl(atom)}
+            className="atom-list__link atom-list__editor-link">
+            {title}
+          </a>
+        );
     };
 
     render () {
