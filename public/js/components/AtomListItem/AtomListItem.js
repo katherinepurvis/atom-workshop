@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import {atomPropType} from '../../constants/atomPropType.js';
 import {getTitleForAtom, getAtomEditorUrl, isAtomWorkshopEditable} from '../../util/atomDataExtractors';
 import publishState from '../../util/publishState';
-import {workshopEditableAtomTypes} from '../../constants/atomData';
 import format from 'date-fns/format';
 import {Link} from 'react-router';
 
