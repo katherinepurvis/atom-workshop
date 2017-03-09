@@ -21,6 +21,9 @@ class Header extends React.Component {
       publishAtom: PropTypes.func.isRequired,
       takeDownAtom: PropTypes.func.isRequired
     }).isRequired,
+    config: PropTypes.shape({
+      isEmbedded: PropTypes.bool.isRequired
+    })
   }
 
   publishAtom = () => {
@@ -106,6 +109,11 @@ class Header extends React.Component {
   }
 
   render () {
+
+    if (this.props.config.isEmbedded) {
+      return false;
+    }
+
     return (
         <div className="toolbar">
           <div className="toolbar__container">
@@ -137,7 +145,8 @@ import * as takeDownAtomActions from '../../actions/AtomActions/takeDownAtom.js'
 function mapStateToProps(state) {
   return {
     atom: state.atom,
-    saveState: state.saveState
+    saveState: state.saveState,
+    config: state.config
   };
 }
 

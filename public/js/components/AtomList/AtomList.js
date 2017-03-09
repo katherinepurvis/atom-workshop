@@ -1,4 +1,6 @@
 import React, { PropTypes } from 'react';
+import {Link} from 'react-router';
+
 import {allAtomTypes} from '../../constants/atomData';
 import {ManagedField} from '../ManagedEditor';
 import FormFieldTextInput from '../FormFields/FormFieldTextInput';
@@ -14,14 +16,15 @@ class AtomList extends React.Component {
             atomEditorUrls: PropTypes.shape({
                 explainer: PropTypes.string,
                 media: PropTypes.string
-            })
+            }),
+            isEmbedded: PropTypes.bool.isRequired
         }),
         atomListActions: PropTypes.shape({
             getAtomList: PropTypes.func.isRequired
         }).isRequired,
         atomList: PropTypes.array
     };
-    
+
     state = {
         params: {
             types:[],
@@ -30,7 +33,7 @@ class AtomList extends React.Component {
             searchFields: "data.title,data.label,title,labels,data.body"
         }
     };
-    
+
     componentWillMount() {
         this.props.atomListActions.getAtomList(this.state.params);
     }
@@ -40,7 +43,20 @@ class AtomList extends React.Component {
             params: newParams
         }, () => this.props.atomListActions.getAtomList(this.state.params));
     };
-    
+
+    renderEmbeddedCreate() {
+
+      if (!this.props.config.isEmbedded) {
+          return false;
+      }
+
+      return (
+        <Link to="/create">
+          <button className="btn">Create New Atom</button>
+        </Link>
+      );
+    }
+
     render () {
 
         if (!this.props.atomList) {
@@ -49,6 +65,7 @@ class AtomList extends React.Component {
 
         return (
             <div className="page__section">
+                {this.renderEmbeddedCreate()}
                 <h1 className="page__subheading">Atom Finder</h1>
                 <div className="atom-list-filters">
                     <form className="form atom-list-filters">

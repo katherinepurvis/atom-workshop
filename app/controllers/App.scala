@@ -29,7 +29,9 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
       atomEditorUrls = Config.atomEditorUrls,
       composerUrl = Config.composerUrl,
       viewerUrl = Config.viewerUrl,
-      capiLiveUrl = Config.capiLiveUrl
+      capiLiveUrl = Config.capiLiveUrl,
+      isEmbedded = req.queryString.get("embeddedMode").isDefined,
+      embeddedMode = req.queryString.get("embeddedMode").map(_.head)
     )
 
     val jsFileName = "build/app.js"

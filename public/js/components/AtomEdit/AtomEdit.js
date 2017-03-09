@@ -3,6 +3,7 @@ import {CTAEditor} from './CustomEditors/CTAEditor';
 import {RecipeEditor} from './CustomEditors/RecipeEditor';
 import {ExplainerEditor} from './CustomEditors/ExplainerEditor';
 import {StoryQuestionsEditor} from './CustomEditors/StoryQuestionsEditor';
+import EmbeddedAtomPick from './EmbeddedAtomPick';
 
 import AtomEditHeader from './AtomEditHeader';
 
@@ -17,9 +18,10 @@ class AtomEdit extends React.Component {
     atom: atomPropType,
     config: PropTypes.shape({
       gridUrl: PropTypes.string,
+      embeddedMode: PropTypes.string,
+      isEmbedded: PropTypes.bool.isRequired
     })
   }
-
 
   updateAtom = (newAtom) => {
     this.props.atomActions.updateAtom(newAtom);
@@ -46,6 +48,14 @@ class AtomEdit extends React.Component {
     }
   }
 
+  renderEmbeddedCreate() {
+    if (!this.props.config.isEmbedded || this.props.config.embeddedMode !== "browse") {
+      return false;
+    }
+
+    return <EmbeddedAtomPick atom={this.props.atom}/>;
+  }
+
   render() {
     if (!this.props.atom) {
       return <div>Loading...</div>;
@@ -53,6 +63,7 @@ class AtomEdit extends React.Component {
 
     return (
         <div className="atom-editor">
+          {this.renderEmbeddedCreate()}
           <AtomEditHeader atom={this.props.atom} onUpdate={this.updateAtom}/>
           <div className="atom-editor__form">
             {this.renderSpecificEditor()}

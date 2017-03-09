@@ -22,4 +22,9 @@
     padding-top: 20px;
     border-top: 1px solid $color300Grey;
   }
+
+  .is-embedded & {
+    background: white;
+    border-width: 0;
+  }
 }
