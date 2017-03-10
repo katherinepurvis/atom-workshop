@@ -20,7 +20,7 @@ class EmbeddedAtomPick extends React.Component {
   }
 
   atomHasBeenPublished(){
-    !!this.props.atom.contentChangeDetails.published;
+    return !!this.props.atom.contentChangeDetails.published;
   }
 
   render () {
