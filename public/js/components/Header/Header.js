@@ -1,8 +1,10 @@
 import React, {PropTypes} from 'react';
 import {Link} from 'react-router';
+
 import publishState from '../../util/publishState';
 import {saveStateVals} from '../../constants/saveStateVals';
 import distanceInWords from 'date-fns/distance_in_words';
+import EmbeddedHeader from './EmbeddedHeader';
 
 const atomPropType = PropTypes.shape({
   id: PropTypes.string.isRequired,
@@ -23,7 +25,8 @@ class Header extends React.Component {
     }).isRequired,
     config: PropTypes.shape({
       isEmbedded: PropTypes.bool.isRequired
-    })
+    }),
+    isFindPage: PropTypes.bool.isRequired
   }
 
   publishAtom = () => {
@@ -86,7 +89,7 @@ class Header extends React.Component {
   }
 
   renderCreateNewButton = () => {
-    if(location.pathname === "/find") {
+    if(this.props.isFindPage) {
       return (
           <div className="toolbar__container">
             <Link to="/create" className="toolbar__item toolbar__button">
@@ -111,7 +114,7 @@ class Header extends React.Component {
   render () {
 
     if (this.props.config.isEmbedded) {
-      return false;
+      return <EmbeddedHeader config={this.props.config} isFindPage={this.props.isFindPage}/>;
     }
 
     return (

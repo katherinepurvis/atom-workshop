@@ -16,7 +16,7 @@ class EmbeddedAtomPick extends React.Component {
 
   render () {
     return (
-      <button className="btn" onClick={this.triggerEmbedMessage}>
+      <button className="btn" onClick={this.triggerEmbedMessage()}>
         Pick this atom
       </button>
     );

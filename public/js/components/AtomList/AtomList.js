@@ -44,18 +44,6 @@ class AtomList extends React.Component {
         }, () => this.props.atomListActions.getAtomList(this.state.params));
     };
 
-    renderEmbeddedCreate() {
-
-      if (!this.props.config.isEmbedded) {
-          return false;
-      }
-
-      return (
-        <Link to="/create">
-          <button className="btn">Create New Atom</button>
-        </Link>
-      );
-    }
 
     render () {
 
@@ -65,46 +53,29 @@ class AtomList extends React.Component {
 
         return (
             <div className="page__section">
-                {this.renderEmbeddedCreate()}
                 <h1 className="page__subheading">Atom Finder</h1>
                 <div className="atom-list-filters">
-                    <form className="form atom-list-filters">
-                        <div className="atom-list-filters__search-box">
-                            <ManagedField data={this.state.params} updateData={this.updateAtomList} fieldLocation="q" name="Search:">
-                                <FormFieldTextInput/>
-                            </ManagedField>
-                        </div>
-                        <div className="atom-list-filters__types-filter">
-                            <ManagedField data={this.state.params}
-                                          updateData={this.updateAtomList}
-                                          fieldLocation="types"
-                                          name="Atom Types:">
-                                <FormFieldCheckboxGroup checkValues={allAtomTypes.map((t)=>t.type)}/>
-                            </ManagedField>
-                        </div>
-                        <div className="atom-list-filters__page-size">
-                            <ManagedField data={this.state.params} updateData={this.updateAtomList} fieldLocation="page-size" name="Page size:">
-                                <FormFieldSelectBox selectValues={["20","50","100","150","200"]}/>
-                            </ManagedField>
-                        </div>
-                    </form>
+                  <div className="atom-list-filters__search-box">
+                      <ManagedField data={this.state.params} updateData={this.updateAtomList} fieldLocation="q" name="Search:">
+                          <FormFieldTextInput/>
+                      </ManagedField>
+                  </div>
+                  <div className="atom-list-filters__types-filter">
+                      <ManagedField data={this.state.params}
+                                    updateData={this.updateAtomList}
+                                    fieldLocation="types"
+                                    name="Atom Types:">
+                          <FormFieldCheckboxGroup checkValues={allAtomTypes.map((t)=>t.type)}/>
+                      </ManagedField>
+                  </div>
+                  <div className="atom-list-filters__page-size">
+                      <ManagedField data={this.state.params} updateData={this.updateAtomList} fieldLocation="page-size" name="Page size:">
+                          <FormFieldSelectBox selectValues={["20","50","100","150","200"]}/>
+                      </ManagedField>
+                  </div>
                 </div>
                 <div className="atom-list">
-                    <table className="atom-list__table">
-                        <thead>
-                            <tr className="atom-list__header-row">
-                                <th className="atom-list__header">Title</th>
-                                <th className="atom-list__header">Type</th>
-                                <th className="atom-list__header">Last Modified</th>
-                                <th className="atom-list__header">Created by</th>
-                                <th className="atom-list__header">Publication status</th>
-                                <th className="atom-list__header"> </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {this.props.atomList.map((atom) => <AtomListItem atom={atom} config={this.props.config} key={atom.id}/>)}
-                        </tbody>
-                    </table>
+                    {this.props.atomList.map((atom) => <AtomListItem atom={atom} config={this.props.config} key={atom.id}/>)}
                 </div>
             </div>
         );
