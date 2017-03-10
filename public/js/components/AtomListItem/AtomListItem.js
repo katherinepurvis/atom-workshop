@@ -5,7 +5,7 @@ import publishState from '../../util/publishState';
 import {supportedAtomTypes} from '../../constants/atomData';
 import {Link} from 'react-router';
 import _capitalize from 'lodash/fp/capitalize';
-import distanceInWordsToNow from 'date-fns/distance_in_words_to_now'
+import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 
 export default class AtomListItem extends React.Component {
 

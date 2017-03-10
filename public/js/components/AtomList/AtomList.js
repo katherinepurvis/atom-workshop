@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import {Link} from 'react-router';
 
 import {allAtomTypes} from '../../constants/atomData';
 import {ManagedField} from '../ManagedEditor';
