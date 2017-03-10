@@ -27,4 +27,17 @@
     background: white;
     border-width: 0;
   }
+
+  &__embed-pick {
+    padding: 10px;
+
+    background-color: $color200Grey;
+    margin-bottom: 10px;
+    
+    .btn {
+      display: inline-block;
+      padding: 5px 10px;
+    }
+
+  }
 }

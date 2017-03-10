@@ -13,7 +13,8 @@ class AtomEdit extends React.Component {
 
   static propTypes = {
     atomActions: PropTypes.shape({
-      updateAtom: PropTypes.func.isRequired
+      updateAtom: PropTypes.func.isRequired,
+      publishAtom: PropTypes.func.isRequired
     }).isRequired,
     atom: atomPropType,
     config: PropTypes.shape({
@@ -53,7 +54,7 @@ class AtomEdit extends React.Component {
       return false;
     }
 
-    return <EmbeddedAtomPick atom={this.props.atom}/>;
+    return <EmbeddedAtomPick atom={this.props.atom} publishAtom={this.props.atomActions.publishAtom}/>;
   }
 
   render() {
@@ -76,8 +77,8 @@ class AtomEdit extends React.Component {
 //REDUX CONNECTIONS
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as getAtomActions from '../../actions/AtomActions/getAtom.js';
 import * as updateAtomActions from '../../actions/AtomActions/updateAtom.js';
+import * as publishAtomActions from '../../actions/AtomActions/publishAtom.js';
 
 function mapStateToProps(state) {
   return {
@@ -88,7 +89,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    atomActions: bindActionCreators(Object.assign({}, updateAtomActions, getAtomActions), dispatch)
+    atomActions: bindActionCreators(Object.assign({}, updateAtomActions, publishAtomActions), dispatch)
   };
 }
 
