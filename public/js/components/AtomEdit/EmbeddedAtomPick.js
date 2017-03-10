@@ -28,7 +28,7 @@ class EmbeddedAtomPick extends React.Component {
     if (!this.atomHasBeenPublished()) {
       return (
         <div className="atom-editor__embed-pick">
-          <button className="btn" onClick={this.triggerEmbedMessage()}>
+          <button className="btn" onClick={this.triggerAtomPublished}>
             Publish this atom
           </button>
           <span> - This atom has not been published, once published it can be embedded</span>
@@ -38,7 +38,7 @@ class EmbeddedAtomPick extends React.Component {
 
     return (
       <div className="atom-editor__embed-pick">
-        <button className="btn" onClick={this.triggerEmbedMessage()}>
+        <button className="btn" onClick={this.triggerEmbedMessage}>
           Pick this atom
         </button>
       </div>
