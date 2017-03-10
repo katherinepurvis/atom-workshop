@@ -5,7 +5,8 @@ class EmbeddedHeader extends React.Component {
 
   static propTypes = {
     config: PropTypes.shape({
-      isEmbedded: PropTypes.bool.isRequired
+      isEmbedded: PropTypes.bool.isRequired,
+      embeddedMode: PropTypes.string
     }),
     isFindPage: PropTypes.bool.isRequired
   }
@@ -18,6 +19,11 @@ class EmbeddedHeader extends React.Component {
   }
 
   renderEmbeddedBackButton() {
+
+    if (this.props.config.embeddedMode === "edit") {
+      return false;
+    }
+
     return (
       <Link to="/find" className="toolbar__button">Back to Atom Search</Link>
     );
