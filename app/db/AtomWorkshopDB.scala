@@ -63,7 +63,6 @@ class AtomWorkshopDB() extends AtomWorkshopDBAPI {
     checkAtomExistsInDatastore(datastore, newAtom.atomType, newAtom.id).fold(err => Left(err), result => {
       if (result) updateAtom(datastore, newAtom)
       else createAtom(datastore, newAtom.atomType, user, newAtom)
-
     })
   }
 
