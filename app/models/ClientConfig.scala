@@ -9,13 +9,20 @@ object AtomEditorUrls {
   implicit val atomEditorDecoder: Decoder[AtomEditorUrls] = deriveDecoder
 }
 
+case class User(firstName: String, lastName: String, email: String)
+object User {
+  implicit val userEncoder: Encoder[User] = deriveEncoder
+  implicit val userDecoder: Decoder[User] = deriveDecoder
+}
+
 case class ClientConfig(
-                         username: String,
+                         user: User,
                          gridUrl: String,
                          atomEditorUrls: AtomEditorUrls,
                          composerUrl: String,
                          viewerUrl: String,
-                         capiLiveUrl: String
+                         capiLiveUrl: String,
+                         presenceEndpointURL: String
                        )
 
 object ClientConfig {

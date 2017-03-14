@@ -22,14 +22,14 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
 
   def index(placeholder: String) = AuthAction { req =>
     Logger.info(s"I am the ${Config.appName}")
-
     val clientConfig = ClientConfig(
-      username = req.user.email,
+      user = User(req.user.firstName, req.user.lastName, req.user.email),
       gridUrl = Config.gridUrl,
       atomEditorUrls = Config.atomEditorUrls,
       composerUrl = Config.composerUrl,
       viewerUrl = Config.viewerUrl,
-      capiLiveUrl = Config.capiLiveUrl
+      capiLiveUrl = Config.capiLiveUrl,
+      presenceEndpointURL = Config.presenceEndpointURL
     )
 
     val jsFileName = "build/app.js"
