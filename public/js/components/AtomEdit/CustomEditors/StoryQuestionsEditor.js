@@ -29,11 +29,6 @@ export class StoryQuestionsEditor extends React.Component {
               <StoryQuestionsQuestionSet />
             </FormFieldArrayWrapper>
           </ManagedField>
-          <ManagedField fieldLocation="data.storyquestions.userQuestions" name="User Questions">
-            <FormFieldArrayWrapper>
-              <StoryQuestionsQuestionSet />
-            </FormFieldArrayWrapper>
-          </ManagedField>
         </ManagedForm>
       </div>
     );
