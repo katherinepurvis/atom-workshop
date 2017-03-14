@@ -38,7 +38,10 @@ class EmbeddedAtomPick extends React.Component {
 
     return (
       <div className="atom-editor__embed-pick">
-        <button className="btn" onClick={this.triggerEmbedMessage}>
+        <button className="btn" onClick={this.triggerAtomPublished}>
+          Publish this atom
+        </button>
+        <button className="btn right" onClick={this.triggerEmbedMessage}>
           Pick this atom
         </button>
       </div>

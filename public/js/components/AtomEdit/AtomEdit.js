@@ -5,13 +5,18 @@ import {ExplainerEditor} from './CustomEditors/ExplainerEditor';
 import {StoryQuestionsEditor} from './CustomEditors/StoryQuestionsEditor';
 import EmbeddedAtomPick from './EmbeddedAtomPick';
 
-import AtomEditHeader from './AtomEditHeader';
+import {subscribeToPresence, enterPresence} from '../../services/presence';
 
-import {atomPropType} from '../../constants/atomPropType.js';
+import AtomEditHeader from './AtomEditHeader';
+import {atomPropType} from '../../constants/atomPropType';
 
 class AtomEdit extends React.Component {
 
   static propTypes = {
+    routeParams: PropTypes.shape({
+      atomType: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequired
+    }).isRequired,
     atomActions: PropTypes.shape({
       updateAtom: PropTypes.func.isRequired,
       publishAtom: PropTypes.func.isRequired
@@ -24,8 +29,13 @@ class AtomEdit extends React.Component {
     })
   }
 
+  componentWillMount() {
+    subscribeToPresence(this.props.routeParams.id, this.props.routeParams.atomType);
+  }
+
   updateAtom = (newAtom) => {
     this.props.atomActions.updateAtom(newAtom);
+    enterPresence(this.props.routeParams.id, this.props.routeParams.atomType);
   }
 
   renderSpecificEditor () {
@@ -83,7 +93,8 @@ import * as publishAtomActions from '../../actions/AtomActions/publishAtom.js';
 function mapStateToProps(state) {
   return {
     config: state.config,
-    atom: state.atom
+    atom: state.atom,
+    presence: state.presence
   };
 }
 
