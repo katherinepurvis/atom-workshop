@@ -136,14 +136,14 @@ $toolbarHeight: 50px;
     flex-grow: 0;
     align-items: center;
     text-decoration: none;
-    background-color: $cBlueLink;
+    background-color: $brandColor;
     color: white;
 
     padding: 5px 20px;
     margin: 10px;
 
     &:hover:not(:disabled) {
-      background: $cBlueLink;
+      background: $darkBrandColor;
       box-shadow: none;
     }
 
