@@ -17,7 +17,7 @@ class AtomCreateExternalApp extends React.Component {
           <AtomTypeCard atomType={this.props.atomType} />
           <Link className="link" to="/create">Select different atom</Link>
         </div>
-        <div>This atom cannot be created from within the Atom Workshop. It has it's own dedicated editor</div>
+        <div>This atom cannot be created from within the Atom Workshop. It has its own dedicated editor</div>
         <h3><a href={getCreateUrlFromAtomType(this.props.atomType)}>Open Dedicated Editor</a></h3>
       </div>
     );
