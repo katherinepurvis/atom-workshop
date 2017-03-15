@@ -22,14 +22,16 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
 
   def index(placeholder: String) = AuthAction { req =>
     Logger.info(s"I am the ${Config.appName}")
-
     val clientConfig = ClientConfig(
-      username = req.user.email,
+      user = User(req.user.firstName, req.user.lastName, req.user.email),
       gridUrl = Config.gridUrl,
-      atomEditorUrls = Config.atomEditorUrls,
       composerUrl = Config.composerUrl,
       viewerUrl = Config.viewerUrl,
-      capiLiveUrl = Config.capiLiveUrl
+      capiLiveUrl = Config.capiLiveUrl,
+      isEmbedded = req.queryString.get("embeddedMode").isDefined,
+      embeddedMode = req.queryString.get("embeddedMode").map(_.head),
+      atomEditorGutoolsDomain = Config.atomEditorGutoolsDomain,
+      presenceEndpointURL = Config.presenceEndpointURL
     )
 
     val jsFileName = "build/app.js"
@@ -37,7 +39,7 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
     val jsLocation = sys.env.get("JS_ASSET_HOST").map(_ + jsFileName)
       .getOrElse(routes.Assets.versioned(jsFileName).toString)
 
-    Ok(views.html.index("AtomMcAtomFace", jsLocation, clientConfig.asJson.noSpaces))
+    Ok(views.html.index("Atom Workshop", jsLocation, clientConfig.asJson.noSpaces))
   }
 
   def getAtom(atomType: String, id: String, version: String) = AuthAction {

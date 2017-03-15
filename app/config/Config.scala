@@ -4,8 +4,10 @@ import com.amazonaws.auth.profile.ProfileCredentialsProvider
 import com.amazonaws.auth.{AWSCredentialsProviderChain, InstanceProfileCredentialsProvider}
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient
 import com.amazonaws.services.kinesis.AmazonKinesisClient
+
 import com.gu.cm.{Configuration => ConfigurationMagic, Mode}
 import models.AtomEditorUrls
+
 import services.AwsInstanceTags
 
 object Config extends AwsInstanceTags {
@@ -65,12 +67,15 @@ object Config extends AwsInstanceTags {
   val liveReindexKinesisStreamName = getPropertyIfEnabled(kinesisEnabled, "aws.kinesis.reindex.live")
   val previewReindexKinesisStreamName = getPropertyIfEnabled(kinesisEnabled, "aws.kinesis.reindex.preview")
 
+  val presenceEnabled = getOptionalProperty("presence.enabled", config.getBoolean).getOrElse(true)
+  val presenceEndpointURL = getPropertyIfEnabled(presenceEnabled, "presence.endpoint")
+
   val capiPreviewUrl = config.getString("capi.previewUrl")
   val capiLiveUrl = config.getString("capi.liveUrl")
   val capiUsername = config.getString("capi.previewUsername")
   val capiPassword = config.getString("capi.previewPassword")
 
-  val atomEditorUrls = AtomEditorUrls(config.getString("atom.editor.url.explainer"), config.getString("atom.editor.url.media"))
+  val atomEditorGutoolsDomain = config.getString("atom.editors.gutoolsDomain")
 
   val kinesisClient = region.createClient(
     classOf[AmazonKinesisClient],
