@@ -12,7 +12,7 @@ object AtomDataStores {
   }
 
   val previewDataStore = new PreviewDynamoDataStore(dynamoDB, previewDynamoTableName)
-  val publishedDataStore = new PublishedDynamoDataStore(dynamoDB, previewDynamoTableName)
+  val publishedDataStore = new PublishedDynamoDataStore(dynamoDB, publishedDynamoTableName)
 }
 
 object ReindexDataStores {
