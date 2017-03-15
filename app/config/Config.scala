@@ -4,10 +4,7 @@ import com.amazonaws.auth.profile.ProfileCredentialsProvider
 import com.amazonaws.auth.{AWSCredentialsProviderChain, InstanceProfileCredentialsProvider}
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient
 import com.amazonaws.services.kinesis.AmazonKinesisClient
-
 import com.gu.cm.{Configuration => ConfigurationMagic, Mode}
-import models.AtomEditorUrls
-
 import services.AwsInstanceTags
 
 object Config extends AwsInstanceTags {
