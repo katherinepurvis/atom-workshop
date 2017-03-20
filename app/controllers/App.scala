@@ -1,22 +1,22 @@
 package controllers
 
+import cats.syntax.either._
+import com.gu.contentatom.thrift.EventType
+import com.gu.fezziwig.CirceScroogeMacros._
 import config.Config
+import db.AtomDataStores._
+import db.AtomWorkshopDBAPI
+import io.circe._
+import io.circe.syntax._
 import models._
 import play.api.Logger
 import play.api.libs.ws.WSClient
 import play.api.mvc.Controller
-import cats.syntax.either._
-import com.gu.contentatom.thrift.EventType
-import db.{AtomDataStores, AtomWorkshopDBAPI}
-import com.gu.fezziwig.CirceScroogeMacros._
-import io.circe.syntax._
-import io.circe._
-import io.circe.generic.auto._
-import util.AtomLogic._
-import util.Parser._
 import services.AtomPublishers._
 import util.AtomElementBuilders
+import util.AtomLogic._
 import util.AtomUpdateOperations._
+import util.Parser._
 
 class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends Controller with PanDomainAuthActions {
 
@@ -32,6 +32,7 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
       isEmbedded = req.queryString.get("embeddedMode").isDefined,
       embeddedMode = req.queryString.get("embeddedMode").map(_.head),
       atomEditorGutoolsDomain = Config.atomEditorGutoolsDomain,
+      presenceEnabled = Config.presenceEnabled,
       presenceEndpointURL = Config.presenceEndpointURL
     )
 
@@ -47,7 +48,7 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
     APIResponse {
       for {
         atomType <- validateAtomType(atomType)
-        ds <- AtomDataStores.getDataStore(atomType, getVersion(version))
+        ds = getDataStore(getVersion(version))
         atom <- atomWorkshopDB.getAtom(ds, atomType, id)
       } yield atom
     }
@@ -58,9 +59,8 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
       for {
         atomType <- validateAtomType(atomType)
         createAtomFields <- extractCreateAtomFields(req.body.asJson.map(_.toString))
-        ds <- AtomDataStores.getDataStore(atomType, Preview)
         atomToCreate = AtomElementBuilders.buildDefaultAtom(atomType, req.user, createAtomFields)
-        atom <- atomWorkshopDB.createAtom(ds, atomType, req.user, atomToCreate)
+        atom <- atomWorkshopDB.createAtom(previewDataStore, atomType, req.user, atomToCreate)
         _ <- sendKinesisEvent(atom, previewAtomPublisher, EventType.Update)
       } yield atom
     }
@@ -70,10 +70,9 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
     APIResponse {
       for {
         atomType <- validateAtomType(atomType)
-        previewDs <- AtomDataStores.getDataStore(atomType, Preview)
-        liveDs <- AtomDataStores.getDataStore(atomType, Live)
+        previewDs = getDataStore(Preview)
         currentDraftAtom <- atomWorkshopDB.getAtom(previewDs, atomType, id)
-        updatedAtom <- atomWorkshopDB.publishAtom(liveDs, req.user, updateTopLevelFields(currentDraftAtom, req.user, publish=true))
+        updatedAtom <- atomWorkshopDB.publishAtom(publishedDataStore, req.user, updateTopLevelFields(currentDraftAtom, req.user, publish=true))
         _ <- atomWorkshopDB.updateAtom(previewDs, updatedAtom)
         _ <- sendKinesisEvent(updatedAtom, liveAtomPublisher, EventType.Update)
         _ <- sendKinesisEvent(updatedAtom, previewAtomPublisher, EventType.Update)
@@ -87,8 +86,7 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
         atomType <- validateAtomType(atomType)
         payload <- extractRequestBody(req.body.asJson.map(_.toString))
         newAtom <- stringToAtom(payload)
-        datastore <- AtomDataStores.getDataStore(atomType, Preview)
-        updatedAtom <- atomWorkshopDB.updateAtom(datastore, updateTopLevelFields(newAtom, req.user))
+        updatedAtom <- atomWorkshopDB.updateAtom(previewDataStore, updateTopLevelFields(newAtom, req.user))
         _ <- sendKinesisEvent(updatedAtom, previewAtomPublisher, EventType.Update)
       } yield updatedAtom
     }
@@ -100,10 +98,9 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
         atomType <- validateAtomType(atomType)
         payload <- extractRequestBody(req.body.asJson.map(_.toString))
         newJson <- stringToJson(payload)
-        datastore <- AtomDataStores.getDataStore(atomType, Preview)
-        currentAtom <- atomWorkshopDB.getAtom(datastore, atomType, id)
+        currentAtom <- atomWorkshopDB.getAtom(previewDataStore, atomType, id)
         newAtom <- updateAtomFromJson(currentAtom, newJson, req.user)
-        updatedAtom <- atomWorkshopDB.updateAtom(datastore, updateTopLevelFields(newAtom, req.user))
+        updatedAtom <- atomWorkshopDB.updateAtom(previewDataStore, updateTopLevelFields(newAtom, req.user))
         _ <- sendKinesisEvent(updatedAtom, previewAtomPublisher, EventType.Update)
       } yield updatedAtom
     }
@@ -113,10 +110,9 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
     APIResponse {
       for {
         atomType <- validateAtomType(atomType)
-        liveDataStore <- AtomDataStores.getDataStore(atomType, Live)
-        liveAtom = atomWorkshopDB.getAtom(liveDataStore, atomType, id)
+        liveAtom = atomWorkshopDB.getAtom(publishedDataStore, atomType, id)
         _ <- checkAtomCanBeDeletedFromPreview(liveAtom)
-        previewDataStore <- AtomDataStores.getDataStore(atomType, Preview)
+        previewDataStore = getDataStore(Preview)
         result <- atomWorkshopDB.deleteAtom(previewDataStore, atomType, id)
         atom <- liveAtom
         _ <- sendKinesisEvent(atom, previewAtomPublisher, EventType.Takedown)
@@ -128,11 +124,9 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
     APIResponse {
       for {
         atomType <- validateAtomType(atomType)
-        liveDataStore <- AtomDataStores.getDataStore(atomType, Live)
-        previewDataStore <- AtomDataStores.getDataStore(atomType, Preview)
-        atom <- atomWorkshopDB.getAtom(liveDataStore, atomType, id)
+        atom <- atomWorkshopDB.getAtom(publishedDataStore, atomType, id)
         updatedAtom <- atomWorkshopDB.updateAtom(previewDataStore, updateTakenDownChangeRecord(atom, req.user))
-        result <- atomWorkshopDB.deleteAtom(liveDataStore, atomType, id)
+        result <- atomWorkshopDB.deleteAtom(publishedDataStore, atomType, id)
         _ <- sendKinesisEvent(updatedAtom, liveAtomPublisher, EventType.Takedown)
         _ <- sendKinesisEvent(updatedAtom, previewAtomPublisher, EventType.Update)
       } yield updatedAtom

@@ -1,4 +1,5 @@
 const publishState = (atom) => {
+  if (!atom) return {};
   // @TODO - Add "Taken down" state when the API returns a taken down time
   if (atom.contentChangeDetails.published) {
 
@@ -9,7 +10,7 @@ const publishState = (atom) => {
       };
     }
 
-    if (atom.contentChangeDetails.published.date >= atom.contentChangeDetails.lastModified.date) {
+    if (atom.contentChangeDetails.lastModified && atom.contentChangeDetails.published.date >= atom.contentChangeDetails.lastModified.date) {
       return {
         id: 'published',
         text: 'Published'

@@ -9,6 +9,9 @@ export default class FormFieldArrayWrapper extends React.Component {
     fieldValue: PropTypes.array,
     fieldErrors: PropTypes.arrayOf(errorPropType),
     onUpdateField: PropTypes.func,
+    nested: PropTypes.bool,
+    numbered: PropTypes.bool,
+    fieldClass: PropTypes.string,
     children: PropTypes.oneOfType([
       PropTypes.element,
       PropTypes.arrayOf(PropTypes.element)
@@ -40,16 +43,18 @@ export default class FormFieldArrayWrapper extends React.Component {
 
     const hydratedChildren = React.Children.map(this.props.children, (child) => {
       return React.cloneElement(child, {
+        key: `${this.props.fieldName}-${i}`,
         fieldName: `${this.props.fieldName}-${i}`,
         fieldValue: value,
         fieldErrors: this.props.fieldErrors,
-        formRowClass: 'form__row--flex-width',
+        formRowClass: 'form__row form__row--flex',
         onUpdateField: updateFn
       });
     });
 
     return (
-      <div className="form__row form__row--field-with-btn">
+      <div className={this.props.fieldClass ? this.props.fieldClass : 'form__group'}>
+        {this.props.numbered ? <span className="form__field-number">{`${i + 1}. `}</span> : false }
         {hydratedChildren}
         <button className="btn form__field-btn" type="button" onClick={removeFn.bind(this, i)}>Delete</button>
       </div>
@@ -61,10 +66,12 @@ export default class FormFieldArrayWrapper extends React.Component {
     const values = this.props.fieldValue || [];
 
     return (
-      <div className="form__row">
-        <span className="form__label">{this.props.fieldLabel}</span>
+      <div className={this.props.nested ? 'form__row form__row--nested' : 'form__row'}>
+        <div className="form__btn-heading">
+          <span className="form__label">{this.props.fieldLabel}</span>
+          <button className="form__btn-heading__btn" type="button" onClick={this.onAddClick}>Add</button>
+        </div>
         {values.map((value, i) => this.renderValue(value, i))}
-        <button className="btn" type="button" onClick={this.onAddClick}>Add</button>
       </div>
     );
   }
