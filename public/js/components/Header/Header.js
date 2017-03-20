@@ -6,6 +6,7 @@ import PresenceIndicator from '../Utilities/PresenceIndicator';
 import {saveStateVals} from '../../constants/saveStateVals';
 import distanceInWords from 'date-fns/distance_in_words';
 import EmbeddedHeader from './EmbeddedHeader';
+import AtomListSearch from '../AtomListSearch/AtomListSearch';
 
 const atomPropType = PropTypes.shape({
   id: PropTypes.string.isRequired,
@@ -131,6 +132,7 @@ class Header extends React.Component {
                 </div>
               </Link>
             </header>
+            {!this.isEditor() ? <AtomListSearch /> : false}
             {this.renderAtomStates()}
           </div>
             {this.renderHeaderRight()}
@@ -150,7 +152,8 @@ function mapStateToProps(state) {
     atom: state.atom,
     saveState: state.saveState,
     config: state.config,
-    presence: state.presence
+    presence: state.presence,
+    search: state.search
   };
 }
 

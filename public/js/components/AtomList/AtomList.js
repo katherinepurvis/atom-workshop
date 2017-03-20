@@ -1,10 +1,5 @@
 import React, { PropTypes } from 'react';
 
-import {allAtomTypes} from '../../constants/atomData';
-import {ManagedField} from '../ManagedEditor';
-import FormFieldTextInput from '../FormFields/FormFieldTextInput';
-import FormFieldCheckboxGroup from '../FormFields/FormFieldCheckboxGroup';
-import FormFieldSelectBox from '../FormFields/FormFieldSelectBox';
 import AtomListItem from '../AtomListItem/AtomListItem';
 
 
@@ -21,28 +16,24 @@ class AtomList extends React.Component {
         atomListActions: PropTypes.shape({
             getAtomList: PropTypes.func.isRequired
         }).isRequired,
-        atomList: PropTypes.array
-    };
-
-    state = {
-        params: {
-            types:[],
-            "page-size": "20",
-            q: "",
-            searchFields: "data.title,data.label,title,labels,data.body"
-        }
+        atomList: PropTypes.array,
+        search: PropTypes.object
     };
 
     componentWillMount() {
-        this.props.atomListActions.getAtomList(this.state.params);
+        this.props.atomListActions.getAtomList();
     }
 
-    updateAtomList = (newParams) => {
-        this.setState({
-            params: newParams
-        }, () => this.props.atomListActions.getAtomList(this.state.params));
-    };
+    componentWillReceiveProps(newProps) {
+      const oldSearch = this.props.search;
+      const newSearch = newProps.search;
 
+      if (oldSearch !== newSearch && newSearch !== {}) {
+        this.props.atomListActions.getAtomList(newSearch);
+    } else if (newSearch === {} && oldSearch !== {}) {
+        this.props.atomListActions.getAtomList();
+      }
+    }
 
     render () {
 
@@ -52,27 +43,6 @@ class AtomList extends React.Component {
 
         return (
             <div className="page__section">
-                <h1 className="page__subheading">Atom Finder</h1>
-                <div className="atom-list-filters">
-                  <div className="atom-list-filters__search-box">
-                      <ManagedField data={this.state.params} updateData={this.updateAtomList} fieldLocation="q" name="Search:">
-                          <FormFieldTextInput/>
-                      </ManagedField>
-                  </div>
-                  <div className="atom-list-filters__types-filter">
-                      <ManagedField data={this.state.params}
-                                    updateData={this.updateAtomList}
-                                    fieldLocation="types"
-                                    name="Atom Types:">
-                          <FormFieldCheckboxGroup checkValues={allAtomTypes.map((t)=>t.type)}/>
-                      </ManagedField>
-                  </div>
-                  <div className="atom-list-filters__page-size">
-                      <ManagedField data={this.state.params} updateData={this.updateAtomList} fieldLocation="page-size" name="Page size:">
-                          <FormFieldSelectBox selectValues={["20","50","100","150","200"]}/>
-                      </ManagedField>
-                  </div>
-                </div>
                 <div className="atom-list">
                     {this.props.atomList.map((atom) => <AtomListItem atom={atom} config={this.props.config} key={atom.id}/>)}
                 </div>
@@ -90,7 +60,8 @@ import * as getAtomListActions from '../../actions/AtomListActions/getAtomList';
 function mapStateToProps(state) {
     return {
         atomList: state.atomList,
-        config: state.config
+        config: state.config,
+        search: state.search
     };
 }
 
