@@ -16,7 +16,7 @@ export class AtomCreateTypeSelect extends React.Component {
         >
         <AtomTypeCard atomType={atomType} />
       </Link>
-    )
+    );
   }
 
   render () {
