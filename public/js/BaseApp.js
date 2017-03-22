@@ -8,6 +8,7 @@ import AtomCreateGenericInfo from './components/AtomCreate/AtomCreateGenericInfo
 import AtomEdit from './components/AtomEdit/AtomEdit';
 import AtomStats from './components/AtomStats/AtomStats';
 import AtomList from './components/AtomList/AtomList';
+import ExternalAtom from './components/ExternalAtom/ExternalAtom';
 import AtomRoot from './components/AtomRoot/AtomRoot';
 
 export class BaseApp extends React.Component {
@@ -28,6 +29,7 @@ export class BaseApp extends React.Component {
               <Route path="/atoms/:atomType/:id/edit" component={AtomEdit} />
               <Route path="/atoms/:atomType/:id/stats" component={AtomStats} />
             </Route>
+            <Route path="/external-atoms/:atomType/:id/link" component={ExternalAtom} />
             <IndexRedirect to="/find" />
           </Route>
         </Router>
