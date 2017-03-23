@@ -9,6 +9,7 @@ export default class FormFieldTagPicker extends React.Component {
   static propTypes = {
     fieldLabel: PropTypes.string,
     fieldName: PropTypes.string,
+    fieldClass: PropTypes.string,
     fieldValue: PropTypes.string,
     fieldPlaceholder: PropTypes.string,
     fieldErrors: PropTypes.arrayOf(errorPropType),
@@ -85,7 +86,7 @@ export default class FormFieldTagPicker extends React.Component {
       return (
         <div className={this.props.formRowClass || "form__row"}>
           {this.props.fieldLabel ? <label htmlFor={this.props.fieldName} className="form__label">{this.props.fieldLabel}</label> : false}
-          <input className="form__field" value={`Currently selected tag: ${this.props.fieldValue}`} disabled={true} />
+          <input className={"form__field" + this.props.fieldClass} value={`Currently selected tag: ${this.props.fieldValue}`} disabled={true} />
           <button className="btn" onClick={this.resetTag}>Change Tag</button>
         </div>
       );

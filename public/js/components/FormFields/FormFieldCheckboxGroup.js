@@ -10,6 +10,7 @@ export default class FormFieldCheckboxGroup extends React.Component {
     fieldLabel: PropTypes.string,
     fieldName: PropTypes.string,
     fieldValue: PropTypes.array,
+    fieldClass: PropTypes.string,
     checkValues: PropTypes.array.isRequired,
     fieldErrors: PropTypes.arrayOf(errorPropType),
     formRowClass: PropTypes.string,
@@ -40,6 +41,7 @@ export default class FormFieldCheckboxGroup extends React.Component {
         key={`${this.props.fieldName}-${i}`}
         fieldName={`${fieldName}`}
         fieldValue={this.isChecked(fieldName)}
+        fieldClass={this.props.fieldClass}
         onUpdateField={updateFn}
         checkGroup="true" />
     );

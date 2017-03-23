@@ -18,6 +18,7 @@ export class ManagedField extends React.Component {
     ]),
     updateData: PropTypes.func,
     updateFormErrors: PropTypes.func,
+    fieldClass: PropTypes.string,
     data: PropTypes.object,
     name: PropTypes.string,
     isRequired: PropTypes.bool,
@@ -52,6 +53,7 @@ export class ManagedField extends React.Component {
       return React.cloneElement(child, {
         fieldName: this.props.name,
         fieldLabel: this.props.name,
+        fieldClass: this.props.fieldClass,
         fieldValue: _get(this.props.fieldLocation, this.props.data),
         fieldErrors: this.state.touched ? this.state.fieldErrors : undefined,
         onUpdateField: this.updateFn,

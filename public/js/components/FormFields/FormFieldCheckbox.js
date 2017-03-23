@@ -7,6 +7,7 @@ export default class FormFieldCheckbox extends React.Component {
   static propTypes = {
     fieldLabel: PropTypes.string,
     fieldName: PropTypes.string.isRequired,
+    fieldClass: PropTypes.string,
     fieldValue: PropTypes.bool.isRequired,
     fieldErrors: PropTypes.arrayOf(errorPropType),
     onUpdateField: PropTypes.func.isRequired
@@ -20,7 +21,7 @@ export default class FormFieldCheckbox extends React.Component {
     return (
       <div className="form__group">
         {this.props.fieldLabel ? <label className="form__label" htmlFor={this.props.fieldName}>{this.props.fieldLabel}</label> : false}
-        <input className="form__checkbox" type="checkbox" checked={this.props.fieldValue} name={this.props.fieldName} value={this.props.fieldValue} onChange={this.onUpdate} />
+        <input className={"form__checkbox" + this.props.fieldClass} type="checkbox" checked={this.props.fieldValue} name={this.props.fieldName} value={this.props.fieldValue} onChange={this.onUpdate} />
         {!this.props.fieldLabel ? <span className="form__label form__label--checkbox">{this.props.fieldName}</span> : false}
         <ShowErrors errors={this.props.fieldErrors}/>
       </div>
