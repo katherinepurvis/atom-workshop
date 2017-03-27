@@ -72,6 +72,7 @@
     "scribe": "guardian/scribe#fcf4e16",
     "scribe-plugin-keyboard-shortcuts": "^0.1.1",
     "scribe-plugin-link-prompt-command": "^1.0.0",
+    "scribe-plugin-noting": "^0.3.28",
     "scribe-plugin-sanitizer": "^0.1.10",
     "scribe-plugin-toolbar": "^1.0.0",
     "uuid": "^3.0.1",
