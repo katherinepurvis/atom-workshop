@@ -55,7 +55,7 @@ export const media = {
 };
 
 export const allAtomTypes = [cta, explainer, recipe, storyQuestions, quiz, media];
-export const workshopEditableAtomTypes = [cta, storyQuestions, recipe];
+export const workshopEditableAtomTypes = [cta, storyQuestions, recipe, explainer];
 export function getNonEditableAtomTypes() {
    return allAtomTypes.filter((atomType) => workshopEditableAtomTypes.indexOf(atomType) === -1);
 }
