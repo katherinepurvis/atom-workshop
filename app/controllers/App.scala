@@ -133,4 +133,11 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
     }
   }
 
+  def updatedSince(date: Long) = AuthAction { req =>
+    APIResponse {
+      for {
+        results <- atomWorkshopDB.getChangedSince(data)
+      } yield results
+    }
+  }
 }

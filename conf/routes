@@ -10,7 +10,7 @@ GET     /atoms/:placeholder/:placeholder/stats   controllers.App.index(placehold
 GET  /api/preview/:atomType/:id                  controllers.App.getAtom(atomType: String, id: String, version = "preview")
 GET  /api/live/:atomType/:id                     controllers.App.getAtom(atomType: String, id: String, version = "live")
 
-GET     /updatedSince/:date                      controllers.App.updatedSince(date: Long)
+GET     /api/updatedSince/:date                      controllers.App.updatedSince(date: Long)
 
 DELETE /api/preview/:atomType/:id                controllers.App.deleteAtom(atomType: String, id: String)
 DELETE /api/live/:atomType/:id                   controllers.App.takedownAtom(atomType: String, id: String)
