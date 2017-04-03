@@ -16,7 +16,7 @@
     border: 0; // reset
     border-bottom: 2px solid $color300Grey;
     padding: 5px 5px 5px 25px;
-    
+
     &:focus {
       border-color: $brandColor;
     }
@@ -50,7 +50,7 @@
       background: none;
       border: 0;
       display: inline-block;
-      vertical-align: bottom;
+      vertical-align: middle;
       width: 70px;
       overflow: hidden;
       white-space: nowrap;
@@ -82,6 +82,17 @@
 
       &:not(:last-child) {
         border-bottom: 1px solid $color300Grey;
+      }
+    }
+
+    &--select {
+      background: none;
+      padding: 0 0 0 12px;
+
+      .atom-search__dropdown__value--select {
+        background: url(../images/arrow.png) transparent no-repeat right 10px center;
+        height: 100%;
+        padding: 12px 25px 12px 0;
       }
     }
   }
