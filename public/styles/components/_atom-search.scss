@@ -6,13 +6,17 @@
   background: $color200Grey;
   border: 1px solid $color300Grey;
 
+  &__row {
+    margin: 10px;
+  }
+
   &__input {
     background: no-repeat left center url(../images/search.svg) transparent;
     outline: none;
     border: 0; // reset
     border-bottom: 2px solid $color300Grey;
     padding: 5px 5px 5px 25px;
-
+    
     &:focus {
       border-color: $brandColor;
     }
