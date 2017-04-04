@@ -88,9 +88,8 @@ export default class AtomListItem extends React.Component {
                 {this.renderEditorLink(this.props.atom)}
               </div>
               <div>
-                <span className="bold">{publishState(this.props.atom).text} </span>
-                Last modified {this.getDateString(this.props.atom.contentChangeDetails.lastModified)} ago
-                {this.renderStatsLink()}
+                <p className="bold">Status: {publishState(this.props.atom).text} </p>
+                <p>Last modified {this.getDateString(this.props.atom.contentChangeDetails.lastModified)} ago {this.renderStatsLink()}</p>
               </div>
             </div>
           </div>
