@@ -57,8 +57,8 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala, RiffRaffArtifact
     )
   )
 
-lazy val snapper = (project in file("./snapper"))
-  .settings(
+lazy val snapper = (project in file("./snapper")).settings(
+  scalaVersion := "2.11.8",
   libraryDependencies ++= Seq(
     "com.amazonaws" %  "aws-java-sdk-core" % awsVersion,
     "com.amazonaws" % "aws-java-sdk-dynamodb" % awsVersion
