@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import _isEqual from 'lodash/fp/isEqual';
 
 import {allAtomTypes} from '../../constants/atomData';
 import {searchParams} from '../../constants/queryParams';
@@ -19,27 +20,37 @@ class AtomList extends React.Component {
       }),
       isEmbedded: PropTypes.bool.isRequired
     }),
-    queryParams: PropTypes.object,
+    queryParams: PropTypes.shape({
+      q: PropTypes.string,
+      types: PropTypes.array,
+      'page-size': PropTypes.string
+    }),
     atomListActions: PropTypes.shape({
       getAtomList: PropTypes.func.isRequired
     }).isRequired,
     queryParamsActions: PropTypes.shape({
       updateQueryParams: PropTypes.func.isRequired
-    }).isRequired,
+    }),
     atomList: PropTypes.array
   };
 
-  componentWillMount() {
-    if (!Object.keys(this.props.queryParams).length) {
-      this.props.queryParamsActions.updateQueryParams(searchParams);
-      this.props.atomListActions.getAtomList(searchParams);
-    } else {
-      this.props.atomListActions.getAtomList(this.props.queryParams);
+  triggerSearch(overrideSearchQuery) {
+    const searchQuery = overrideSearchQuery || this.props.queryParams;
+    this.props.atomListActions.getAtomList(searchQuery);
+  }
+
+  componentDidMount() {
+    this.props.queryParamsActions.updateQueryParams(Object.assign({}, searchParams, this.props.queryParams));
+    this.triggerSearch();
+  }
+
+  componentWillReceiveProps(props) {
+    if (!_isEqual(props.queryParams, this.props.queryParams)) {
+      this.triggerSearch(props.queryParams);
     }
   }
 
   updateAtomList = (newParams) => {
-    this.props.atomListActions.getAtomList(newParams);
     this.props.queryParamsActions.updateQueryParams(newParams);
   };
 
@@ -86,7 +97,7 @@ class AtomList extends React.Component {
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as getAtomListActions from '../../actions/AtomListActions/getAtomList';
-import * as updateQueryParamsActions from '../../actions/QueryParamActions/updateQueryParams';
+import * as updateQueryParamsActions from '../../actions/QueryParamsActions/updateQueryParams';
 
 function mapStateToProps(state) {
   return {
