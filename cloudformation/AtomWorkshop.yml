@@ -56,7 +56,7 @@ Parameters:
 Mappings:
   Config:
     IpRange:
-      CODE: 77.91.248.0/21
+      CODE: 0.0.0.0/0
       PROD: 0.0.0.0/0
     DesiredCapacity:
       CODE: 1
