@@ -3,7 +3,7 @@ version := "1.0"
 
 scalaVersion := "2.11.8"
 
-lazy val awsVersion = "1.11.8"
+lazy val awsVersion = "1.11.119"
 lazy val atomLibVersion = "0.2.3-SNAPSHOT"
 
 libraryDependencies ++= Seq(
