@@ -1,9 +1,7 @@
 package com.gu.atomworkshop.snapper
 
-import scala.collection.JavaConversions._
 import com.amazonaws.auth.profile.ProfileCredentialsProvider
 import com.amazonaws.services.dynamodbv2._
-import model._
 
 //class Snapper(streamArn: String) {
 //   val authProvider = new ProfileCredentialsProvider("composer")
@@ -57,11 +55,14 @@ import model._
 
 object SnapperTest {
   val conf = Config(
-    "arn:aws:dynamodb:eu-west-1:743583969668:table/atom-workshop-preview-DEV/stream/2017-04-04T08:12:21.600", "composer", "eu-west-1"
+    tableName   = "atom-workshop-preview-DEV",
+    authProfile = "composer",
+    regionName  = "eu-west-1"
   )
+  val dynamo = new Dynamo(conf)
 
   def main(args: Array[String]): Unit = {
-    val fetcher = new EventFetcher(conf)
+    val fetcher = new EventFetcher(dynamo)
     println(fetcher.fetchEvents(None))
   }
 }
