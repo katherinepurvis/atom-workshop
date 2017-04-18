@@ -53,4 +53,9 @@ class Dynamo(conf: Config) {
     }
     streamsClient.getShardIterator(getShardIteratorRequest).getShardIterator
   }
+
+  def getRecords(it: ShardIterator) =
+    streamsClient.getRecords(
+      new GetRecordsRequest().withShardIterator(it)
+    ).getRecords().toList
 }

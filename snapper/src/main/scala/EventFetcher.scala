@@ -27,19 +27,11 @@ class EventFetcher(dynamo: Dynamo) {
      * if we want to. */
     val its = dynamo.getStreamIterators(lastSeen)
     val changed = its.foldLeft(Set.empty: Set[String]) { (acc, it) =>
-      val getRecordsResult = dynamo.streamsClient.getRecords(
-        new GetRecordsRequest().withShardIterator(it)
+      val records = dynamo.getRecords(it)
+      val ids = records map(
+        record => record.getDynamodb.getKeys.toMap.get("id").map(_.getS)
       )
-      val records = getRecordsResult.getRecords().toList
-      println(s"Records: ${records.length}")
-      records map { record =>
-        val keys = record.getDynamodb.getKeys.toMap
-        keys  map {
-          case (key, value) =>
-            println(s"$key, $value")
-        }
-      }
-      acc // XXX
+      acc ++ ids.flatten
     }
     changed.toList
   }
