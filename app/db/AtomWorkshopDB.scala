@@ -1,34 +1,24 @@
 package db
 
 import cats.syntax.either._
-import com.gu.atom.data.{DataStoreResult, DynamoDataStore, IDNotFound}
+import com.gu.atom.data._
 import com.gu.contentatom.thrift.{Atom, AtomType}
 import com.gu.pandomainauth.model.User
-import models.{AtomAPIError, AtomWorkshopDynamoDatastoreError}
+import models.{AtomAPIError, AtomWorkshopDynamoDatastoreError, Live}
 import play.api.Logger
 import util.AtomLogic._
+import db.AtomDataStores._
 
-trait AtomWorkshopDBAPI {
+class AtomWorkshopPublishedDbAPI() {
+
+  val datastore: PublishedDynamoDataStore = publishedDataStore
 
   def transformAtomLibResult[T](result: DataStoreResult.DataStoreResult[T]): Either[AtomAPIError, T] = result match {
     case Left(e) => Left(AtomWorkshopDynamoDatastoreError(e.msg))
     case Right(r) => Right(r)
   }
 
-  def createAtom(datastore: DynamoDataStore, atomType: AtomType, user: User, atom: Atom): Either[AtomAPIError, Atom]
-
-  def getAtom(datastore: DynamoDataStore, atomType: AtomType, id: String): Either[AtomAPIError, Atom]
-
-  def publishAtom(datastore: DynamoDataStore, user: User, newVersion: Atom): Either[AtomAPIError, Atom]
-
-  def updateAtom(datastore: DynamoDataStore, atom: Atom): Either[AtomAPIError, Atom]
-
-  def deleteAtom(datastore: DynamoDataStore, atomType: AtomType, id: String): Either[AtomAPIError, Atom]
-}
-
-class AtomWorkshopDB() extends AtomWorkshopDBAPI {
-
-  def createAtom(datastore: DynamoDataStore, atomType: AtomType, user: User, atom: Atom): Either[AtomAPIError, Atom] = {
+  def createAtom(atomType: AtomType, user: User, atom: Atom): Either[AtomAPIError, Atom] = {
     Logger.info(s"Attempting to create atom of type ${atomType.name} with id ${atom.id}")
     try {
       val result = datastore.createAtom(buildKey(atomType, atom.id), atom)
@@ -39,10 +29,10 @@ class AtomWorkshopDB() extends AtomWorkshopDBAPI {
     }
   }
 
-  def getAtom(datastore: DynamoDataStore, atomType: AtomType, id: String) =
+  def getAtom(atomType: AtomType, id: String): Either[AtomAPIError, Atom] =
     transformAtomLibResult(datastore.getAtom(buildKey(atomType, id)))
 
-  def updateAtom(datastore: DynamoDataStore, atom: Atom): Either[AtomAPIError, Atom] = {
+  def updateAtom(atom: Atom): Either[AtomAPIError, Atom] = {
     try {
       val result = datastore.updateAtom(atom)
       Logger.info(s"Successfully updated atom of type ${atom.atomType.name} with id ${atom.id}")
@@ -52,20 +42,71 @@ class AtomWorkshopDB() extends AtomWorkshopDBAPI {
     }
   }
 
-  def publishAtom(datastore: DynamoDataStore, user: User, newAtom: Atom): Either[AtomAPIError, Atom] = {
+  def publishAtom(user: User, newAtom: Atom): Either[AtomAPIError, Atom] = {
 
-    def checkAtomExistsInDatastore(datastore: DynamoDataStore, atomType: AtomType, id: String): Either[AtomAPIError, Boolean] =
+    def checkAtomExistsInDatastore(atomType: AtomType, id: String): Either[AtomAPIError, Boolean] =
       datastore.getAtom(buildKey(atomType, id)).fold({
         case IDNotFound => Right(false)
         case e => Left(AtomWorkshopDynamoDatastoreError(e.msg))
       }, _ => Right(true))
 
-    checkAtomExistsInDatastore(datastore, newAtom.atomType, newAtom.id).fold(err => Left(err), result => {
-      if (result) updateAtom(datastore, newAtom)
-      else createAtom(datastore, newAtom.atomType, user, newAtom)
+    checkAtomExistsInDatastore(newAtom.atomType, newAtom.id).fold(err => Left(err), result => {
+      if (result) updateAtom(newAtom)
+      else createAtom(newAtom.atomType, user, newAtom)
     })
   }
 
-  def deleteAtom(datastore: DynamoDataStore, atomType: AtomType, id: String) =
+  def deleteAtom(atomType: AtomType, id: String) =
+    transformAtomLibResult(datastore.deleteAtom(buildKey(atomType, id)))
+}
+
+class AtomWorkshopPreviewDbAPI() {
+
+  val datastore: PreviewDynamoDataStore = previewDataStore
+
+  def transformAtomLibResult[T](result: DataStoreResult.DataStoreResult[T]): Either[AtomAPIError, T] = result match {
+    case Left(e) => Left(AtomWorkshopDynamoDatastoreError(e.msg))
+    case Right(r) => Right(r)
+  }
+
+  def createAtom(atomType: AtomType, user: User, atom: Atom): Either[AtomAPIError, Atom] = {
+    Logger.info(s"Attempting to create atom of type ${atomType.name} with id ${atom.id}")
+    try {
+      val result = datastore.createAtom(buildKey(atomType, atom.id), atom)
+      Logger.info(s"Successfully created atom of type ${atomType.name} with id ${atom.id}")
+      transformAtomLibResult(result)
+    } catch {
+      case e: Exception => processException(e)
+    }
+  }
+
+  def getAtom(atomType: AtomType, id: String): Either[AtomAPIError, Atom] =
+    transformAtomLibResult(datastore.getAtom(buildKey(atomType, id)))
+
+  def updateAtom(atom: Atom): Either[AtomAPIError, Atom] = {
+    try {
+      val result = datastore.updateAtom(atom)
+      Logger.info(s"Successfully updated atom of type ${atom.atomType.name} with id ${atom.id}")
+      transformAtomLibResult(result)
+    } catch {
+      case e: Exception => processException(e)
+    }
+  }
+
+  def publishAtom(user: User, newAtom: Atom): Either[AtomAPIError, Atom] = {
+
+    def checkAtomExistsInDatastore(atomType: AtomType, id: String): Either[AtomAPIError, Boolean] =
+      datastore.getAtom(buildKey(atomType, id)).fold({
+        case IDNotFound => Right(false)
+        case e => Left(AtomWorkshopDynamoDatastoreError(e.msg))
+      }, _ => Right(true))
+
+    checkAtomExistsInDatastore(newAtom.atomType, newAtom.id).fold(err => Left(err), result => {
+      if (result) updateAtom(newAtom)
+      else createAtom(newAtom.atomType, user, newAtom)
+    })
+  }
+
+  def deleteAtom(atomType: AtomType, id: String) =
     transformAtomLibResult(datastore.deleteAtom(buildKey(atomType, id)))
 }
