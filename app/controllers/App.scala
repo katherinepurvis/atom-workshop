@@ -4,10 +4,7 @@ import cats.syntax.either._
 import com.gu.contentatom.thrift.{Atom, AtomType, EventType}
 import com.gu.fezziwig.CirceScroogeMacros._
 import config.Config
-import db.AtomDataStores._
-import db.{AtomWorkshopPublishedDbAPI, AtomWorkshopPreviewDbAPI}
-import io.circe._
-import io.circe.syntax._
+import db._
 import models._
 import play.api.Logger
 import play.api.libs.ws.WSClient
@@ -18,7 +15,16 @@ import util.AtomLogic._
 import util.AtomUpdateOperations._
 import util.Parser._
 
-class App(val wsClient: WSClient, val atomWorkshopPreviewDbAPI: AtomWorkshopPreviewDbAPI, val atomWorkshopPublishedDbAPI: AtomWorkshopPublishedDbAPI) extends Controller with PanDomainAuthActions {
+// Required for Json parsing
+import io.circe.generic.auto._
+import io.circe.Json
+import io.circe.syntax._
+
+class App(
+    val wsClient: WSClient,
+    val atomWorkshopDraftDbAPI: AtomWorkshopDraftDbAPI,
+    val atomWorkshopPreviewDbAPI: AtomWorkshopPreviewDbAPI,
+    val atomWorkshopPublishedDbAPI: AtomWorkshopPublishedDbAPI) extends Controller with PanDomainAuthActions {
 
   def index(placeholder: String) = AuthAction { req =>
     Logger.info(s"I am the ${Config.appName}")
@@ -48,16 +54,25 @@ class App(val wsClient: WSClient, val atomWorkshopPreviewDbAPI: AtomWorkshopPrev
     APIResponse {
       for {
         atomType <- validateAtomType(atomType)
-        dbVersion = getVersion(version)
-        atom <- getAtomFromDatastore(atomType, id, dbVersion)
+        dbAPIVersion = getVersion(version)
+        atom <- getAtomFromDatastore(atomType, id, dbAPIVersion)
       } yield atom
     }
   }
 
+  def getDraft(draftType: String, id: String) = AuthAction {
+    APIResponse{
+      for {
+        draftType <- validateAtomType(draftType)
+        draft <- atomWorkshopDraftDbAPI.getDraft(draftType, id)
+      } yield draft
+    }
+  }
+
   private def getAtomFromDatastore(atomType: AtomType, id: String, version: Version): Either[AtomAPIError, Atom] = version match {
-    case Draft => Left(AtomWorkshopDynamoDatastoreError("Sorry I've not done the draft bit yet"))
     case Preview => atomWorkshopPreviewDbAPI.getAtom(atomType, id)
     case Live => atomWorkshopPublishedDbAPI.getAtom(atomType, id)
+    case Draft => Left(AtomWorkshopDynamoDatastoreError("Draft datastore does not contain atoms."))
   }
 
 

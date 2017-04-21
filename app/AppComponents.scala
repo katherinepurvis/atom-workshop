@@ -2,7 +2,7 @@ import com.gu.atom.play.ReindexController
 import config.LogConfig
 import config.Config.config
 import db.AtomDataStores._
-import db.{AtomWorkshopPublishedDbAPI, AtomWorkshopPreviewDbAPI}
+import db._
 import db.ReindexDataStores._
 import play.api.ApplicationLoader.Context
 import play.api._
@@ -16,7 +16,7 @@ class AppComponents(context: Context)
 
   lazy val router = new Routes(httpErrorHandler, appController, healthcheckController, loginController, assets, supportController, reindex)
   lazy val assets = new controllers.Assets(httpErrorHandler)
-  lazy val appController = new controllers.App(wsClient, atomWorkshopPreviewDbAPI, atomWorkshopPublishedDbAPI)
+  lazy val appController = new controllers.App(wsClient, atomWorkshopDraftDbAPI, atomWorkshopPreviewDbAPI, atomWorkshopPublishedDbAPI)
   lazy val loginController = new controllers.Login(wsClient)
   lazy val healthcheckController = new controllers.Healthcheck()
   lazy val supportController = new controllers.Support(wsClient)
@@ -25,5 +25,6 @@ class AppComponents(context: Context)
 
   lazy val atomWorkshopPreviewDbAPI = new AtomWorkshopPreviewDbAPI()
   lazy val atomWorkshopPublishedDbAPI = new AtomWorkshopPublishedDbAPI()
+  lazy val atomWorkshopDraftDbAPI = new AtomWorkshopDraftDbAPI()
 }
 
