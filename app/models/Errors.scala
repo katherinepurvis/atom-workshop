@@ -13,3 +13,4 @@ case class AtomThriftDeserialisingError(message: String) extends AtomAPIError(s"
 case object UnexpectedExceptionError extends AtomAPIError("Atom workshop hit an exception it didn't expect. Please try again!")
 case object BodyRequiredForUpdateError extends AtomAPIError("You must provide a JSON representation of the the new version of the atom you wish to update in the body of your request")
 case object KinesisPublishingFailed extends AtomAPIError("Failed to publish to Content API via kinesis")
+case object AtomWithoutIDError extends AtomAPIError("Atom without an ID was provided. All atoms need an ID.")

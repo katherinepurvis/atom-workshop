@@ -31,6 +31,7 @@ object DraftLogic {
       case e: ParsingFailure => AtomJsonParsingError(e.message)
       case e: DecodingFailure => AtomThriftDeserialisingError(e.message)
       case e: AmazonDynamoDBException => AmazonDynamoError(e.getMessage)
+      case e: NoSuchElementException => AtomWithoutIDError
       case _ => UnexpectedExceptionError
     }
     Logger.error(atomApiError.msg, exception)
