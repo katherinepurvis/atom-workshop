@@ -51,6 +51,15 @@ class App(
     Ok(views.html.index("Atom Workshop", jsLocation, clientConfig.asJson.noSpaces))
   }
 
+  def getDraft(draftType: String, id: String) = AuthAction {
+    APIResponse{
+      for {
+        draftType <- validateDraftType(draftType)
+        draft <- atomWorkshopDraftDbAPI.getDraft(draftType, id)
+      } yield draft
+    }
+  }
+
   def getAtom(atomType: String, id: String, version: String) = AuthAction {
     APIResponse {
       for {
@@ -67,22 +76,13 @@ class App(
     case Draft => Left(AtomWorkshopDynamoDatastoreError("Draft datastore does not contain atoms."))
   }
 
-  def getDraft(draftType: String, id: String) = AuthAction {
-    APIResponse{
-      for {
-        draftType <- validateDraftType(draftType)
-        draft <- atomWorkshopDraftDbAPI.getDraft(draftType, id)
-      } yield draft
-    }
-  }
-
-  def createDraft(atomType: String) = AuthAction {req =>
+  def createDraft(draftType: String) = AuthAction {req =>
     APIResponse {
       for {
-        atomType <- validateDraftType(atomType)
+        draftType <- validateDraftType(draftType)
         createDraftFields <- extractCreateAtomFields(req.body.asJson.map(_.toString))
-        draftToCreate = DraftElementBuilder.buildDraft(atomType, createDraftFields)
-        draft <- atomWorkshopDraftDbAPI.createDraft(atomType, draftToCreate)
+        draftToCreate = DraftElementBuilder.buildDraft(draftType, createDraftFields)
+        draft <- atomWorkshopDraftDbAPI.createDraft(draftType, draftToCreate)
       } yield draft
     }
   }
