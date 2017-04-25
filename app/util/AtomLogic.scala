@@ -10,7 +10,7 @@ import io.circe.generic.auto._
 import io.circe.{DecodingFailure, ParsingFailure, parser, _}
 import models._
 import play.api.Logger
-import util.AtomElementBuilders._
+import util.atomBuilders.AtomElementBuilder._
 
 object AtomLogic {
 

@@ -6,7 +6,7 @@ import com.gu.pandomainauth.model.User
 import io.circe.Json
 import io.circe.syntax._
 import models.AtomAPIError
-import util.AtomElementBuilders._
+import util.atomBuilders.AtomElementBuilder._
 import util.Parser._
 
 object AtomUpdateOperations {

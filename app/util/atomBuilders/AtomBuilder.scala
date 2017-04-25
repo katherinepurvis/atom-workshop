@@ -1,4 +1,4 @@
-package util
+package util.atomBuilders
 
 import com.gu.contentatom.thrift.atom.cta.CTAAtom
 import com.gu.contentatom.thrift.atom.explainer.{DisplayType, ExplainerAtom}
@@ -9,7 +9,7 @@ import com.gu.pandomainauth.model.{User => PandaUser}
 import models.CreateAtomFields
 import org.joda.time.DateTime
 
-object AtomElementBuilders {
+object AtomElementBuilder {
 
   def buildContentChangeDetails(user: PandaUser, existingContentChangeDetails: Option[ContentChangeDetails], updateCreated: Boolean = false,
     updateLastModified: Boolean = false, updatePublished: Boolean = false, updateTakenDown: Boolean = false): ContentChangeDetails = {

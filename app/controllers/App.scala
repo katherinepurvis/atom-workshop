@@ -10,10 +10,11 @@ import play.api.Logger
 import play.api.libs.ws.WSClient
 import play.api.mvc.Controller
 import services.AtomPublishers._
-import util.AtomElementBuilders
 import util.AtomLogic._
+import util.DraftLogic._
 import util.AtomUpdateOperations._
 import util.Parser._
+import util.atomBuilders.{AtomElementBuilder, DraftElementBuilder}
 
 // Required for Json parsing
 import io.circe.generic.auto._
@@ -60,28 +61,38 @@ class App(
     }
   }
 
-  def getDraft(draftType: String, id: String) = AuthAction {
-    APIResponse{
-      for {
-        draftType <- validateAtomType(draftType)
-        draft <- atomWorkshopDraftDbAPI.getDraft(draftType, id)
-      } yield draft
-    }
-  }
-
   private def getAtomFromDatastore(atomType: AtomType, id: String, version: Version): Either[AtomAPIError, Atom] = version match {
     case Preview => atomWorkshopPreviewDbAPI.getAtom(atomType, id)
     case Live => atomWorkshopPublishedDbAPI.getAtom(atomType, id)
     case Draft => Left(AtomWorkshopDynamoDatastoreError("Draft datastore does not contain atoms."))
   }
 
+  def getDraft(draftType: String, id: String) = AuthAction {
+    APIResponse{
+      for {
+        draftType <- validateDraftType(draftType)
+        draft <- atomWorkshopDraftDbAPI.getDraft(draftType, id)
+      } yield draft
+    }
+  }
+
+  def createDraft(atomType: String) = AuthAction {req =>
+    APIResponse {
+      for {
+        atomType <- validateDraftType(atomType)
+        createDraftFields <- extractCreateAtomFields(req.body.asJson.map(_.toString))
+        draftToCreate = DraftElementBuilder.buildDraft(atomType, createDraftFields)
+        draft <- atomWorkshopDraftDbAPI.createDraft(atomType, draftToCreate)
+      } yield draft
+    }
+  }
 
   def createAtom(atomType: String) = AuthAction { req =>
     APIResponse{
       for {
         atomType <- validateAtomType(atomType)
         createAtomFields <- extractCreateAtomFields(req.body.asJson.map(_.toString))
-        atomToCreate = AtomElementBuilders.buildDefaultAtom(atomType, req.user, createAtomFields)
+        atomToCreate = AtomElementBuilder.buildDefaultAtom(atomType, req.user, createAtomFields)
         atom <- atomWorkshopPreviewDbAPI.createAtom(atomType, req.user, atomToCreate)
         _ <- sendKinesisEvent(atom, previewAtomPublisher, EventType.Update)
       } yield atom

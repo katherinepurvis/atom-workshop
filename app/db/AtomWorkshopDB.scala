@@ -8,15 +8,7 @@ import models.{AtomAPIError, AtomWorkshopDynamoDatastoreError, Live}
 import play.api.Logger
 import util.AtomLogic._
 import db.AtomDataStores._
-import com.gu.draftcontentatom.thrift.{Atom => Draft}
-import AtomWorkshopDbAPI._
-
-class AtomWorkshopDraftDbAPI() {
-  val datastore: DraftDynamoDataStore = draftDataStore
-
-  def getDraft(atomType: AtomType, id: String): Either[AtomAPIError, Draft] =
-    transformAtomLibResult(datastore.getAtom(buildKey(atomType, id)))
-}
+import DBUtils._
 
 class AtomWorkshopPublishedDbAPI() {
 
@@ -108,11 +100,4 @@ class AtomWorkshopPreviewDbAPI() {
 
   def deleteAtom(atomType: AtomType, id: String) =
     transformAtomLibResult(datastore.deleteAtom(buildKey(atomType, id)))
-}
-
-object AtomWorkshopDbAPI {
-  def transformAtomLibResult[T](result: DataStoreResult.DataStoreResult[T]): Either[AtomAPIError, T] = result match {
-    case Left(e) => Left(AtomWorkshopDynamoDatastoreError(e.msg))
-    case Right(r) => Right(r)
-  }
 }
