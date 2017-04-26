@@ -13,6 +13,7 @@ import services.AtomPublishers._
 import util.AtomLogic._
 import util.DraftLogic._
 import util.AtomUpdateOperations._
+import util.AtomParser._
 import util.Parser._
 import util.atomBuilders.{AtomElementBuilder, DraftElementBuilder}
 import util.SharedAtomDraftLogic._

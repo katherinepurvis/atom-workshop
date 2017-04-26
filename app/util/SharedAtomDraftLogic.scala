@@ -3,9 +3,10 @@ package util
 import com.amazonaws.services.dynamodbv2.model.AmazonDynamoDBException
 import cats.syntax.either._
 import io.circe.generic.auto._
-import io.circe.{DecodingFailure, ParsingFailure}
+import io.circe.{DecodingFailure, Json, ParsingFailure, parser}
 import models._
 import play.api.Logger
+import util.SharedAtomDraftLogic.processException
 
 object SharedAtomDraftLogic {
 
@@ -39,4 +40,14 @@ object SharedAtomDraftLogic {
     }.getOrElse(Right(None))
   }
 
+}
+
+object Parser {
+  def stringToJson(atomJson: String): Either[AtomAPIError, Json] = {
+    Logger.info(s"Parsing body to json: $atomJson")
+    val parsingResult = for {
+      parsedJson <- parser.parse(atomJson)
+    } yield parsedJson
+    parsingResult.fold(processException, a => Right(a))
+  }
 }

@@ -5,11 +5,12 @@ import com.gu.atom.data.DynamoCompositeKey
 import com.gu.contentatom.thrift.{Atom, AtomType}
 import com.gu.fezziwig.CirceScroogeMacros._
 import com.gu.pandomainauth.model.User
-import io.circe.{parser, _}
+import io.circe._
 import models._
 import play.api.Logger
 import util.atomBuilders.AtomElementBuilder._
 import SharedAtomDraftLogic._
+import Parser._
 
 object AtomLogic {
 
@@ -27,7 +28,7 @@ object AtomLogic {
     atom.copy(contentChangeDetails = buildContentChangeDetails(user, Some(atom.contentChangeDetails), updateTakenDown = true))
 }
 
-object Parser {
+object AtomParser {
 
   def stringToAtom(atomString: String): Either[AtomAPIError, Atom] = {
     Logger.info(s"Parsing atom json: $atomString")
@@ -42,11 +43,4 @@ object Parser {
     json.as[Atom].fold(processException, m => Right(m))
   }
 
-  def stringToJson(atomJson: String): Either[AtomAPIError, Json] = {
-    Logger.info(s"Parsing body to json: $atomJson")
-    val parsingResult = for {
-      parsedJson <- parser.parse(atomJson)
-    } yield parsedJson
-    parsingResult.fold(processException, a => Right(a))
-  }
 }

@@ -6,6 +6,9 @@ import models._
 import cats.syntax.either._
 import com.gu.atom.data.DynamoCompositeKey
 import io.circe.generic.auto._
+import play.api.Logger
+import Parser._
+import io.circe.Json
 
 object DraftLogic {
 
@@ -20,8 +23,24 @@ object DraftLogic {
     jsonString.map(x =>
       for {
         json <- Parser.stringToJson(x)
-        draft <- json.as[Atom].fold(processException _, m => Right(m))
+        draft <- json.as[Atom].fold(processException, m => Right(m))
       } yield draft
     ).getOrElse(Left(AtomJsonParsingError("Draft Atom could not be created from the json.")))
 
+}
+
+object DraftParser {
+
+  def stringToAtom(atomString: String): Either[AtomAPIError, Atom] = {
+    Logger.info(s"Parsing draft atom json: $atomString")
+    for {
+      json <- stringToJson(atomString)
+      atom <- jsonToAtom(json)
+    } yield atom
+  }
+
+  def jsonToAtom(json: Json): Either[AtomAPIError, Atom] = {
+    Logger.info(s"Parsing json: $json")
+    json.as[Atom].fold(processException, m => Right(m))
+  }
 }

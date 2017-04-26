@@ -7,7 +7,7 @@ import io.circe.Json
 import io.circe.syntax._
 import models.AtomAPIError
 import util.atomBuilders.AtomElementBuilder._
-import util.Parser._
+import util.AtomParser._
 
 object AtomUpdateOperations {
   def updateTopLevelFields(atom: Atom, user: User, publish: Boolean = false): Atom =
