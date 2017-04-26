@@ -205,6 +205,17 @@
   width: 100%;
   padding: 5px 10px;
   cursor: pointer;
+
+  &__id {
+    float: right;
+    max-width: 100px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 13px;
+    vertical-align: baseline;
+    color: $color500Grey;
+  }
 }
 
 .form__btn-heading {
