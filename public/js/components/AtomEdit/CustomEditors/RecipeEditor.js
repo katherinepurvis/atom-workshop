@@ -27,7 +27,7 @@ export class RecipeEditor extends React.Component {
   render () {
     return (
 
-      <ManagedForm data={this.props.atom} updateData={this.props.onUpdate} onFormErrorsUpdate={this.props.onFormErrorsUpdate} formName="recipeEditor">>
+      <ManagedForm data={this.props.atom} updateData={this.props.onUpdate} onFormErrorsUpdate={this.props.onFormErrorsUpdate} formName="recipeEditor">
 
         <ManagedField fieldLocation="data.recipe.tags.cuisine" name="Cuisine" isRequired={true}>
           <FormFieldMultiSelect selectValues={recipeData.cuisineList}/>
