@@ -15,6 +15,7 @@ import util.DraftLogic._
 import util.AtomUpdateOperations._
 import util.Parser._
 import util.atomBuilders.{AtomElementBuilder, DraftElementBuilder}
+import util.SharedAtomDraftLogic._
 
 // Required for Json parsing
 import io.circe.generic.auto._

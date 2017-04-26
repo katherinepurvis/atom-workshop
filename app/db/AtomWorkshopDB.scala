@@ -1,6 +1,5 @@
 package db
 
-import cats.syntax.either._
 import com.gu.atom.data._
 import com.gu.contentatom.thrift.{Atom, AtomType}
 import com.gu.pandomainauth.model.User
@@ -9,6 +8,7 @@ import play.api.Logger
 import util.AtomLogic._
 import db.AtomDataStores._
 import DBUtils._
+import util.SharedAtomDraftLogic._
 
 class AtomWorkshopPublishedDbAPI() {
 

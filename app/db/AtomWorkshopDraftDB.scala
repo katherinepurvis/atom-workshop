@@ -6,6 +6,7 @@ import models.AtomAPIError
 import util.DraftLogic._
 import db.AtomDataStores._
 import DBUtils._
+import util.SharedAtomDraftLogic._
 
 class AtomWorkshopDraftDbAPI() {
   val datastore: DraftDynamoDataStore = draftDataStore
