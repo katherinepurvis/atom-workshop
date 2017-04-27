@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import {ManagedForm, ManagedField} from '../../../ManagedEditor';
-import FormFieldTextInput from '../../../FormFields/FormFieldTextInput';
 import FormFieldArrayWrapper from '../../../FormFields/FormFieldArrayWrapper';
 import {StoryQuestionsQuestion} from './Question.js';
 import uuidv4 from 'uuid/v4';
