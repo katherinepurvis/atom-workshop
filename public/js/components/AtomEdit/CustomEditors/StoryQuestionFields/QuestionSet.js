@@ -21,20 +21,19 @@ export class StoryQuestionsQuestionSet extends React.Component {
   };
 
   updateQuestionSet = (questionSet) => {
-    const questionSetWithId = Object.assign({}, questionSet, {
-      questionSetId: questionSet.questionSetId || uuidv4()
+    const questionSetId = questionSet.questionSetId || uuidv4();
+    const questionSetWithIdAndTitle = Object.assign({}, questionSet, {
+      questionSetId: questionSetId, 
+      questionSetTitle: questionSetId
     });
 
-    this.props.onUpdateField(questionSetWithId);
+    this.props.onUpdateField(questionSetWithIdAndTitle);
   }
 
   render () {
     return (
       <div className="form__field">
         <ManagedForm data={this.props.fieldValue} updateData={this.updateQuestionSet} onFormErrorsUpdate={this.props.onFormErrorsUpdate} formName="storyquestionsEditor">
-          <ManagedField fieldLocation="questionSetTitle" name="Question Set Title" isRequired={true}>
-            <FormFieldTextInput />
-          </ManagedField>
           <ManagedField fieldLocation="questions" name="Questions" isRequired={true}>
             <FormFieldArrayWrapper>
               <StoryQuestionsQuestion />

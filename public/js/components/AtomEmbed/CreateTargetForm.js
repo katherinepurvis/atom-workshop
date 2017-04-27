@@ -67,9 +67,6 @@ class CreateTargetForm extends React.Component {
           <ManagedField fieldLocation="title" name="Title" isRequired={true}>
             <FormFieldTextInput/>
           </ManagedField>
-          <ManagedField fieldLocation="description" name="Description" isRequired={true}>
-            <FormFieldTextInput/>
-          </ManagedField>
           <ManagedField fieldLocation="tagPaths" name="Target Tag" isRequired={true} >
             <FormFieldArrayWrapper>
               <FormFieldTagPicker/>
