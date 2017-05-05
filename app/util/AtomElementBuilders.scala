@@ -51,7 +51,7 @@ object AtomElementBuilders {
   }
 
   def buildDefaultHtml(atomType: AtomType, atomData: AtomData): String = {
-    s"""<div class="atom-${atomType.name}">${buildHtml(atomType, atomData)}</div>"""
+    s"""<div class="atom-${atomType.name}">${buildHtml(atomType, atomData).getOrElse("")}</div>"""
   }
 
   def buildHtml(atomType: AtomType, atomData: AtomData): Option[String] = atomType match {
