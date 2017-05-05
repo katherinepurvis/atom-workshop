@@ -44,29 +44,25 @@ object AtomElementBuilders {
       title = createAtomFields.flatMap(_.title),
       id = java.util.UUID.randomUUID.toString,
       atomType = atomType,
-      defaultHtml = createAtomFields.flatMap(_.defaultHtml).getOrElse(buildHtml(atomType = atomType, atomData = defaultAtoms(atomType))),
+      defaultHtml = createAtomFields.flatMap(_.defaultHtml).getOrElse(buildDefaultHtml(atomType = atomType, atomData = defaultAtoms(atomType))),
       data = defaultAtoms(atomType),
       contentChangeDetails = buildContentChangeDetails(user, None, updateCreated = true)
     )
   }
 
-  // this is just a stub - will eventually need to generate default HTML for all the atom types we support
-  def buildHtml(atomType: AtomType, atomData: AtomData): String = atomType match {
+  def buildDefaultHtml(atomType: AtomType, atomData: AtomData): String = {
+    s"""<div class="atom-${atomType.name}">${buildHtml(atomType, atomData)}</div>"""
+  }
+
+  def buildHtml(atomType: AtomType, atomData: AtomData): Option[String] = atomType match {
     case AtomType.Storyquestions => buildStoryQuestionsHtml(atomData)
-    case _ => buildDefaultHtml(atomType)
+    case _ => None
   }
 
-  def buildStoryQuestionsHtml(sqData: AtomData): String = {
-    val questions: Option[String] = for {
-      eqs <- sqData.asInstanceOf[AtomData.Storyquestions].storyquestions.editorialQuestions
-    } yield {
-      eqs flatMap (_.questions map { q => s"<li>${q.questionText}</li>" }) mkString ""
-    }
-
-    questions map ("<ul>" ++ _ ++ "</ul>") getOrElse ""
-  }
-
-  def buildDefaultHtml(atomType: AtomType): String = {
-    s"""<div class="atom-${atomType.name}"></div>"""
+  def buildStoryQuestionsHtml(sqData: AtomData): Option[String] = for {
+    eqs <- sqData.asInstanceOf[AtomData.Storyquestions].storyquestions.editorialQuestions
+  } yield {
+    val list = eqs flatMap (_.questions map { q => s"<li>${q.questionText}</li>" }) mkString ""
+    "<ul>" ++ list ++ "</ul>"
   }
 }
