@@ -50,8 +50,19 @@ object AtomElementBuilders {
     )
   }
 
-  // this is just a stub - will eventually need to generate default HTML for all the atom types we support
   def buildDefaultHtml(atomType: AtomType, atomData: AtomData): String = {
-    s"""<div class="atom-${atomType.name}"></div>"""
+    s"""<div class="atom-${atomType.name}">${buildHtml(atomType, atomData).getOrElse("")}</div>"""
+  }
+
+  def buildHtml(atomType: AtomType, atomData: AtomData): Option[String] = atomType match {
+    case AtomType.Storyquestions => buildStoryQuestionsHtml(atomData)
+    case _ => None
+  }
+
+  def buildStoryQuestionsHtml(sqData: AtomData): Option[String] = for {
+    eqs <- sqData.asInstanceOf[AtomData.Storyquestions].storyquestions.editorialQuestions
+  } yield {
+    val list = eqs flatMap (_.questions map { q => s"<li>${q.questionText}</li>" }) mkString ""
+    "<ul>" ++ list ++ "</ul>"
   }
 }

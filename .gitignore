@@ -4,5 +4,5 @@ target
 .DS_Store
 logs/
 node_modules/
-
+.ensime*
 public/build
