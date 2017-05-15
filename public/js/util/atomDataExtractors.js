@@ -1,4 +1,4 @@
-import {allAtomTypes, workshopEditableAtomTypes} from '../constants/atomData.js';
+import {allAtomTypes, isAtomTypeEditable} from '../constants/atomData.js';
 import {logInfo} from './logger';
 import { getStore } from './storeAccessor';
 
@@ -24,10 +24,7 @@ export function getAtomTypeForAtom(atom) {
 }
 
 export function isAtomWorkshopEditable(atom) {
-  const atomTypeString = atom.atomType.toLowerCase();
-  const matchingAtomType = workshopEditableAtomTypes.find((atomType) => atomType.type.toLowerCase() === atomTypeString);
-
-  return matchingAtomType ? true : false;
+  return isAtomTypeEditable(atom.atomType);
 }
 
 export function getAtomEditorUrl(atom) {

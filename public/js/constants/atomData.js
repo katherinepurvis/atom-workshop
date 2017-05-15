@@ -56,18 +56,17 @@ export const media = {
   createUri: _template("https://video.${gutoolsDomain}/videos/create")
 };
 
-export const allAtomTypes = [cta, explainer, recipe, storyQuestions, quiz, media];
-export const workshopEditableAtomTypes = [cta, storyQuestions, recipe];
-export function getNonEditableAtomTypes() {
-   return allAtomTypes.filter((atomType) => workshopEditableAtomTypes.indexOf(atomType) === -1);
-}
+export const workshopEditableAtomTypes = [cta, recipe];
+export const storyAtomTypes = [storyQuestions];
+export const nonEditableAtomTypes = [explainer, quiz, media];
+export const allAtomTypes = workshopEditableAtomTypes.concat(storyAtomTypes).concat(nonEditableAtomTypes);
 
 export function getAtomByType(typeString) {
   return allAtomTypes.find((atomData) => atomData.type.toLowerCase() === typeString.toLowerCase());
 }
 
 export function isAtomTypeEditable(typeString) {
-  const matchingType = workshopEditableAtomTypes.find((atomData) => atomData.type.toLowerCase() === typeString.toLowerCase());
+  const matchingType = workshopEditableAtomTypes.concat(storyAtomTypes).find((atomData) => atomData.type.toLowerCase() === typeString.toLowerCase());
   return !!matchingType;
 }
 
