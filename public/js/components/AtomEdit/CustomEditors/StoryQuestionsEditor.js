@@ -24,7 +24,6 @@ export class StoryQuestionsEditor extends React.Component {
           <ManagedField fieldLocation="data.storyquestions.relatedStoryId" name="Related Tag" isRequired={true}>
             <FormFieldTagPicker/>
           </ManagedField>
-          /* Always exactly one QuestionSet in editorialQuestions, as we hide this model in the UI */
           <ManagedField fieldLocation="data.storyquestions.editorialQuestions[0]" name="Editorial Questions">
             <StoryQuestionsQuestionSet onFormErrorsUpdate={this.props.onFormErrorsUpdate} />
           </ManagedField>
