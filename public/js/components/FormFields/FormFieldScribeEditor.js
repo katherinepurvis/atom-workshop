@@ -64,6 +64,8 @@ export class ScribeEditor extends React.Component {
     this.configureScribe();
 
     this.scribe.on('content-changed', this.onContentChange);
+
+    this.refs.editor.innerHTML = this.props.value;
   }
 
   configureScribe() {
@@ -115,7 +117,7 @@ export class ScribeEditor extends React.Component {
           <button type="button" data-command-name="linkPrompt" className="scribe__toolbar__item">Link</button>
           <button type="button" data-command-name="unlink" className="scribe__toolbar__item">Unlink</button>
         </div>
-        <div id={this.props.fieldName} dangerouslySetInnerHTML={{__html: this.props.value}} ref="editor" className="scribe__editor"></div>
+        <div id={this.props.fieldName} ref="editor" className="scribe__editor"></div>
         </div>
   );
   }
