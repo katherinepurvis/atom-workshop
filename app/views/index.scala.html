@@ -1,4 +1,4 @@
-@(title: String, jsLocation: String, clientConfigJson: String)
+@(title: String, jsLocation: String, presenceJsLocation: Option[String], clientConfigJson: String)
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,7 +14,11 @@
         <script type="application/json" id="config">
             @Html(clientConfigJson)
         </script>
-        <script src="https://presence.code.dev-gutools.co.uk/client/1/lib.js" type="application/javascript"></script>
+
+        @presenceJsLocation.map { presenceJs =>
+            <script src="@presenceJs" type="application/javascript"></script>
+        }
+
         <script src="@jsLocation" type="application/javascript"></script>
     </body>
 </html>

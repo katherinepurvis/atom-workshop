@@ -33,7 +33,7 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
       embeddedMode = req.queryString.get("embeddedMode").map(_.head),
       atomEditorGutoolsDomain = Config.atomEditorGutoolsDomain,
       presenceEnabled = Config.presenceEnabled,
-      presenceEndpointURL = Config.presenceEndpointURL
+      presenceDomain = Config.presenceDomain
     )
 
     val jsFileName = "build/app.js"
@@ -41,7 +41,13 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
     val jsLocation = sys.env.get("JS_ASSET_HOST").map(_ + jsFileName)
       .getOrElse(routes.Assets.versioned(jsFileName).toString)
 
-    Ok(views.html.index("Atom Workshop", jsLocation, clientConfig.asJson.noSpaces))
+    val presenceJsFile = if(Config.presenceEnabled) {
+      Some(s"https://${Config.presenceDomain}/client/1/lib.js")
+    } else {
+      None
+    }
+
+    Ok(views.html.index("Atom Workshop", jsLocation, presenceJsFile, clientConfig.asJson.noSpaces))
   }
 
   def getAtom(atomType: String, id: String, version: String) = AuthAction {
