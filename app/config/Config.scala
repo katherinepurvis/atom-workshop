@@ -66,7 +66,7 @@ object Config extends AwsInstanceTags {
   val previewReindexKinesisStreamName = getPropertyIfEnabled(kinesisEnabled, "aws.kinesis.reindex.preview")
 
   val presenceEnabled = getOptionalProperty("presence.enabled", config.getBoolean).getOrElse(true)
-  val presenceEndpointURL = getPropertyIfEnabled(presenceEnabled, "presence.endpoint")
+  val presenceDomain = getPropertyIfEnabled(presenceEnabled, "presence.domain")
 
   val capiPreviewUrl = config.getString("capi.previewUrl")
   val capiLiveUrl = config.getString("capi.liveUrl")
