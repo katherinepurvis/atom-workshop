@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import {ManagedForm, ManagedField} from '../../../ManagedEditor';
-import FormFieldTextInput from '../../FormFields/FormFieldTextInput';
+import FormFieldTextInput from '../../../FormFields/FormFieldTextInput';
 
 export class GuideItem extends React.Component {
   static propTypes = {

@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import FormFieldImageSelect from '../../FormFields/FormFieldImageSelect';
 import FormFieldTextInput from '../../FormFields/FormFieldTextInput';
-import FormFieldArrayWrapper from '../../../FormFields/FormFieldArrayWrapper';
+import FormFieldArrayWrapper from '../../FormFields/FormFieldArrayWrapper';
 import {GuideItem} from './GuideFields/GuideItem';
 import {ManagedField, ManagedForm} from '../../ManagedEditor';
 import {atomPropType} from '../../../constants/atomPropType';

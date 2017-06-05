@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import {ManagedForm, ManagedField} from '../../../ManagedEditor';
-import FormFieldTextInput from '../../FormFields/FormFieldTextInput';
-import FormFieldDateInput from '../../FormFields/FormFieldDateInput';
+import FormFieldTextInput from '../../../FormFields/FormFieldTextInput';
+import FormFieldDateInput from '../../../FormFields/FormFieldDateInput';
 
 export class TimelineItem extends React.Component {
   static propTypes = {

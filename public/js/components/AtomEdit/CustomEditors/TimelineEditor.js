@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import FormFieldArrayWrapper from '../../../FormFields/FormFieldArrayWrapper';
+import FormFieldArrayWrapper from '../../FormFields/FormFieldArrayWrapper';
 import FormFieldTextInput from '../../FormFields/FormFieldTextInput';
 import {TimelineItem} from './TimelineFields/TimelineItem';
 import {ManagedField, ManagedForm} from '../../ManagedEditor';
