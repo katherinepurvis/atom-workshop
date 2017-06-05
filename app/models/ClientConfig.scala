@@ -20,7 +20,7 @@ case class ClientConfig(
                          embeddedMode: Option[String],
                          atomEditorGutoolsDomain: String,
                          presenceEnabled: Boolean,
-                         presenceEndpointURL: String
+                         presenceDomain: String
                        )
 
 object ClientConfig {
