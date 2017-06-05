@@ -56,7 +56,31 @@ export const media = {
   createUri: _template("https://video.${gutoolsDomain}/videos/create")
 };
 
-export const allAtomTypes = [cta, explainer, recipe, storyQuestions, quiz, media];
+export const qa = {
+  type: "qanda",
+  fullName: "A question answered",
+  description: "An answer to some curated question asked via the Story Questions component"
+};
+
+export const guide = {
+  type: "guide",
+  fullName: "A Guide to…",
+  description: "A summarised description of an ongoing story where key points are highlighted"
+};
+
+export const profile = {
+  type: "profile",
+  fullName: "In profile",
+  description: "A mini-bio for a key figure (person or organisation) and its role in an ongoing story"
+};
+
+export const timeline = {
+  type: "timeline",
+  fullName: "Timeline",
+  description: "An itemised list of events outlining the backbone of an ongoing story"
+};
+
+export const allAtomTypes = [cta, explainer, recipe, storyQuestions, quiz, media, qa, guide, profile, timeline];
 export const workshopEditableAtomTypes = [cta, storyQuestions, recipe];
 export function getNonEditableAtomTypes() {
    return allAtomTypes.filter((atomType) => workshopEditableAtomTypes.indexOf(atomType) === -1);
