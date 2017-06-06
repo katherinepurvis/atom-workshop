@@ -1,7 +1,7 @@
 package db
 
 import cats.syntax.either._
-import com.gu.atom.data.{DataStoreResult, DynamoDataStore, IDNotFound}
+import com.gu.atom.data.{DataStoreResultUtil, DynamoDataStore, IDNotFound}
 import com.gu.contentatom.thrift.{Atom, AtomType}
 import com.gu.pandomainauth.model.User
 import models.{AtomAPIError, AtomWorkshopDynamoDatastoreError}
@@ -10,7 +10,7 @@ import util.AtomLogic._
 
 trait AtomWorkshopDBAPI {
 
-  def transformAtomLibResult[T](result: DataStoreResult.DataStoreResult[T]): Either[AtomAPIError, T] = result match {
+  def transformAtomLibResult[T](result: DataStoreResultUtil.DataStoreResult[T]): Either[AtomAPIError, T] = result match {
     case Left(e) => Left(AtomWorkshopDynamoDatastoreError(e.msg))
     case Right(r) => Right(r)
   }
