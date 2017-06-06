@@ -23,7 +23,7 @@ export default class FormFieldTextInput extends React.Component {
     return (
         <div className={this.props.formRowClass || "form__row"}>
           {this.props.fieldLabel ? <label htmlFor={this.props.fieldName} className="form__label">{this.props.fieldLabel}</label> : false}
-          <textarea className={"form__field " + (this.props.fieldErrors && this.props.fieldErrors.length ? "form__field--error" : "")}  id={this.props.fieldName} placeholder={this.props.fieldPlaceholder || ''} onChange={this.onUpdate}>{this.props.fieldValue || ""}</textarea>
+          <textarea rows="8" className={"form__field " + (this.props.fieldErrors && this.props.fieldErrors.length ? "form__field--error" : "")}  id={this.props.fieldName} placeholder={this.props.fieldPlaceholder || ''} onChange={this.onUpdate}>{this.props.fieldValue || ""}</textarea>
           <ShowErrors errors={this.props.fieldErrors}/>
         </div>
 
