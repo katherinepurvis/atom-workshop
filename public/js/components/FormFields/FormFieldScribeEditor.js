@@ -24,7 +24,7 @@ export default class FormFieldsScribeEditor extends React.Component {
     wordCount: 0
   }
 
-  wordCount = (text) => text.trim().replace(/<(?:.|\n)*?>/gm, '').split(/\s+/).length;
+  wordCount = text => text.trim().replace(/<(?:.|\n)*?>/gm, '').split(/\s+/).filter(_ => _.length !== 0).length;
 
   renderWordCount = () => {
     const wordCount = this.wordCount(this.props.fieldValue);
