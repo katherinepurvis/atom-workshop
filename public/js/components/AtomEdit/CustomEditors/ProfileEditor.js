@@ -12,7 +12,10 @@ export class ProfileEditor extends React.Component {
   static propTypes = {
     atom: atomPropType.isRequired,
     onUpdate: PropTypes.func.isRequired,
-    onFormErrorsUpdate: PropTypes.func
+    onFormErrorsUpdate: PropTypes.func,
+    config: PropTypes.shape({
+      gridUrl: PropTypes.string.isRequired
+    }).isRequired
   }
 
   render () {
@@ -23,7 +26,7 @@ export class ProfileEditor extends React.Component {
             <FormFieldTextInput/>
           </ManagedField>
           <ManagedField fieldLocation="data.profile.headshot" name="Head shot">
-            <FormFieldImageSelect/>
+            <FormFieldImageSelect gridUrl={this.props.config.gridUrl}/>
           </ManagedField>
           <ManagedField fieldLocation="data.profile.items" name="Items">
             <FormFieldArrayWrapper>

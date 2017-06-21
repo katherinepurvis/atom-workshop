@@ -21,7 +21,7 @@ export class TimelineEditor extends React.Component {
           <ManagedField fieldLocation="data.timeline.typeLabel" name="Label">
             <FormFieldTextInput/>
           </ManagedField>
-          <ManagedField fieldLocation="data.timeline.items" name="Items">
+          <ManagedField fieldLocation="data.timeline.events" name="Events">
             <FormFieldArrayWrapper>
               <TimelineItem onFormErrorsUpdate={this.props.onFormErrorsUpdate} />
             </FormFieldArrayWrapper>

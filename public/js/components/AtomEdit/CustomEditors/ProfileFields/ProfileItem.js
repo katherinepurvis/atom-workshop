@@ -27,7 +27,7 @@ export class ProfileItem extends React.Component {
     };
     return (
       <div className="form__field">
-        <ManagedForm data={value} updateData={this.updateItem} onFormErrorsUpdate={this.props.onFormErrorsUpdate} formName="guideEditor">
+        <ManagedForm data={value} updateData={this.updateItem} onFormErrorsUpdate={this.props.onFormErrorsUpdate} formName="profileEditor">
           <ManagedField fieldLocation="title" name="Title">
             <FormFieldTextInput/>
           </ManagedField>

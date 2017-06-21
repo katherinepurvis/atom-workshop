@@ -28,7 +28,7 @@ export class QAItem extends React.Component {
     };
     return (
       <div className="form__field">
-        <ManagedForm data={value} updateData={this.updateItem} onFormErrorsUpdate={this.props.onFormErrorsUpdate} formName="qaditor">
+        <ManagedForm data={value} updateData={this.updateItem} onFormErrorsUpdate={this.props.onFormErrorsUpdate} formName="qaEditor">
           <ManagedField fieldLocation="title" name="Title">
             <FormFieldTextInput/>
           </ManagedField>
