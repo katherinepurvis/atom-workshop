@@ -3,6 +3,10 @@ import {CTAEditor} from './CustomEditors/CTAEditor';
 import {RecipeEditor} from './CustomEditors/RecipeEditor';
 import {ExplainerEditor} from './CustomEditors/ExplainerEditor';
 import {StoryQuestionsEditor} from './CustomEditors/StoryQuestionsEditor';
+import {QAndAEditor} from './CustomEditors/QAndAEditor';
+import {GuideEditor} from './CustomEditors/GuideEditor';
+import {ProfileEditor} from './CustomEditors/ProfileEditor';
+import {TimelineEditor} from './CustomEditors/TimelineEditor';
 import EmbeddedAtomPick from './EmbeddedAtomPick';
 
 import {subscribeToPresence, enterPresence} from '../../services/presence';
@@ -59,6 +63,14 @@ class AtomEdit extends React.Component {
         return <ExplainerEditor atom={this.props.atom} onUpdate={this.updateAtom} onFormErrorsUpdate={this.updateFormErrors} />;
       case ("storyquestions"):
         return <StoryQuestionsEditor atom={this.props.atom} onUpdate={this.updateAtom} onFormErrorsUpdate={this.updateFormErrors} />;
+      case ("qanda"):
+        return <QAndAEditor atom={this.props.atom} onUpdate={this.updateAtom} onFormErrorsUpdate={this.updateFormErrors} />;
+      case ("guide"):
+        return <GuideEditor atom={this.props.atom} onUpdate={this.updateAtom} onFormErrorsUpdate={this.updateFormErrors} />;
+      case ("profile"):
+        return <ProfileEditor atom={this.props.atom} onUpdate={this.updateAtom} config={this.props.config} onFormErrorsUpdate={this.updateFormErrors} />;
+      case ("timeline"):
+        return <TimelineEditor atom={this.props.atom} onUpdate={this.updateAtom} onFormErrorsUpdate={this.updateFormErrors} />;
       default:
         return (
           <div>Atom Workshop cannot edit this type of atom currently</div>

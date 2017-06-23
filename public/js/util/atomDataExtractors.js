@@ -15,6 +15,10 @@ export function getTitleForAtom(atom) {
         case ("recipe"): return atom.data.recipe.title;
         case ("storyquestions"): return atom.data.storyquestions.title;
         case ("media"): return atom.data.media.title;
+        case ("qanda"): return atom.title;
+        case ("guide"): return atom.title;
+        case ("profile"): return atom.title;
+        case ("timeline"): return atom.title;
     }
 }
 
