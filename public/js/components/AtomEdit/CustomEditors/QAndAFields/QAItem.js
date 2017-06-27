@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import {ManagedForm, ManagedField} from '../../../ManagedEditor';
-import FormFieldTextInput from '../../../FormFields/FormFieldTextInput';
 import FormFieldTextArea from '../../../FormFields/FormFieldTextArea';
 
 export class QAItem extends React.Component {
@@ -29,10 +28,7 @@ export class QAItem extends React.Component {
     return (
       <div className="form__field">
         <ManagedForm data={value} updateData={this.updateItem} onFormErrorsUpdate={this.props.onFormErrorsUpdate} formName="qaEditor">
-          <ManagedField fieldLocation="title" name="Title">
-            <FormFieldTextInput/>
-          </ManagedField>
-          <ManagedField fieldLocation="body" name="Body" isRequired={true}>
+          <ManagedField fieldLocation="body" name="Answer" isRequired={true}>
             <FormFieldTextArea/>
           </ManagedField>
         </ManagedForm>
