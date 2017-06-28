@@ -10,7 +10,10 @@ export class QAndAEditor extends React.Component {
   static propTypes = {
     atom: atomPropType.isRequired,
     onUpdate: PropTypes.func.isRequired,
-    onFormErrorsUpdate: PropTypes.func
+    onFormErrorsUpdate: PropTypes.func,
+    config: PropTypes.shape({
+      gridUrl: PropTypes.string.isRequired
+    }).isRequired
   }
 
   render () {
@@ -21,7 +24,7 @@ export class QAndAEditor extends React.Component {
             <QAItem onFormErrorsUpdate={this.props.onFormErrorsUpdate} />
           </ManagedField>
           <ManagedField fieldLocation="data.qanda.eventImage" name="Event Image">
-            <FormFieldImageSelect/>
+            <FormFieldImageSelect gridUrl={this.props.config.gridUrl}/>
           </ManagedField>
         </ManagedForm>
       </div>

@@ -77,7 +77,7 @@ class FormFieldImageSelect extends React.Component {
 
   renderWithoutImage() {
     return (
-      <button className="image-select__button" onClick={this.openModal}>
+      <button className="image-select__button" type="button" onClick={this.openModal}>
           + Add Image from Grid
       </button>
     );
