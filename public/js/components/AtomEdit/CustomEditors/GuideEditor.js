@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import FormFieldImageSelect from '../../FormFields/FormFieldImageSelect';
-import FormFieldTextInput from '../../FormFields/FormFieldTextInput';
 import FormFieldArrayWrapper from '../../FormFields/FormFieldArrayWrapper';
 import {GuideItem} from './GuideFields/GuideItem';
 import {ManagedField, ManagedForm} from '../../ManagedEditor';
@@ -18,9 +17,6 @@ export class GuideEditor extends React.Component {
     return (
       <div className="form">
         <ManagedForm data={this.props.atom} updateData={this.props.onUpdate} onFormErrorsUpdate={this.props.onFormErrorsUpdate} formName="guideEditor">
-          <ManagedField fieldLocation="data.guide.typeLabel" name="Label">
-            <FormFieldTextInput/>
-          </ManagedField>
           <ManagedField fieldLocation="data.guide.guideImage" name="Guide Image">
             <FormFieldImageSelect/>
           </ManagedField>
