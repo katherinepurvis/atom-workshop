@@ -10,7 +10,8 @@ exports[`test Should render no image when none provided 1`] = `
     className="image-select">
     <button
       className="image-select__button"
-      onClick={[Function]}>
+      onClick={[Function]}
+      type="button">
       + Add Image from Grid
     </button>
   </div>
