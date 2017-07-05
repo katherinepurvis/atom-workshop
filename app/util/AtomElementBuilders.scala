@@ -43,7 +43,7 @@ object AtomElementBuilders {
       AtomType.Cta -> AtomData.Cta(CTAAtom("-")),
       AtomType.Recipe -> AtomData.Recipe(RecipeAtom(title, RecipeTags(), RecipeTime())),
       AtomType.Storyquestions -> AtomData.Storyquestions(StoryQuestionsAtom("(None)", RelatedStoryLinkType.Tag, title)),
-      AtomType.Qanda -> AtomData.Qa(QAndAAtom(Some("Q&A"), None, QAndAItem(None, "Body"), None)),
+      AtomType.Qanda -> AtomData.Qanda(QAndAAtom(Some("Q&A"), None, QAndAItem(None, "Body"), None)),
       AtomType.Guide -> AtomData.Guide(GuideAtom(None, None, Nil)),
       AtomType.Profile -> AtomData.Profile(ProfileAtom(None, None, Nil, None)),
       AtomType.Timeline -> AtomData.Timeline(TimelineAtom())
