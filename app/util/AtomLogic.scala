@@ -3,7 +3,8 @@ package util
 import cats.syntax.either._
 import com.amazonaws.services.dynamodbv2.model.AmazonDynamoDBException
 import com.gu.atom.data.DynamoCompositeKey
-import com.gu.contentatom.thrift.{Atom, AtomType}
+import com.gu.contentatom.thrift._
+import com.gu.contententity.thrift.Entity
 import com.gu.fezziwig.CirceScroogeMacros._
 import com.gu.pandomainauth.model.User
 import io.circe.generic.auto._
@@ -58,6 +59,19 @@ object AtomLogic {
 
 object Parser {
   import AtomLogic._
+
+  //These implicits speed up compilation
+  private implicit val atomDecoder = {
+    implicit val entityDecoder = Decoder[Entity]
+    implicit val imageAssetDecoder = Decoder[ImageAsset]
+    implicit val imageDecoder = Decoder[Image]
+    implicit val changeRecord = Decoder[ChangeRecord]
+    implicit val atomDataDecoder = Decoder[AtomData]
+    implicit val flagsDecoder = Decoder[Flags]
+
+    Decoder[Atom]
+  }
+
 
   def stringToAtom(atomString: String): Either[AtomAPIError, Atom] = {
     Logger.info(s"Parsing atom json: $atomString")
