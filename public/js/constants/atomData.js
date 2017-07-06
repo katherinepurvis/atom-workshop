@@ -58,19 +58,19 @@ export const media = {
 
 export const qa = {
   type: "qanda",
-  fullName: "A question answered",
+  fullName: "Q & A",
   description: "Provide readers with the answers to their questions"
 };
 
 export const guide = {
   type: "guide",
-  fullName: "A Guide to…",
+  fullName: "Quick Guide",
   description: "A bullet pointed summary of the story so far to get readers up to speed"
 };
 
 export const profile = {
   type: "profile",
-  fullName: "In profile",
+  fullName: "Profile",
   description: "Give readers the details on important people or organisations related to a story"
 };
 
