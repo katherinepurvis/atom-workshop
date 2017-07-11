@@ -82,9 +82,13 @@ export const timeline = {
 
 export const allAtomTypes = [cta, explainer, recipe, storyQuestions, quiz, media, qa, guide, profile, timeline];
 export const workshopEditableAtomTypes = [cta, storyQuestions, recipe, qa, guide, profile, timeline];
+export const snippetAtomTypes = [qa, guide, profile, timeline];
 export function getNonEditableAtomTypes() {
    return allAtomTypes.filter((atomType) => workshopEditableAtomTypes.indexOf(atomType) === -1);
 }
+
+export const editableNonSnippetAtomTypes =
+  workshopEditableAtomTypes.filter((atomType) => snippetAtomTypes.indexOf(atomType) === -1);
 
 export function getAtomByType(typeString) {
   return allAtomTypes.find((atomData) => atomData.type.toLowerCase() === typeString.toLowerCase());
