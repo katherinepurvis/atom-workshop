@@ -23,7 +23,7 @@ export class QAndAEditor extends React.Component {
           <ManagedField fieldLocation="data.qanda.item" name="Item">
             <QAItem onFormErrorsUpdate={this.props.onFormErrorsUpdate} />
           </ManagedField>
-          <ManagedField fieldLocation="data.qanda.eventImage" name="Event Image">
+          <ManagedField fieldLocation="data.qanda.eventImage" name="Image">
             <FormFieldImageSelect gridUrl={this.props.config.gridUrl}/>
           </ManagedField>
         </ManagedForm>
