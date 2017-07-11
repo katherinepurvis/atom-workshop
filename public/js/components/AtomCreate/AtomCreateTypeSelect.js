@@ -27,6 +27,10 @@ export class AtomCreateTypeSelect extends React.Component {
           {editableNonSnippetAtomTypes.map(this.renderAtomType)}
         </div>
         <h1 className="page__subheading">Create new snippet atom</h1>
+        <div className="create__note">
+          A variety of atom types designed to give readers the context they need
+          to make sense of a complex news story
+        </div>
         <div className="create__cards">
           {snippetAtomTypes.map(this.renderAtomType)}
         </div>
