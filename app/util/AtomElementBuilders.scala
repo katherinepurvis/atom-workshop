@@ -63,12 +63,12 @@ object AtomElementBuilders {
     s"""<div class="atom-${atomType.name}">${buildHtml(atomType, atomData).getOrElse("")}</div>"""
   }
 
-  def buildHtml(atomType: AtomType, atomData: AtomData): Option[String] = atomType match {
-    case AtomType.Storyquestions => buildStoryQuestionsHtml(atomData.asInstanceOf[AtomData.Storyquestions].storyquestions)
-    case AtomType.Guide          => buildGuideHtml(atomData.asInstanceOf[AtomData.Guide].guide)
-    case AtomType.Profile        => buildProfileHtml(atomData.asInstanceOf[AtomData.Profile].profile)
-    case AtomType.Qanda          => buildQAndAHtml(atomData.asInstanceOf[AtomData.Qanda].qanda)
-    case AtomType.Timeline       => buildTimelineHtml(atomData.asInstanceOf[AtomData.Timeline].timeline)
+  def buildHtml(atomType: AtomType, atomData: AtomData): Option[String] = atomData match {
+    case x: AtomData.Storyquestions => buildStoryQuestionsHtml(x.storyquestions)
+    case x: AtomData.Guide          => buildGuideHtml(x.guide)
+    case x: AtomData.Profile        => buildProfileHtml(x.profile)
+    case x: AtomData.Qanda          => buildQAndAHtml(x.qanda)
+    case x: AtomData.Timeline       => buildTimelineHtml(x.timeline)
     case _ => None
   }
 
