@@ -30,9 +30,9 @@ export class TimelineItem extends React.Component {
     };
     return (
       <div className="form__field">
-        <ManagedForm data={value} updateData={this.updateItem} onFormErrorsUpdate={this.props.onFormErrorsUpdate} formName="guideEditor">
+        <ManagedForm data={value} updateData={this.updateItem} onFormErrorsUpdate={this.props.onFormErrorsUpdate} formName="timelineEditor">
         <ManagedField fieldLocation="date" name="Date" isRequired={true}>
-          <FormFieldDateInput/>
+          <FormFieldDateInput isOutsideRange={() => false}/>
         </ManagedField>
           <ManagedField fieldLocation="title" name="Title" isRequired={true}>
             <FormFieldTextInput/>

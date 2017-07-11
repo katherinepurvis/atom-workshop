@@ -31,7 +31,7 @@ export default class AtomEditHeader extends React.Component {
     if(isAtomWorkshopEditable(atom)) {
       return (
         <ManagedForm data={atom} updateData={this.props.onUpdate} formName={`${atom.atomType.toLowerCase()}Editor`}>
-          <ManagedField fieldLocation="title" name="Title:">
+          <ManagedField fieldLocation="title" name="Public title:">
             <FormFieldTextInput/>
           </ManagedField>
         </ManagedForm>

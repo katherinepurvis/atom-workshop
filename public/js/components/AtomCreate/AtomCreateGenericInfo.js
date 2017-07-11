@@ -63,7 +63,7 @@ class AtomCreateGenericInfo extends React.Component {
         </div>
         <form className="form">
           <FormFieldTextInput
-            fieldLabel="Title"
+            fieldLabel="Public title"
             fieldName="title"
             fieldValue={this.state.title}
             fieldPlaceholder="Enter a title for this atom"

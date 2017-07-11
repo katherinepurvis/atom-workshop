@@ -15,6 +15,7 @@ for the composer AWS account from [janus](https://janus.gutools.co.uk). You'll a
  - Run app with: `./scripts/start.sh`
  - Run using sbt: `sbt "run 9050"`. (For quick restart you should run `sbt` and then `run 9050`, so that you can exit
   the application without exiting sbt.)
+ - Access the app by visiting https://atomworkshop.local.dev-gutools.co.uk (just make sure nginx is running on your machine)
 
 ## Compiling Client Side Dependencies
 

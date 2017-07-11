@@ -58,26 +58,26 @@ export const media = {
 
 export const qa = {
   type: "qanda",
-  fullName: "A question answered",
-  description: "An answer to some curated question asked via the Story Questions component"
+  fullName: "Q & A",
+  description: "Provide readers with the answers to their questions"
 };
 
 export const guide = {
   type: "guide",
-  fullName: "A Guide to…",
-  description: "A summarised description of an ongoing story where key points are highlighted"
+  fullName: "Quick Guide",
+  description: "A bullet pointed summary of the story so far to get readers up to speed"
 };
 
 export const profile = {
   type: "profile",
-  fullName: "In profile",
-  description: "A mini-bio for a key figure (person or organisation) and its role in an ongoing story"
+  fullName: "Profile",
+  description: "Give readers the details on important people or organisations related to a story"
 };
 
 export const timeline = {
   type: "timeline",
   fullName: "Timeline",
-  description: "An itemised list of events outlining the backbone of an ongoing story"
+  description: "A series of key events to help readers navigate an ongoing story"
 };
 
 export const allAtomTypes = [cta, explainer, recipe, storyQuestions, quiz, media, qa, guide, profile, timeline];
