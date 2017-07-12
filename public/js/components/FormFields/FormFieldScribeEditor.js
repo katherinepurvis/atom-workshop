@@ -74,30 +74,30 @@ export class ScribeEditor extends React.Component {
     // Create an instance of the Scribe toolbar
     if (this.props.showToolbar !== false) {
       this.scribe.use(scribePluginToolbar(this.refs.toolbar));
-
-      // Configure Scribe plugins
-      this.scribe.use(scribePluginLinkPromptCommand());
-      this.scribe.use(scribeKeyboardShortcutsPlugin({
-        bold: function (event) { return event.metaKey && event.keyCode === 66; }, // b
-        italic: function (event) { return event.metaKey && event.keyCode === 73; }, // i
-        linkPrompt: function (event) { return event.metaKey && !event.shiftKey && event.keyCode === 75; }, // k
-        unlink: function (event) { return event.metaKey && event.shiftKey && event.keyCode === 75; } // shft + k
-      }));
-
-      this.scribe.use(scribePluginSanitizer({
-        tags: {
-          p: {},
-          i: {},
-          b: {},
-          a: {
-            href: true
-          },
-          ul: {},
-          ol: {},
-          li: {}
-        }
-      }));
     }
+
+    // Configure Scribe plugins
+    this.scribe.use(scribePluginLinkPromptCommand());
+    this.scribe.use(scribeKeyboardShortcutsPlugin({
+      bold: function (event) { return event.metaKey && event.keyCode === 66; }, // b
+      italic: function (event) { return event.metaKey && event.keyCode === 73; }, // i
+      linkPrompt: function (event) { return event.metaKey && !event.shiftKey && event.keyCode === 75; }, // k
+      unlink: function (event) { return event.metaKey && event.shiftKey && event.keyCode === 75; } // shft + k
+    }));
+
+    this.scribe.use(scribePluginSanitizer({
+      tags: {
+        p: {},
+        i: {},
+        b: {},
+        a: {
+          href: true
+        },
+        ul: {},
+        ol: {},
+        li: {}
+      }
+    }));
 
   }
 
