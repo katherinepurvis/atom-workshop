@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import {ManagedForm, ManagedField} from '../../../ManagedEditor';
 import FormFieldTextInput from '../../../FormFields/FormFieldTextInput';
 import FormFieldDateInput from '../../../FormFields/FormFieldDateInput';
-import FormFieldTextArea from '../../../FormFields/FormFieldTextArea';
+import FormFieldsScribeEditor from '../../../FormFields/FormFieldScribeEditor';
 
 export class TimelineItem extends React.Component {
   static propTypes = {
@@ -38,7 +38,7 @@ export class TimelineItem extends React.Component {
             <FormFieldTextInput/>
           </ManagedField>
           <ManagedField fieldLocation="body" name="Body">
-            <FormFieldTextArea/>
+            <FormFieldsScribeEditor showWordCount={true} suggestedLength={150} showToolbar={false}/>
           </ManagedField>
         </ManagedForm>
       </div>
