@@ -58,9 +58,6 @@ export class StoryQuestionsEditor extends React.Component {
           <ManagedField fieldLocation="data.storyquestions.editorialQuestions[0]" name="Editorial Questions">
             <StoryQuestionsQuestionSet onFormErrorsUpdate={this.props.onFormErrorsUpdate} />
           </ManagedField>
-          <ManagedField fieldLocation="labels[0]" name="Email List ID">
-            <FormFieldTextInput/>
-          </ManagedField>
         </ManagedForm>
       </div>
     );

@@ -25,6 +25,12 @@ export default function atom(state = null, action) {
         contentChangeDetails: action.atom.contentChangeDetails
       }) || false;
 
+    case 'ATOM_CREATE_NOTIFICATION_RECEIVE':
+      return action.atom || false;
+
+    case 'ATOM_DELETE_NOTIFICATION_RECEIVE':
+      return action.atom || false;
+
     default:
       return state;
   }

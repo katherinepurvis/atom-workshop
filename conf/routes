@@ -38,3 +38,7 @@ POST    /reindex-preview                         com.gu.atom.play.ReindexControl
 POST    /reindex-publish                         com.gu.atom.play.ReindexController.newPublishedReindexJob()
 GET     /reindex-preview                         com.gu.atom.play.ReindexController.previewReindexJobStatus()
 GET     /reindex-publish                         com.gu.atom.play.ReindexController.publishedReindexJobStatus()
+
+# Custom atom actions
+POST    /api/live/:atomType/:id/custom/notifications controllers.AtomActions.createNotificationList(atomType: String, id: String)
+DELETE  /api/live/:atomType/:id/custom/notifications controllers.AtomActions.deleteNotificationList(atomType: String, id: String)
