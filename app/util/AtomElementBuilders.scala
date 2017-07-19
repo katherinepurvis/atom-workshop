@@ -12,6 +12,7 @@ import com.gu.contentatom.thrift.{User, _}
 import com.gu.pandomainauth.model.{User => PandaUser}
 import models.CreateAtomFields
 import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
 
 object AtomElementBuilders {
 
@@ -62,15 +63,50 @@ object AtomElementBuilders {
     s"""<div class="atom-${atomType.name}">${buildHtml(atomType, atomData).getOrElse("")}</div>"""
   }
 
-  def buildHtml(atomType: AtomType, atomData: AtomData): Option[String] = atomType match {
-    case AtomType.Storyquestions => buildStoryQuestionsHtml(atomData)
+  def buildHtml(atomType: AtomType, atomData: AtomData): Option[String] = atomData match {
+    case x: AtomData.Storyquestions => buildStoryQuestionsHtml(x.storyquestions)
+    case x: AtomData.Guide          => buildGuideHtml(x.guide)
+    case x: AtomData.Profile        => buildProfileHtml(x.profile)
+    case x: AtomData.Qanda          => buildQAndAHtml(x.qanda)
+    case x: AtomData.Timeline       => buildTimelineHtml(x.timeline)
     case _ => None
   }
 
-  def buildStoryQuestionsHtml(sqData: AtomData): Option[String] = for {
-    eqs <- sqData.asInstanceOf[AtomData.Storyquestions].storyquestions.editorialQuestions
+  def buildStoryQuestionsHtml(storyquestions: StoryQuestionsAtom): Option[String] = for {
+    eqs <- storyquestions.editorialQuestions
   } yield {
     val list = eqs flatMap (_.questions map { q => s"<li>${q.questionText}</li>" }) mkString ""
     "<ul>" ++ list ++ "</ul>"
   }
+
+  def buildGuideHtml(atom: GuideAtom): Option[String] =
+    Some(
+      atom.items.map{ item =>
+        item.title.map(title => s"<p><strong>$title</strong></p>").getOrElse("") ++
+        s"<p>${item.body}</p>"
+      }.mkString("")
+    )
+
+  def buildProfileHtml(atom: ProfileAtom): Option[String] =
+    Some(
+      atom.items.map{ item =>
+        item.title.map(title => s"<p><strong>$title</strong></p>").getOrElse("") ++
+        s"<p>${item.body}</p>"
+      }.mkString("")
+    )
+
+  def buildQAndAHtml(atom: QAndAAtom): Option[String] =
+    Some(atom.item).map { item =>
+      item.title.map(title => s"<p><strong>$title</strong></p>").getOrElse("") ++
+      s"<p>${item.body}</p>"
+    }
+
+  def buildTimelineHtml(atom: TimelineAtom): Option[String] =
+    Some(
+      atom.events.map{ item =>
+        val date = new DateTime(item.date)
+        s"<p>(${DateTimeFormat.longDate.print(date)})<strong>$item.title</strong></p>" ++
+        item.body.map(body => s"<p>${body}</p>").getOrElse("")
+      }.mkString("")
+    )
 }
