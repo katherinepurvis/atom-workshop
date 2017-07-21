@@ -105,7 +105,7 @@ object AtomElementBuilders {
     Some(
       atom.events.map{ item =>
         val date = new DateTime(item.date)
-        s"<p>(${DateTimeFormat.longDate.print(date)})<strong>${item.title}</strong></p>" ++
+        s"<p><i>(${DateTimeFormat.longDate.print(date)})</i>&nbsp;<strong>${item.title}</strong></p>" ++
         item.body.map(body => s"<p>${body}</p>").getOrElse("")
       }.mkString("")
     )
