@@ -13,7 +13,7 @@ export default class FormFieldCheckbox extends React.Component {
   }
 
   onUpdate = (e) => {
-    this.props.onUpdateField(e.target.value);
+    this.props.onUpdateField(e.target.checked);
   }
 
   render() {
