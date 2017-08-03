@@ -24,29 +24,6 @@ class AtomStats extends React.Component {
     this.props.atomActions.getAtomUsages(this.props.routeParams.atomType, this.props.routeParams.id);
   }
 
-
-  renderAtomDetail = (name, value) => {
-    return (
-      <li key={name} className="details-list__item">
-        <span className="details-list__title">{name}:</span> {value}
-      </li>
-    );
-  }
-
-  renderAtomDetails = () => {
-    if(this.props.atom) {
-      const atomType = this.props.routeParams.atomType.toLowerCase();
-      return (
-        <ul className="details-list">
-          {
-            Object.keys(this.props.atom.data[atomType])
-            .map(key => this.renderAtomDetail(key, this.props.atom.data[atomType][key]))
-          }
-        </ul>
-      );
-    }
-  }
-
   renderAtomUsage = (usage, i) => {
     const composerLink = `${this.props.config.composerUrl}/content/${usage.fields.internalComposerCode}`;
     const viewerLink = `${this.props.config.viewerUrl}/preview/${usage.id}`;
@@ -85,9 +62,6 @@ class AtomStats extends React.Component {
     return (
       <div className="atom-editor">
         <h1 className="atom-editor__title">{this.props.atom ? this.props.atom.title : ''}</h1>
-        <div className="atom-editor__section">
-          {this.renderAtomDetails()}
-        </div>
         <h2>Usages</h2>
         <div className="atom-editor__section">
           {this.renderAtomUsages()}
