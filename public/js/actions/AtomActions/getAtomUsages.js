@@ -40,7 +40,7 @@ export function getAtomUsages(atomType, atomId) {
       Promise.all(res.map(getByPath))
         .then(capiResponse => {
           const usages = capiResponse.reduce((all, item) => {
-            all.push(item.response.content);
+            all.push(item);
             return all;
           }, []);
 

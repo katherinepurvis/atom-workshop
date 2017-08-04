@@ -64,6 +64,6 @@ export const getByPath = (path) => {
   )
   .then((res) => res.json())
   .then((json) => {
-    return Promise.resolve(json.response.results);
+    return Promise.resolve(json.response.content);
   });
 };
