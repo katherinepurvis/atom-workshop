@@ -9,6 +9,7 @@ import atom from '../reducers/atomReducer';
 import saveState from '../reducers/saveStateReducer';
 import atomList from '../reducers/atomListReducer';
 import atomUsages from '../reducers/atomUsagesReducer';
+import suggestedContent from '../reducers/suggestedContentReducer';
 import externalAtom from '../reducers/externalAtomReducer';
 import queryParams from '../reducers/queryParamsReducer';
 import {routerReducer} from 'react-router-redux';
@@ -23,6 +24,7 @@ export const rootReducer = combineReducers({
   saveState,
   atomList,
   atomUsages,
+  suggestedContent,
   externalAtom,
   queryParams,
   routing: routerReducer

@@ -67,3 +67,18 @@ export const getByPath = (path) => {
     return Promise.resolve(json.response.content);
   });
 };
+
+export const getContentByTags = (tags, atomType) => {
+  const date = new Date(new Date().setDate(new Date().getDate()-7));
+  return pandaFetch(
+    `/support/previewCapi/search?tag=${tags.join(',')}&show-atoms=${atomType}&show-fields=all&from-date=${date.toISOString()}`,
+    {
+      method: 'get',
+      credentials: 'same-origin'
+    }
+  )
+  .then((res) => res.json())
+  .then((json) => {
+    return Promise.resolve(json.response.results);
+  });
+};
