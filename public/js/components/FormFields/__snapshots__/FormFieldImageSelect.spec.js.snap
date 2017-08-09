@@ -58,10 +58,16 @@ exports[`test Should render with image when provided 1`] = `
           1215
         </div>
         <button
-          className="image-select__button"
+          className="image-select__button image-select__replace-button"
           onClick={[Function]}
           type="button">
           Replace Image
+        </button>
+        <button
+          className="image-select__remove-button btn--red"
+          onClick={[Function]}
+          type="button">
+          Remove Image
         </button>
       </div>
     </div>

@@ -48,6 +48,10 @@ class FormFieldImageSelect extends React.Component {
       window.addEventListener('message', this.onMessage, false);
   }
 
+  removeImage = () => {
+    this.props.onUpdateField(null);
+  }
+
   validMessage(data) {
     return data && data.crop && data.crop.data && data.image && data.image.data;
   }
@@ -100,8 +104,11 @@ class FormFieldImageSelect extends React.Component {
           <div className="image-select__image-details__detail">
             Dimensions: {this.props.fieldValue.master.dimensions.width} x {this.props.fieldValue.master.dimensions.height}
           </div>
-          <button className="image-select__button" type="button" onClick={this.openModal}>
+          <button className="image-select__button image-select__replace-button" type="button" onClick={this.openModal}>
               Replace Image
+          </button>
+          <button className="image-select__remove-button btn--red" type="button" onClick={this.removeImage}>
+              Remove Image
           </button>
         </div>
       </div>
