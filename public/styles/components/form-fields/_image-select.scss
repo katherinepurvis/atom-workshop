@@ -43,6 +43,16 @@
     }
   }
 
+  button + button {
+    margin-left: 20px;
+  }
+
+  &__remove-button {
+    display: inline-block;
+    padding: 5px 12px;
+    font: inherit;
+    color: #ffffff
+  }
 
 
 }
