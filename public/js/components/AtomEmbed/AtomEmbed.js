@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react';
 import {atomPropType} from '../../constants/atomPropType.js';
 import copy from 'copy-to-clipboard';
+import {Link} from 'react-router';
 
 import CurrentTargets from './CurrentTargets';
 
@@ -65,6 +66,12 @@ class AtomEmbed extends React.Component {
             <div className="form__row">
               <CurrentTargets atom={this.props.atom} />
             </div>
+          </div>
+          <div className="form__row">
+            <Link to={`/atoms/${this.props.atom.atomType}/${this.props.atom.id}/stats`}
+              className="atom-list__link">
+              Where can I embed this atom?
+            </Link>
           </div>
         </div>
       </div>
