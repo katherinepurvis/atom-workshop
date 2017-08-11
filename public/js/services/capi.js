@@ -28,7 +28,7 @@ export const searchAtoms = (query) => {
 
 export const fetchCapiAtom = (atomType, atomId) => {
   return pandaFetch(
-    `/support/previewCapi/atom/${atomType}/${atomId}`,
+    `/support/previewCapi/atom/${atomType.toLowerCase()}/${atomId}`,
     {
       method: 'get',
       credentials: 'same-origin'
@@ -42,7 +42,7 @@ export const fetchCapiAtom = (atomType, atomId) => {
 
 export const fetchAtomUsages = (atomType, atomId) => {
   return pandaFetch(
-    `/support/previewCapi/atom/${atomType}/${atomId}/usage`,
+    `/support/previewCapi/atom/${atomType.toLowerCase()}/${atomId}/usage`,
     {
       method: 'get',
       credentials: 'same-origin'
