@@ -37,8 +37,8 @@
 .form__field {
   background-color: $cWhite;
   padding: 11px;
-  border: 1px solid $color300Grey;
   width: 100%;
+  border: 1px solid $color300Grey;
 
   &:not(:last-child) {
     margin-bottom: 10px;
@@ -63,12 +63,22 @@
   &--error, &--error:focus {
     border-color: $cRedB5;
   }
+
+  &--questions {
+    border: 1px solid $color300Grey;
+    margin-bottom: 20px;
+  }
+
+  &--nested {
+    border: none;
+  }
 }
 
 .form__field--multiselect {
   $multiSelectBtnWidth: 45px;
   position: relative;
   padding-right: $multiSelectBtnWidth + 10px;
+  border: 1px solid $color300Grey;
 
   &__btn {
     width: $multiSelectBtnWidth;
@@ -135,7 +145,12 @@
 }
 
 .form__group {
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+  border: 1px solid $color300Grey;
+
+  &--checkbox {
+    border: none;
+  }
 
   &--flex {
     display: flex;
@@ -227,6 +242,12 @@
       background: $brandColor;
     }
   }
+
+  &__add {
+    display: table;
+    margin-left: auto;
+  }
+
 }
 
 // Flex container for side by side fields and other adventures

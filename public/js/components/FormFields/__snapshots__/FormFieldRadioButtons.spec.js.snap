@@ -7,7 +7,7 @@ exports[`test Should render 1`] = `
     test
   </label>
   <div
-    className="form__group form__group--radio">
+    className="form__group--radio">
     <input
       checked={false}
       className="form__radio-btn"
@@ -21,7 +21,7 @@ exports[`test Should render 1`] = `
     </span>
   </div>
   <div
-    className="form__group form__group--radio">
+    className="form__group--radio">
     <input
       checked={false}
       className="form__radio-btn"
