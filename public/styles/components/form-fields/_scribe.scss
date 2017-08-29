@@ -27,6 +27,10 @@
   background: $cWhite;
   border: 1px solid $greyBorderColor;
 
+  p {
+   margin-bottom: 20px;
+  }
+
   &:focus {
     border-color: $brandColor;
     outline: none;
