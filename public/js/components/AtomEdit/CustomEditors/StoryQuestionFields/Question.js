@@ -26,7 +26,7 @@ export class StoryQuestionsQuestion extends React.Component {
 
   render () {
     return (
-      <div className="form__field">
+      <div className="form__field form__field--nested">
         <ManagedForm data={this.props.fieldValue} updateData={this.updateQuestion} onFormErrorsUpdate={this.props.onFormErrorsUpdate} formName="storyquestionsEditor">
           <ManagedField fieldLocation="questionText" name="Question" isRequired={true}>
             <FormFieldTextInput />

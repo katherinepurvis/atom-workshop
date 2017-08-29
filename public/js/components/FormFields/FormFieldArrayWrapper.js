@@ -19,8 +19,8 @@ export default class FormFieldArrayWrapper extends React.Component {
   }
 
   onAddClick = () => {
-    const exisitingValues = this.props.fieldValue || [];
-    this.props.onUpdateField(exisitingValues.concat([undefined]));
+    const existingValues = this.props.fieldValue || [];
+    this.props.onUpdateField(existingValues.concat([undefined]));
   }
 
   renderValue(value, i) {
@@ -53,10 +53,10 @@ export default class FormFieldArrayWrapper extends React.Component {
     });
 
     return (
-      <div className={this.props.fieldClass ? this.props.fieldClass : 'form__group'}>
+      <div className={this.props.fieldClass ? this.props.fieldClass : 'form__group form__field'}>
         {this.props.numbered ? <span className="form__field-number">{`${i + 1}. `}</span> : false }
         {hydratedChildren}
-        <button className="btn form__field-btn" type="button" onClick={removeFn.bind(this, i)}>Delete</button>
+        <button className="btn form__field-btn btn--red" type="button" onClick={removeFn.bind(this, i)}>Delete</button>
       </div>
     );
   }
@@ -69,9 +69,9 @@ export default class FormFieldArrayWrapper extends React.Component {
       <div className={this.props.nested ? 'form__row form__row--nested' : 'form__row'}>
         <div className="form__btn-heading">
           <span className="form__label">{this.props.fieldLabel}</span>
-          <button className="form__btn-heading__btn" type="button" onClick={this.onAddClick}>Add</button>
-        </div>
-        {values.map((value, i) => this.renderValue(value, i))}
+       </div>
+          {values.map((value, i) => this.renderValue(value, i))}
+        <button className="form__btn-heading__btn form__btn-heading__add" type="button" onClick={this.onAddClick}>Add</button>
       </div>
     );
   }

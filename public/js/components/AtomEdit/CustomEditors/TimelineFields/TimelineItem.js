@@ -29,7 +29,7 @@ export class TimelineItem extends React.Component {
       body: ""
     };
     return (
-      <div className="form__field">
+      <div className="form__field form__field--nested">
         <ManagedForm data={value} updateData={this.updateItem} onFormErrorsUpdate={this.props.onFormErrorsUpdate} formName="timelineEditor">
         <ManagedField fieldLocation="date" name="Date" isRequired={true}>
           <FormFieldDateInput isOutsideRange={() => false}/>
