@@ -67,5 +67,24 @@ export default {
         }
       }
     );
-  }
+  },
+
+  createNotificationList: (atom) =>
+      pandaFetch(
+        `/api/live/${atom.atomType}/${atom.id}/custom/notifications`,
+        {
+          method: 'post',
+          credentials: 'same-origin'
+        }
+      )
+  ,
+
+  deleteNotificationList: (atom) =>
+      pandaFetch(
+        `/api/live/${atom.atomType}/${atom.id}/custom/notifications`,
+        {
+          method: 'delete',
+          credentials: 'same-origin'
+        }
+      )
 };

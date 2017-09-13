@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import AtomEmbed from '../AtomEmbed/AtomEmbed';
+import AtomActions from '../AtomActions/AtomActions';
 
 import {atomPropType} from '../../constants/atomPropType.js';
 
@@ -35,6 +36,7 @@ class AtomRoot extends React.Component {
         <div className="atom__content">
           {this.props.children}
         </div>
+        <AtomActions atom={this.props.atom}/>
       </div>
     );
   }
