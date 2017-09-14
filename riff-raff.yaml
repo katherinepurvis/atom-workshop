@@ -13,6 +13,6 @@ deployments:
     app: atom-workshop
     parameters:
       amiTags:
-        Recipe: editorial-tools-basic
+        Recipe: editorial-tools-xenial-java8
         AmigoStage: PROD
       amiParameter: ImageId
