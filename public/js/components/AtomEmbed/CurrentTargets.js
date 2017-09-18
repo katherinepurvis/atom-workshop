@@ -90,6 +90,7 @@ class CurrentTargets extends React.Component {
         {this.state.editing ?
           <CreateTargetForm
             atomPath={this.calculateAtomPath()}
+            title={this.props.atom.title}
             triggerTargetFetch={this.fetchTargets}
             toggleEditMode={this.toggleEditMode}
             />

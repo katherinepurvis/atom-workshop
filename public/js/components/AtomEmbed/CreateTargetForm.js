@@ -12,6 +12,7 @@ class CreateTargetForm extends React.Component {
 
   static propTypes = {
     atomPath: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
     triggerTargetFetch: PropTypes.func.isRequired,
     toggleEditMode: PropTypes.func.isRequired
   }
@@ -20,6 +21,19 @@ class CreateTargetForm extends React.Component {
     creating: false,
     currentTarget: {},
     formHasError: true
+  }
+
+
+  componentWillMount() {
+
+    if (!this.state.currentTarget.title) {
+      this.setState({
+        currentTarget: {
+          title: this.props.title
+        }
+      });
+    }
+
   }
 
   createTarget = () => {
