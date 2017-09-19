@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 import {ManagedForm, ManagedField} from '../../../ManagedEditor';
 import FormFieldTextInput from '../../../FormFields/FormFieldTextInput';
-import FormFieldDateInput from '../../../FormFields/FormFieldDateInput';
 import FormFieldsScribeEditor from '../../../FormFields/FormFieldScribeEditor';
+import FormFieldDateTextInput from '../../../FormFields/FormFieldDateTextInput';
 
 export class TimelineItem extends React.Component {
   static propTypes = {
@@ -10,7 +10,7 @@ export class TimelineItem extends React.Component {
     fieldName: PropTypes.string,
     fieldValue: PropTypes.shape({
       title: PropTypes.string,
-      date: PropTypes.date,
+      date: PropTypes.number,
       body: PropTypes.string
     }),
     fieldPlaceholder: PropTypes.string,
@@ -28,12 +28,13 @@ export class TimelineItem extends React.Component {
       date: Date.now(),
       body: "-"
     };
+
     return (
       <div className="form__field form__field--nested">
         <ManagedForm data={value} updateData={this.updateItem} onFormErrorsUpdate={this.props.onFormErrorsUpdate} formName="timelineEditor">
-        <ManagedField fieldLocation="date" name="Date" isRequired={true}>
-          <FormFieldDateInput isOutsideRange={() => false}/>
-        </ManagedField>
+          <ManagedField fieldLocation="date" name="Date" isRequired={true}>
+            <FormFieldDateTextInput/>
+          </ManagedField>
           <ManagedField fieldLocation="title" name="Title" isRequired={true}>
             <FormFieldTextInput/>
           </ManagedField>
