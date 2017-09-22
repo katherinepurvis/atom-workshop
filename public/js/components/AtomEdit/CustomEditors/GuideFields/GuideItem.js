@@ -22,8 +22,8 @@ export class GuideItem extends React.Component {
 
   render () {
     const value = this.props.fieldValue || {
-      title: "",
-      body: ""
+      title: null,
+      body: "-"
     };
     return (
       <div className="form__field form__field--nested">
