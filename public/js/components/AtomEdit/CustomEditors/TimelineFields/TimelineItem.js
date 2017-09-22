@@ -24,9 +24,9 @@ export class TimelineItem extends React.Component {
 
   render () {
     const value = this.props.fieldValue || {
-      title: "",
+      title: "-",
       date: Date.now(),
-      body: ""
+      body: "-"
     };
     return (
       <div className="form__field form__field--nested">
