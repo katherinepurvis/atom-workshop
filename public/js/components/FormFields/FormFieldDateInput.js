@@ -2,7 +2,6 @@ import React, {PropTypes} from 'react';
 
 import {SingleDatePicker} from 'react-dates';
 import format from 'date-fns/format';
-
 import ShowErrors from '../Utilities/ShowErrors';
 import { errorPropType } from '../../constants/errorPropType';
 
