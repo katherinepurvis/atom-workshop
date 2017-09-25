@@ -4,7 +4,7 @@ version := "1.0"
 scalaVersion := "2.11.8"
 
 lazy val awsVersion = "1.11.8"
-lazy val atomLibVersion = "1.1.3"
+lazy val atomLibVersion = "1.1.7"
 
 libraryDependencies ++= Seq(
   ws,
@@ -13,7 +13,7 @@ libraryDependencies ++= Seq(
   "com.gu"                   %% "atom-manager-play"           % atomLibVersion,
   "com.gu"                   %% "atom-publisher-lib"          % atomLibVersion,
   "com.gu"                   %% "configuration-magic-core"    % "1.3.0",
-  "com.gu"                   %% "fezziwig"                    % "0.2",
+  "com.gu"                   %% "fezziwig"                    % "0.7",
   "com.gu"                   %  "kinesis-logback-appender"    % "1.3.0",
   "com.gu"                   %% "pan-domain-auth-play_2-5"    % "0.4.1",
   "io.circe"                 %% "circe-parser"                % "0.7.0",
