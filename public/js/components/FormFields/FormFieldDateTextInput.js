@@ -15,31 +15,23 @@ export default class FormFieldDateTextInput extends React.Component {
         onUpdateField: PropTypes.func
     };
 
-    milisecondsToString = (ms) => {
-        moment(ms).format("yyyy-MM-dd");
-    }
+    millisecondsToString = (ms) => moment.utc(ms).format("YYYY-MM-DD");
 
     state = {
-        fieldDisplayValue: this.milisecondsToString(this.props.fieldValue)
+        fieldDisplayValue: this.millisecondsToString(this.props.fieldValue)
     };
 
     onUpdate = (e) => {
-        let momentDate = moment(e.target.value, "YYYY-MM-DD", true);
+        let momentDate = moment.utc(e.target.value, "YYYY-MM-DD", true);
         if (momentDate.isValid()) {
-            this.setState ({
+            this.setState({
                 fieldDisplayValue: e.target.value
             });
             this.props.onUpdateField(momentDate.valueOf());
         }
     }
 
-    componentWillReceiveProps(newProps) {
-        this.milisecondsToString(newProps.fieldValue);
-    }
-
-
     render() {
-
         return (
             <div className={this.props.formRowClass || "form__row"}>
                 {this.props.fieldLabel ? <label htmlFor={this.props.fieldName} className="form__label">{this.props.fieldLabel}</label> : false}
