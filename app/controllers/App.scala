@@ -38,6 +38,7 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
       viewerUrl = Config.viewerUrl,
       capiLiveUrl = Config.capiLiveUrl,
       targetingUrl = Config.targetingUrl,
+      workflowUrl = Config.workflowUrl,
       isEmbedded = req.queryString.get("embeddedMode").isDefined,
       embeddedMode = req.queryString.get("embeddedMode").map(_.head),
       atomEditorGutoolsDomain = Config.atomEditorGutoolsDomain,
