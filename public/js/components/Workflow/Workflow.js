@@ -11,8 +11,15 @@ import format from 'date-fns/format'
 class Workflow extends React.Component {
 
   static propTypes = {
-    atom: atomPropType
-
+    atom: atomPropType,
+    config: PropTypes.shape({
+      capiLiveUrl: PropTypes.string.isRequired,
+      isEmbedded: PropTypes.bool.isRequired
+    }),
+    workflowActions: PropTypes.shape({
+      getWorkflowStatus: PropTypes.func.isRequired,
+      trackInWorkflow: PropTypes.func.isRequired
+    })
   }
 
   state = {
