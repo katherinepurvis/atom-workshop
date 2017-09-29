@@ -18,27 +18,51 @@ export default class FormFieldArrayWrapper extends React.Component {
     ])
   }
 
+  //We store new items in state to avoid sending invalid items back to the server before they're ready
+  state = {
+    newItems: []
+  }
+
   onAddClick = () => {
-    const existingValues = this.props.fieldValue || [];
-    this.props.onUpdateField(existingValues.concat([undefined]));
+    this.setState({
+      newItems: this.state.newItems.concat([undefined])
+    });
   }
 
   renderValue(value, i) {
 
     const updateFn = (newValue) => {
-      //Find the value in the array to change
-      const newFieldValue = this.props.fieldValue.map((oldValue) => {
-        return value === oldValue ? newValue : oldValue;
-      });
-      this.props.onUpdateField(newFieldValue);
+      if (value === undefined) {
+        //It's the first update to a new item - add it to props and remove from newItems
+        this.setState({
+          newItems: this.state.newItems.length > 1 ? this.state.newItems.slice(1) : []
+        });
+
+        const update = this.props.fieldValue ? this.props.fieldValue.concat([newValue]) : [newValue];
+        this.props.onUpdateField(update);
+      } else {
+        //Find the value in the array to change
+        const newFieldValue = this.props.fieldValue.map((oldValue) => {
+          return value === oldValue ? newValue : oldValue;
+        });
+
+        this.props.onUpdateField(newFieldValue);
+      }
     };
 
     const removeFn = (removeIndex) => {
-      const newFieldValue = this.props.fieldValue.filter((value, currentIndex) => {
-        return currentIndex !== removeIndex;
-      });
+      if (this.props.fieldValue && this.props.fieldValue.length > removeIndex) {
+        const newFieldValue = this.props.fieldValue.filter((value, currentIndex) => {
+          return currentIndex !== removeIndex;
+        });
 
-      this.props.onUpdateField(newFieldValue);
+        this.props.onUpdateField(newFieldValue);
+      } else {
+        //It must be a new item
+        this.setState({
+          newItems: this.state.newItems.length > 1 ? this.state.newItems.slice(1) : []
+        });
+      }
     };
 
     const hydratedChildren = React.Children.map(this.props.children, (child) => {
@@ -62,8 +86,7 @@ export default class FormFieldArrayWrapper extends React.Component {
   }
 
   render () {
-
-    const values = this.props.fieldValue || [];
+    const values = (this.props.fieldValue || []).concat(this.state.newItems);
 
     return (
       <div className={this.props.nested ? 'form__row form__row--nested' : 'form__row'}>
