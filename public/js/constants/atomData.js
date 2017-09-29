@@ -35,7 +35,7 @@ export const recipe = {
 
 export const storyQuestions = {
   type: "storyquestions",
-  fullName: "Story Questions",
+  fullName: "Reader Questions",
   description: "Pose further questions to the audience and gather interest",
   statsUrl: _template("https://dashboard.ophan.co.uk/interaction/storyQuestions?days=7&platform=all&atom-id=${atomId}")
 };
