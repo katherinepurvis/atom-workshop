@@ -74,7 +74,7 @@ class AtomList extends React.Component {
               updateData={this.updateAtomList}
               fieldLocation="types"
               name="Atom Types">
-              <SearchCheckboxGroup checkValues={allAtomTypes.map((t)=>t.type)}/>
+              <SearchCheckboxGroup checkValues={allAtomTypes.reduce((o, t) => {o[t.type] = t.fullName; return o;}, {})}/>
             </ManagedField>
 
             <ManagedField data={this.props.queryParams} updateData={this.updateAtomList} fieldLocation="page-size" name="Page size">

@@ -7,7 +7,7 @@ export default class SearchCheckboxGroup extends React.Component {
     fieldLabel: PropTypes.string,
     fieldName: PropTypes.string,
     fieldValue: PropTypes.array,
-    checkValues: PropTypes.array.isRequired,
+    checkValues: PropTypes.object.isRequired,
     formRowClass: PropTypes.string,
     onUpdateField: PropTypes.func
   };
@@ -32,13 +32,12 @@ export default class SearchCheckboxGroup extends React.Component {
     return this.props.fieldValue.reduce((acc, curr) => `${acc}, ${curr}`);
   }
 
-  renderCheckbox(fieldName, i) {
-
+  renderCheckbox(fieldName, displayName, i) {
     const updateFn = (e) => {
       let newFieldValue = [],
           newValue = e.target.value;
 
-      if(newValue && !this.isChecked(fieldName)) {
+      if (newValue && !this.isChecked(fieldName)) {
         newFieldValue = this.props.fieldValue.concat([fieldName]);
       } else {
         newFieldValue = this.props.fieldValue.filter((oldFieldName) => {
@@ -51,7 +50,7 @@ export default class SearchCheckboxGroup extends React.Component {
     return (
       <div className="atom-search__dropdown__item" key={i}>
         <input className="atom-search__dropdown__checkbox" type="checkbox" checked={this.isChecked(fieldName)} name={fieldName} value={this.isChecked(fieldName)} onChange={updateFn} />
-        <span className="atom-search__dropdown__checkbox-label">{fieldName}</span>
+        <span className="atom-search__dropdown__checkbox-label">{displayName}</span>
       </div>
     );
   }
@@ -64,7 +63,7 @@ export default class SearchCheckboxGroup extends React.Component {
             <span className="atom-search__dropdown__value">{this.friendlyFieldValue()}</span>
           </div>
           <div className={"atom-search__dropdown__items " + (this.state.showOptions ? "" : "atom-search__dropdown__items--hidden")}>
-            {this.props.checkValues.map((fieldName, i) => this.renderCheckbox(fieldName, i))}
+            {Object.keys(this.props.checkValues).map((fieldName, i) => this.renderCheckbox(fieldName, this.props.checkValues[fieldName], i))}
           </div>
         </div>
     );
