@@ -32,7 +32,7 @@ export class ProfileEditor extends React.Component {
           </ManagedField>
           <ManagedField fieldLocation="commissioningDesks" name="Commissioning desks" updateData={this.onDesk}>
             <FormFieldArrayWrapper>
-              <FormFieldTagPicker />
+              <FormFieldTagPicker tagType="tracking" />
             </FormFieldArrayWrapper>
           </ManagedField>
         </ManagedForm>

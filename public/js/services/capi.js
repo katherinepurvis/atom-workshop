@@ -2,9 +2,9 @@ import { pandaFetch } from './pandaFetch';
 import { uriEncodeParams, sanitiseQuery } from '../util/uriEncodeParams';
 
 
-export const searchTags = (searchText) => {
+export const searchTags = (searchText, type = null) => {
   return pandaFetch(
-    `/support/previewCapi/tags?q=${searchText}`,
+    `/support/previewCapi/tags?q=${searchText}${type ? `&type=${type}` : ''}`,
     {
       method: 'get',
       credentials: 'same-origin'
