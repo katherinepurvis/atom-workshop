@@ -5,6 +5,8 @@ import {allAtomTypes} from '../../constants/atomData.js';
 import {ManagedForm, ManagedField} from '../ManagedEditor';
 import {getTitleForAtom, isAtomWorkshopEditable} from '../../util/atomDataExtractors';
 import FormFieldTextInput from '../FormFields/FormFieldTextInput';
+import FormFieldArrayWrapper from '../FormFields/FormFieldArrayWrapper';
+import FormFieldTagPicker from '../FormFields/FormFieldTagPicker';
 
 
 export default class AtomEditHeader extends React.Component {
@@ -33,6 +35,11 @@ export default class AtomEditHeader extends React.Component {
         <ManagedForm data={atom} updateData={this.props.onUpdate} formName={`${atom.atomType.toLowerCase()}Editor`}>
           <ManagedField fieldLocation="title" name="Public title:">
             <FormFieldTextInput/>
+          </ManagedField>
+          <ManagedField fieldLocation="commissioningDesks" name="Commissioning desks:">
+            <FormFieldArrayWrapper>
+              <FormFieldTagPicker />
+            </FormFieldArrayWrapper>
           </ManagedField>
         </ManagedForm>
       );
