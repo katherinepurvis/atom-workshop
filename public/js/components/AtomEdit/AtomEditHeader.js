@@ -37,9 +37,7 @@ export default class AtomEditHeader extends React.Component {
             <FormFieldTextInput/>
           </ManagedField>
           <ManagedField fieldLocation="commissioningDesks" name="Commissioning desks:">
-            <FormFieldArrayWrapper>
-              <FormFieldTagPicker />
-            </FormFieldArrayWrapper>
+            <FormFieldTextInput/>
           </ManagedField>
         </ManagedForm>
       );
