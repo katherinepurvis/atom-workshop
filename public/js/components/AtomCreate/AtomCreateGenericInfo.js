@@ -3,6 +3,8 @@ import {Link} from 'react-router';
 import {getAtomByType, isAtomTypeEditable} from '../../constants/atomData';
 import {AtomTypeCard} from '../AtomTypeCard/AtomTypeCard.js';
 import FormFieldTextInput from '../FormFields/FormFieldTextInput';
+import FormFieldArrayWrapper from '../FormFields/FormFieldArrayWrapper';
+import FormFieldTagPicker from '../FormFields/FormFieldTagPicker';
 import AtomCreateExternalApp from './AtomCreateExternalApp';
 
 class AtomCreateGenericInfo extends React.Component {
@@ -17,7 +19,8 @@ class AtomCreateGenericInfo extends React.Component {
   }
 
   state = {
-    title: ""
+    title: "",
+    commissioningDesks: []
   }
 
   updateTitle = (newTitle) => {
@@ -26,11 +29,18 @@ class AtomCreateGenericInfo extends React.Component {
     });
   }
 
+  updateTags = (tags) => {
+    this.setState({
+      commissioningDesks: tags
+    });
+  }
+
   triggerAtomCreate = (e) => {
     e.preventDefault();
 
     this.props.atomActions.createAtom(this.props.routeParams.atomType, {
-      title: this.state.title
+      title: this.state.title,
+      commissioningDesks: this.state.commissioningDesks
     });
   }
 
@@ -69,6 +79,14 @@ class AtomCreateGenericInfo extends React.Component {
             fieldPlaceholder="Enter a title for this atom"
             onUpdateField={this.updateTitle}
           />
+          <FormFieldArrayWrapper 
+            onUpdateField={this.updateTags}
+            fieldName="commissioningDesks" 
+            fieldLabel="Commissioning desks:" 
+            fieldValue={this.state.commissioningDesks}
+            >
+            <FormFieldTagPicker />
+          </FormFieldArrayWrapper>
           <button className="btn" type="submit" disabled={!this.shouldEnableCreateButton()} onClick={this.triggerAtomCreate}>Create Atom</button>
         </form>
       </div>

@@ -1,7 +1,5 @@
 import React, { PropTypes } from 'react';
 import FormFieldImageSelect from '../../FormFields/FormFieldImageSelect';
-import FormFieldArrayWrapper from '../../FormFields/FormFieldArrayWrapper';
-import FormFieldTagPicker from '../../FormFields/FormFieldTagPicker';
 import {QAItem} from './QAndAFields/QAItem';
 import {ManagedField, ManagedForm} from '../../ManagedEditor';
 import {atomPropType} from '../../../constants/atomPropType';
@@ -27,11 +25,6 @@ export class QAndAEditor extends React.Component {
           </ManagedField>
           <ManagedField fieldLocation="data.qanda.eventImage" name="Image">
             <FormFieldImageSelect gridUrl={this.props.config.gridUrl}/>
-          </ManagedField>
-          <ManagedField fieldLocation="commissioningDesks" name="Commissioning desks">
-            <FormFieldArrayWrapper>
-              <FormFieldTagPicker tagType="tracking" />
-            </FormFieldArrayWrapper>
           </ManagedField>
         </ManagedForm>
       </div>

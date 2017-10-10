@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import FormFieldImageSelect from '../../FormFields/FormFieldImageSelect';
 import FormFieldArrayWrapper from '../../FormFields/FormFieldArrayWrapper';
-import FormFieldTagPicker from '../../FormFields/FormFieldTagPicker';
 import {ProfileItem} from './ProfileFields/ProfileItem';
 import {ManagedField, ManagedForm} from '../../ManagedEditor';
 import {atomPropType} from '../../../constants/atomPropType';
@@ -28,11 +27,6 @@ export class ProfileEditor extends React.Component {
           <ManagedField fieldLocation="data.profile.items" name="Items">
             <FormFieldArrayWrapper>
               <ProfileItem onFormErrorsUpdate={this.props.onFormErrorsUpdate} />
-            </FormFieldArrayWrapper>
-          </ManagedField>
-          <ManagedField fieldLocation="commissioningDesks" name="Commissioning desks">
-            <FormFieldArrayWrapper>
-              <FormFieldTagPicker tagType="tracking" />
             </FormFieldArrayWrapper>
           </ManagedField>
         </ManagedForm>

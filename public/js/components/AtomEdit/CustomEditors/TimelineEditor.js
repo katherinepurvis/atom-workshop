@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import FormFieldArrayWrapper from '../../FormFields/FormFieldArrayWrapper';
-import FormFieldTagPicker from '../../FormFields/FormFieldTagPicker';
 import {TimelineItem} from './TimelineFields/TimelineItem';
 import {ManagedField, ManagedForm} from '../../ManagedEditor';
 import {atomPropType} from '../../../constants/atomPropType';
@@ -26,11 +25,6 @@ export class TimelineEditor extends React.Component {
           <ManagedField fieldLocation="data.timeline.events" name="Events">
             <FormFieldArrayWrapper>
               <TimelineItem onFormErrorsUpdate={this.props.onFormErrorsUpdate}/>
-            </FormFieldArrayWrapper>
-          </ManagedField>
-          <ManagedField fieldLocation="commissioningDesks" name="Commissioning desks">
-            <FormFieldArrayWrapper>
-              <FormFieldTagPicker tagType="tracking" />
             </FormFieldArrayWrapper>
           </ManagedField>
         </ManagedForm>
