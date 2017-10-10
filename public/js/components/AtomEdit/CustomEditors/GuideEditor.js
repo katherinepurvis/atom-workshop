@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import FormFieldImageSelect from '../../FormFields/FormFieldImageSelect';
 import FormFieldArrayWrapper from '../../FormFields/FormFieldArrayWrapper';
+import FormFieldTagPicker from '../../FormFields/FormFieldTagPicker';
 import {GuideItem} from './GuideFields/GuideItem';
 import {ManagedField, ManagedForm} from '../../ManagedEditor';
 import {atomPropType} from '../../../constants/atomPropType';
@@ -26,6 +27,11 @@ export class GuideEditor extends React.Component {
           <ManagedField fieldLocation="data.guide.items" name="Items">
             <FormFieldArrayWrapper>
               <GuideItem onFormErrorsUpdate={this.props.onFormErrorsUpdate} />
+            </FormFieldArrayWrapper>
+          </ManagedField>
+          <ManagedField fieldLocation="data.commissioningDesks" name="Commissioning desks" updateData={this.onDesk}>
+            <FormFieldArrayWrapper>
+              <FormFieldTagPicker />
             </FormFieldArrayWrapper>
           </ManagedField>
         </ManagedForm>
