@@ -85,7 +85,7 @@ class AtomCreateGenericInfo extends React.Component {
             fieldLabel="Commissioning desks:" 
             fieldValue={this.state.commissioningDesks}
             >
-            <FormFieldTagPicker />
+            <FormFieldTagPicker tagType="tracking" />
           </FormFieldArrayWrapper>
           <button className="btn" type="submit" disabled={!this.shouldEnableCreateButton()} onClick={this.triggerAtomCreate}>Create Atom</button>
         </form>
