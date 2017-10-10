@@ -30,7 +30,7 @@ export class ProfileEditor extends React.Component {
               <ProfileItem onFormErrorsUpdate={this.props.onFormErrorsUpdate} />
             </FormFieldArrayWrapper>
           </ManagedField>
-          <ManagedField fieldLocation="data.commissioningDesks" name="Commissioning desks" updateData={this.onDesk}>
+          <ManagedField fieldLocation="commissioningDesks" name="Commissioning desks" updateData={this.onDesk}>
             <FormFieldArrayWrapper>
               <FormFieldTagPicker />
             </FormFieldArrayWrapper>
