@@ -5,9 +5,6 @@ import {allAtomTypes} from '../../constants/atomData.js';
 import {ManagedForm, ManagedField} from '../ManagedEditor';
 import {getTitleForAtom, isAtomWorkshopEditable} from '../../util/atomDataExtractors';
 import FormFieldTextInput from '../FormFields/FormFieldTextInput';
-import FormFieldArrayWrapper from '../FormFields/FormFieldArrayWrapper';
-import FormFieldTagPicker from '../FormFields/FormFieldTagPicker';
-
 
 export default class AtomEditHeader extends React.Component {
 
