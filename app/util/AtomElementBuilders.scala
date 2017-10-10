@@ -51,6 +51,7 @@ object AtomElementBuilders {
 
     Atom(
       title = createAtomFields.flatMap(_.title),
+      commissioningDesks = createAtomFields.map(_.commissioningDesks).getOrElse(Nil),
       id = java.util.UUID.randomUUID.toString,
       atomType = atomType,
       defaultHtml = createAtomFields.flatMap(_.defaultHtml).getOrElse(buildDefaultHtml(atomType = atomType, atomData = defaultAtoms(atomType))),
