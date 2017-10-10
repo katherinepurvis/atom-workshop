@@ -29,7 +29,7 @@ export class GuideEditor extends React.Component {
               <GuideItem onFormErrorsUpdate={this.props.onFormErrorsUpdate} />
             </FormFieldArrayWrapper>
           </ManagedField>
-          <ManagedField fieldLocation="commissioningDesks" name="Commissioning desks" updateData={this.onDesk}>
+          <ManagedField fieldLocation="commissioningDesks" name="Commissioning desks">
             <FormFieldArrayWrapper>
               <FormFieldTagPicker tagType="tracking" />
             </FormFieldArrayWrapper>

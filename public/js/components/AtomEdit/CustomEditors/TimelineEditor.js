@@ -28,7 +28,7 @@ export class TimelineEditor extends React.Component {
               <TimelineItem onFormErrorsUpdate={this.props.onFormErrorsUpdate}/>
             </FormFieldArrayWrapper>
           </ManagedField>
-          <ManagedField fieldLocation="commissioningDesks" name="Commissioning desks" updateData={this.onDesk}>
+          <ManagedField fieldLocation="commissioningDesks" name="Commissioning desks">
             <FormFieldArrayWrapper>
               <FormFieldTagPicker tagType="tracking" />
             </FormFieldArrayWrapper>
