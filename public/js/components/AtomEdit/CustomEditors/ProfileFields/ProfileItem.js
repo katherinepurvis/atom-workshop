@@ -32,7 +32,7 @@ export class ProfileItem extends React.Component {
             <FormFieldTextInput/>
           </ManagedField>
           <ManagedField fieldLocation="body" name="Body" isRequired={true}>
-            <FormFieldsScribeEditor showWordCount={true} suggestedLength={150} showToolbar={false}/>
+            <FormFieldsScribeEditor showWordCount={true} suggestedLength={150} showToolbar={false} tooLongMsg={"Remember that snippets should be concise"} />
           </ManagedField>
         </ManagedForm>
       </div>

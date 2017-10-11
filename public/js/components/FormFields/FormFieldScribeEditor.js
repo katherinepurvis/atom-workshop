@@ -18,7 +18,13 @@ export default class FormFieldsScribeEditor extends React.Component {
     onUpdateField: PropTypes.func,
     showWordCount: PropTypes.bool,
     suggestedLength: PropTypes.number,
-    showToolbar: PropTypes.bool
+    showToolbar: PropTypes.bool,
+    tooLongMsg: PropTypes.string
+  }
+
+  constructor(props) {
+    super(props);
+    this.tooLongMsg = props.tooLongMsg || 'too long';
   }
 
   state = {
@@ -37,7 +43,7 @@ export default class FormFieldsScribeEditor extends React.Component {
     return (
         <div>
           <span className="form__message__text">{wordCount} words</span>
-          {tooLong ? <span className="form__message__text--error"> (too long)</span>: false}
+          {tooLong ? <span className="form__message__text--error"> ({this.tooLongMsg})</span>: false}
         </div>
     );
   }
