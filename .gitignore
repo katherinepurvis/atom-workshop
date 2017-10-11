@@ -6,3 +6,5 @@ logs/
 node_modules/
 .ensime*
 public/build
+ensime-langserver.log
+pc.stdout.log
