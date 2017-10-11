@@ -29,11 +29,12 @@ export default {
         return data;
       }
 
+      const momentLaunchDate = moment(scheduledLaunchDate);
       return Object.assign({}, data, {
-        scheduledLaunchDate: moment(scheduledLaunchDate),
+        scheduledLaunchDate: moment(momentLaunchDate),
         note: `Launching ${momentLaunchDate.format("DD MMM YYYY HH:mm")}`
       });
-    }
+    };
 
     const workflowUrl = getWorkflowUrl();
     const payload = getWorkflowPayload(atom, section, scheduledLaunchDate, status);
@@ -49,7 +50,7 @@ export default {
           'Content-Type': 'application/json'
         }
       }
-    )
+    );
   },
 
   getSections() {
@@ -65,9 +66,8 @@ export default {
         cache: 'default'
       }
     ).then(response => {
-      return response.json()
+      return response.json();
     }).then(sections => {
-      const ordered = _.orderBy(sections.data, 'name');
       return _.orderBy(sections.data, 'name');
     });
   },
@@ -87,5 +87,23 @@ export default {
         ).then(response => {
           return response.json();
         });
+  },
+
+  getTrackableAtomTypes: () => {
+
+    const workflowUrl = getWorkflowUrl();
+
+    return pandaFetch(
+        `${workflowUrl}/api/allowedAtomTypes`,
+        {
+          method: 'get',
+          credentials: 'include',
+          mode: 'cors',
+          cache: 'default'
+        }
+        ).then(response => {
+          return response.json();
+        });
   }
-}
+
+};

@@ -6,7 +6,8 @@ import { getStore } from '../../util/storeAccessor';
 import {ManagedForm, ManagedField} from '../ManagedEditor';
 import FormFieldSelectBox from '../FormFields/FormFieldSelectBox';
 import FormFieldDateInput from '../FormFields/FormFieldDateInput';
-import format from 'date-fns/format'
+import format from 'date-fns/format';
+import _camelCase from 'lodash/fp/camelcase';
 
 class Workflow extends React.Component {
 
@@ -24,6 +25,7 @@ class Workflow extends React.Component {
 
   state = {
     workflowSections: [],
+    trackableAtomTypes: [],
     atomWorkflowInfo: {
       section: ''
     }
@@ -34,6 +36,13 @@ class Workflow extends React.Component {
     .then(sections => {
       this.setState({
         workflowSections: sections
+      });
+    });
+
+    WorkflowApi.getTrackableAtomTypes()
+    .then(atomTypes => {
+      this.setState({
+        trackableAtomTypes: atomTypes
       });
     });
   }
@@ -70,6 +79,13 @@ class Workflow extends React.Component {
   render() {
     const workflow = this.props.workflow;
     const title = workflow.title;
+    const atomType = _.camelCase(this.props.atom.atomType);
+
+    if (!this.state.trackableAtomTypes.includes(atomType)) {
+      return (
+        <div>Atoms with this type are not supported by workflow</div>
+      );
+    }
 
     if (this.props.workflow && this.props.workflow !== WorkflowStatus.notInWorkflow) {
       return (
