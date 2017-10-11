@@ -29,7 +29,7 @@ export class QAItem extends React.Component {
       <div className="form__field">
         <ManagedForm data={value} updateData={this.updateItem} onFormErrorsUpdate={this.props.onFormErrorsUpdate} formName="qaEditor">
           <ManagedField fieldLocation="body" name="Answer" isRequired={true}>
-            <FormFieldsScribeEditor showWordCount={true} suggestedLength={150} showToolbar={false}/>
+            <FormFieldsScribeEditor showWordCount={true} suggestedLength={150} showToolbar={false} tooLongMsg={"Remember that snippets should be concise"}/>
           </ManagedField>
         </ManagedForm>
       </div>

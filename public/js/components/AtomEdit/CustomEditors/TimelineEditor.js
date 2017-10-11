@@ -20,7 +20,7 @@ export class TimelineEditor extends React.Component {
       <div className="form">
         <ManagedForm data={this.props.atom} updateData={this.props.onUpdate} onFormErrorsUpdate={this.props.onFormErrorsUpdate} formName="timelineEditor">
           <ManagedField fieldLocation="data.timeline.description" name="Description - optional" isRequired={false}>
-            <FormFieldsScribeEditor showWordCount={true} suggestedLength={50} showToolbar={false}/>
+            <FormFieldsScribeEditor showWordCount={true} suggestedLength={50} showToolbar={false} tooLongMsg={"Remember that snippets should be concise"}/>
           </ManagedField>
           <ManagedField fieldLocation="data.timeline.events" name="Events">
             <FormFieldArrayWrapper>
