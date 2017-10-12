@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import _isEqual from 'lodash/fp/isEqual';
 
 import {allAtomTypes} from '../../constants/atomData';
+import {getAtomByType} from '../../constants/atomData';
 import {searchParams} from '../../constants/queryParams';
 import {ManagedField} from '../ManagedEditor';
 import SearchTextInput from '../FormFields/SearchFields/SearchTextInput';
@@ -84,7 +85,7 @@ class AtomList extends React.Component {
         </div>
 
         <div className="atom-list">
-          {this.props.atomList.map((atom) => <AtomListItem atom={atom} config={this.props.config} key={atom.id}/>)}
+          {this.props.atomList.filter((atom) => getAtomByType(atom.atomType) !== undefined).map((atom) => <AtomListItem atom={atom} config={this.props.config} key={atom.id}/>)}
         </div>
       </div>
     );
