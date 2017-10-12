@@ -19,14 +19,6 @@ export const cta = {
   description: "A call to action designed for use in GLabs Hosted Content",
 };
 
-export const explainer = {
-  type: "explainer",
-  fullName: "Explainer Text",
-  description: "Provide extra context to any article with an Explainer Text Box",
-  editorUri: _template("https://explainers.${gutoolsDomain}/explain/${atomId}"),
-  createUri: _template("https://explainers.${gutoolsDomain}")
-};
-
 export const recipe = {
   type: "recipe",
   fullName: "Recipe",
@@ -80,7 +72,7 @@ export const timeline = {
   description: "A series of key events to help readers navigate an ongoing story"
 };
 
-export const allAtomTypes = [cta, explainer, recipe, storyQuestions, quiz, media, qa, guide, profile, timeline];
+export const allAtomTypes = [cta, recipe, storyQuestions, quiz, media, qa, guide, profile, timeline];
 export const workshopEditableAtomTypes = [cta, storyQuestions, recipe, qa, guide, profile, timeline];
 export const snippetAtomTypes = [qa, guide, profile, timeline];
 export function getNonEditableAtomTypes() {

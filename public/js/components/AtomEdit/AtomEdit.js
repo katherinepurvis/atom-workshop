@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import {CTAEditor} from './CustomEditors/CTAEditor';
 import {RecipeEditor} from './CustomEditors/RecipeEditor';
-import {ExplainerEditor} from './CustomEditors/ExplainerEditor';
 import {StoryQuestionsEditor} from './CustomEditors/StoryQuestionsEditor';
 import {QAndAEditor} from './CustomEditors/QAndAEditor';
 import {GuideEditor} from './CustomEditors/GuideEditor';
@@ -59,8 +58,6 @@ class AtomEdit extends React.Component {
         return <CTAEditor atom={this.props.atom} onUpdate={this.updateAtom} onFormErrorsUpdate={this.updateFormErrors} />;
       case ("recipe"):
         return <RecipeEditor atom={this.props.atom} onUpdate={this.updateAtom} config={this.props.config} onFormErrorsUpdate={this.updateFormErrors} />;
-      case ("explainer"):
-        return <ExplainerEditor atom={this.props.atom} onUpdate={this.updateAtom} onFormErrorsUpdate={this.updateFormErrors} />;
       case ("storyquestions"):
         return <StoryQuestionsEditor atom={this.props.atom} onUpdate={this.updateAtom} onFormErrorsUpdate={this.updateFormErrors} />;
       case ("qanda"):
