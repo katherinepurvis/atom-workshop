@@ -12,7 +12,6 @@ export default class AtomListItem extends React.Component {
     static propTypes = {
         config: PropTypes.shape({
             atomEditorUrls: PropTypes.shape({
-                explainer: PropTypes.string,
                 media: PropTypes.string
             })
         }),

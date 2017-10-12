@@ -15,7 +15,6 @@ class AtomList extends React.Component {
   static propTypes = {
     config: PropTypes.shape({
       atomEditorUrls: PropTypes.shape({
-        explainer: PropTypes.string,
         media: PropTypes.string
       }),
       isEmbedded: PropTypes.bool.isRequired
