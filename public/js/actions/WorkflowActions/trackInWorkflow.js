@@ -31,7 +31,7 @@ function errorReceivingTrackInWorkflow(error) {
 export function trackInWorkflow(atom, section, scheduledLaunchDate) {
   return dispatch => {
     dispatch(requestTrackInWorkflow(atom.atomType, atom.id));
-    return WorkflowApi.trackInWorkflow(atom, section, scheduledLaunchDate, 'writers')
+    return WorkflowApi.trackInWorkflow(atom, section, scheduledLaunchDate, 'Writers')
     .then(res => res.json())
     .then(atom => {
       dispatch(receiveTrackInWorkflow(atom));
