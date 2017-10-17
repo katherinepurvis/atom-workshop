@@ -13,6 +13,17 @@ class AtomRoot extends React.Component {
     atomActions: PropTypes.shape({
       getAtom: PropTypes.func.isRequired,
     }).isRequired,
+    workflowActions: PropTypes.shape({
+      getWorkflowStatus: PropTypes.func.isRequired,
+      trackInWorkflow: PropTypes.func.isRequired
+    }),
+    workflow: PropTypes.oneOfType([PropTypes.string, PropTypes.shape({
+      title: PropTypes.string,
+      prodOffice: PropTypes.string,
+      section: PropTypes.string,
+      status: PropTypes.string,
+      scheduledLaunch: PropTypes.string
+    })]),
     atom: atomPropType,
     config: PropTypes.shape({
       liveCapiUrl: PropTypes.string

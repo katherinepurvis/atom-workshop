@@ -18,6 +18,13 @@ class AtomEmbed extends React.Component {
       getWorkflowStatus: PropTypes.func.isRequired,
       trackInWorkflow: PropTypes.func.isRequired
     }),
+    workflow: PropTypes.oneOfType([PropTypes.string, PropTypes.shape({
+      title: PropTypes.string,
+      prodOffice: PropTypes.string,
+      section: PropTypes.string,
+      status: PropTypes.string,
+      scheduledLaunch: PropTypes.string
+    })])
   }
 
   state = {
