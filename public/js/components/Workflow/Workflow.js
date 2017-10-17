@@ -7,7 +7,7 @@ import {ManagedForm, ManagedField} from '../ManagedEditor';
 import FormFieldSelectBox from '../FormFields/FormFieldSelectBox';
 import FormFieldDateInput from '../FormFields/FormFieldDateInput';
 import format from 'date-fns/format';
-import _camelCase from 'lodash/fp/camelcase';
+import _ from 'lodash';
 
 class Workflow extends React.Component {
 
@@ -20,7 +20,14 @@ class Workflow extends React.Component {
     workflowActions: PropTypes.shape({
       getWorkflowStatus: PropTypes.func.isRequired,
       trackInWorkflow: PropTypes.func.isRequired
-    })
+    }),
+    workflow: PropTypes.oneOfType([PropTypes.string, PropTypes.shape({
+      title: PropTypes.string,
+      prodOffice: PropTypes.string,
+      section: PropTypes.string,
+      status: PropTypes.string,
+      scheduledLaunch: PropTypes.string
+    })])
   }
 
   state = {
@@ -32,18 +39,20 @@ class Workflow extends React.Component {
   }
 
   componentWillMount() {
-    WorkflowApi.getSections()
-    .then(sections => {
-      this.setState({
-        workflowSections: sections
-      });
-    });
-
     WorkflowApi.getTrackableAtomTypes()
     .then(atomTypes => {
       this.setState({
         trackableAtomTypes: atomTypes
       });
+
+      if (this.state.trackableAtomTypes.includes(_.camelCase(this.props.atom.atomType))) {
+        WorkflowApi.getSections()
+        .then(sections => {
+          this.setState({
+            workflowSections: sections
+          });
+        });
+      }
     });
   }
 
@@ -77,8 +86,6 @@ class Workflow extends React.Component {
   }
 
   render() {
-    const workflow = this.props.workflow;
-    const title = workflow.title;
     const atomType = _.camelCase(this.props.atom.atomType);
 
     if (!this.state.trackableAtomTypes.includes(atomType)) {
@@ -134,7 +141,7 @@ class Workflow extends React.Component {
         </button>
       </div>
     );
-  };
+  }
 }
 
 export default Workflow;
