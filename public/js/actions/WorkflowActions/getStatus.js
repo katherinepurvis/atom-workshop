@@ -22,7 +22,7 @@ function errorReceivingWorkflowStatus(error) {
   logError(error);
   return {
     type:       'SHOW_ERROR',
-    message:    'Could not track atom in workflow',
+    message:    'Could not get workflow statuses',
     error:      error,
     receivedAt: Date.now()
   };
@@ -47,7 +47,7 @@ export function getWorkflowStatus(atom) {
       if (error.status ===  404) {
         return dispatch(receiveStatus404());
       }
-      return dispatch(errorReceivingWorkflowStatus(error))
+      return dispatch(errorReceivingWorkflowStatus(error));
     });
   };
 }
