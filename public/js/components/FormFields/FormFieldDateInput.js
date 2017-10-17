@@ -17,7 +17,8 @@ export default class FormFieldDateInput extends React.Component {
     fieldErrors: PropTypes.arrayOf(errorPropType),
     formRowClass: PropTypes.string,
     onUpdateField: PropTypes.func,
-    isOutsideRange: PropTypes.func
+    isOutsideRange: PropTypes.func,
+    placeholder: PropTypes.string
   };
 
   state = {
