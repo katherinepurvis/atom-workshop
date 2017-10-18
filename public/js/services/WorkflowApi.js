@@ -15,7 +15,7 @@ export default {
       const prodOffice = getProductionOffice();
 
       const data = {
-        contentType: atom.atomType,
+        contentType: _.camelCase(atom.atomType),
         editorId: atom.id,
         title: atom.title,
         priority: 0,
