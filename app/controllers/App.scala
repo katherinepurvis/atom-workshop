@@ -17,9 +17,18 @@ import util.AtomElementBuilders
 import util.AtomLogic._
 import util.AtomUpdateOperations._
 import util.Parser._
+import util.CORSable
+import play.api.mvc.Action
 
 class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends Controller with PanDomainAuthActions {
 
+  def allowCORSAccess(methods: String, args: Any*) = CORSable(Config.workflowUrl) {
+    Action { implicit req =>
+      val requestedHeaders = req.headers("Access-Control-Request-Headers")
+      NoContent.withHeaders("Access-Control-Allow-Methods" -> methods, "Access-Control-Allow-Headers" -> requestedHeaders)
+    }
+  }
+  
   def index(placeholder: String) = AuthAction { req =>
     Logger.info(s"I am the ${Config.appName}")
     val clientConfig = ClientConfig(
@@ -29,6 +38,7 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
       viewerUrl = Config.viewerUrl,
       capiLiveUrl = Config.capiLiveUrl,
       targetingUrl = Config.targetingUrl,
+      workflowUrl = Config.workflowUrl,
       isEmbedded = req.queryString.get("embeddedMode").isDefined,
       embeddedMode = req.queryString.get("embeddedMode").map(_.head),
       atomEditorGutoolsDomain = Config.atomEditorGutoolsDomain,
@@ -60,15 +70,18 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends
     }
   }
 
-  def createAtom(atomType: String) = AuthAction { req =>
-    APIResponse{
-      for {
-        atomType <- validateAtomType(atomType)
-        createAtomFields <- extractCreateAtomFields(req.body.asJson.map(_.toString))
-        atomToCreate = AtomElementBuilders.buildDefaultAtom(atomType, req.user, createAtomFields)
-        atom <- atomWorkshopDB.createAtom(previewDataStore, atomType, req.user, atomToCreate)
-        _ <- sendKinesisEvent(atom, previewAtomPublisher, EventType.Update)
-      } yield atom
+
+  def createAtom(atomType: String) = CORSable(Config.workflowUrl) {
+    AuthAction { req =>
+      APIResponse{
+        for {
+          atomType <- validateAtomType(atomType)
+          createAtomFields <- extractCreateAtomFields(req.body.asJson.map(_.toString))
+          atomToCreate = AtomElementBuilders.buildDefaultAtom(atomType, req.user, createAtomFields)
+          atom <- atomWorkshopDB.createAtom(previewDataStore, atomType, req.user, atomToCreate)
+          _ <- sendKinesisEvent(atom, previewAtomPublisher, EventType.Update)
+        } yield atom
+      }
     }
   }
 
