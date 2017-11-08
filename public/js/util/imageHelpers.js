@@ -11,8 +11,22 @@ export function parseMimeType(mimeType) {
   return mimeType;
 }
 
+function getCredit(metadata) {
+  const imageType = metadata.imageType ? metadata.imageType : "Photograph";
 
-function parseAsset(asset) {
+  const getName = (byline, source) => {
+    if (byline && source) {
+        if (byline === source) return byline;
+        else return `${byline}/${source}`;
+    } else return byline || source;
+  };
+
+  const name = getName(metadata.byline, metadata.source);
+
+  return name ? `${imageType}: ${name}` : null;
+}
+
+function parseAsset(asset, credit) {
   return {
     file: asset.secureUrl,
     mimeType: parseMimeType(asset.mimeType),
@@ -20,14 +34,17 @@ function parseAsset(asset) {
     dimensions: {
       width: asset.dimensions.width,
       height: asset.dimensions.height
-    }
+    },
+    credit: credit
   };
 }
 
-export function parseImageFromGridCrop(cropData) {
+export function parseImageFromGridCrop(data) {
+  const cropData = data.crop.data;
+  const credit = getCredit(data.image.data.metadata);
   return {
-    assets: cropData.assets.map(parseAsset),
-    master: parseAsset(cropData.master),
+    assets: cropData.assets.map(asset => parseAsset(asset, credit)),
+    master: parseAsset(cropData.master, credit),
     mediaId: cropData.specification.uri
   };
 }

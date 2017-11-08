@@ -13,7 +13,8 @@ const assetPropType = PropTypes.shape({
     height: PropTypes.number.isRequired,
     width: PropTypes.number.isRequired
   }).isRequired,
-  size: PropTypes.number.isRequired
+  size: PropTypes.number.isRequired,
+  credit: PropTypes.string
 });
 
 const gridImagePropType = PropTypes.shape({
@@ -76,7 +77,7 @@ class FormFieldImageSelect extends React.Component {
       }
 
       this.closeModal();
-      this.props.onUpdateField(parseImageFromGridCrop(data.crop.data));
+      this.props.onUpdateField(parseImageFromGridCrop(data));
   }
 
   renderWithoutImage() {
