@@ -72,6 +72,11 @@
   &--nested {
     border: none;
   }
+
+  input[disabled] {
+    background-color: #D3D3D3;
+    color: #565a5c;
+  }
 }
 
 .form__field--multiselect {
@@ -150,6 +155,12 @@
 
   &--checkbox {
     border: none;
+
+    &--ranged-date {
+      display: flex;
+      justify-content: space-between;
+    }
+
   }
 
   &--flex {
@@ -187,6 +198,11 @@
   &--radio, &--checkbox {
     display: inline-block;
     margin: 0;
+    font-weight: normal;
+  }
+
+  &--caption {
+    display: block;
     font-weight: normal;
   }
 }

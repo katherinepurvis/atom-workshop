@@ -5,14 +5,14 @@ import moment from 'moment';
 
 export default class FormFieldDateTextInput extends React.Component {
 
-
     static propTypes = {
         fieldLabel: PropTypes.string,
         fieldName: PropTypes.string,
         fieldValue: PropTypes.number,
         fieldErrors: PropTypes.arrayOf(errorPropType),
         formRowClass: PropTypes.string,
-        onUpdateField: PropTypes.func
+        onUpdateField: PropTypes.func,
+        disabled: PropTypes.bool
     };
 
     millisecondsToString = (ms) => moment.utc(ms).format("YYYY-MM-DD");
@@ -41,6 +41,7 @@ export default class FormFieldDateTextInput extends React.Component {
                     id={this.props.fieldName}
                     onChange={this.onUpdate}
                     value={this.state.fieldDisplayValue || ""}
+                    disabled={this.props.disabled}
                 />
                 <ShowErrors errors={this.props.fieldErrors}/>
             </div>
