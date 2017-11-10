@@ -82,3 +82,17 @@ export const getContentByTags = (tags, atomType) => {
     return Promise.resolve(json.response.results);
   });
 };
+
+export const getTagsForContent = (path) => {
+  return pandaFetch(
+    `/support/previewCapi/${path}?show-tags=keyword&tag=tone/news&show-atoms=timelines,guides,qandas,profiles&show-fields=internalComposerCode,headline`,
+    {
+      method: 'get',
+      credentials: 'same-origin'
+    }
+  )
+  .then((res) => res.json())
+  .then((json) => {
+    return Promise.resolve(json.response.content);
+  });
+};

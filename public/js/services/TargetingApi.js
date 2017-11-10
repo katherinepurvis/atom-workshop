@@ -62,3 +62,37 @@ export const deleteTarget = (targetId) => {
     }
   );
 };
+
+export const fetchTargetsForTags = (tags) => {
+
+  const store = getStore();
+  const state = store.getState();
+  const targetingUrl = state.config.targetingUrl;
+
+  const tagsParams = tags.map(tag => `tags=${encodeURIComponent(tag)}`).join('&');
+
+  return pandaFetch(
+    `${targetingUrl}api/suggestions/search?${tagsParams}`,
+    {
+      method: 'get',
+      credentials: 'include',
+      mode: 'cors'
+    }
+  ).then(res => res.json());
+};
+
+export const fetchTargetsForTag = (tag) => {
+
+  const store = getStore();
+  const state = store.getState();
+  const targetingUrl = state.config.targetingUrl;
+
+  return pandaFetch(
+    `${targetingUrl}api/suggestions/search?tags=${tag}`,
+    {
+      method: 'get',
+      credentials: 'include',
+      mode: 'cors'
+    }
+  ).then(res => res.json());
+};
