@@ -1,6 +1,6 @@
 import {getTagsForContent} from '../../services/capi';
 import {mostViewed} from '../../services/ophan';
-import {fetchTargetsForTag} from '../../services/TargetingApi';
+import {fetchTargetsForTags} from '../../services/TargetingApi';
 import AtomsApi from '../../services/AtomsApi';
 import {atomPropType} from '../../constants/atomPropType.js';
 import {logError} from '../../util/logger';
@@ -34,44 +34,25 @@ function errorReceivingSuggestionsForLatestContent(error) {
 const distinct = array => array.filter((value, index, self) => self.indexOf(value) === index);
 const flatten = array => [].concat.apply([], array);
 
-//Returns set of all tags in the given content
-function getTags(contentArray) {
-  return distinct(flatten(
-    contentArray.map(content => content.tags.filter(tag => tag.type === "keyword").map(tag => tag.id))
-  ));
+//Returns an array of target atom urls for the given tags
+function getTargetUrls(tags) {
+  const tagIds = tags.filter(tag => tag.type === "keyword").map(tag => tag.id);
+
+  return fetchTargetsForTags(tagIds).then(targets => {
+    const filtered = targets.filter(target => target.url.includes("/atom/"));
+    return filtered.map(target => target.url);
+  });
 }
 
-//Returns a map of tagId to suggestions from the targeting api, filtering out non-atoms
-function getTagToTargetUrls(tags) {
-  const tagToTargetAtoms = {};
+//Deduplicate the targeting urls across all content, and retrieve the atoms
+function getAtomUrlToAtom(contentArrayWithAtomUrls) {
+  const atomUrls = distinct(flatten(contentArrayWithAtomUrls.map(item => item.atomUrls)));
 
-  const fetch = (tag) => {
-    return fetchTargetsForTag(tag)
-      .then(targets => {
-        const filtered = targets.filter(target => target.url.includes("/atom/"));
-        const urls = filtered.map(target => target.url);
-        if (filtered.length > 0) {
-          tagToTargetAtoms[tag] = urls;
-        }
-        return Promise.resolve();
-      });
-  };
-
-  //Sequentially fetch targets for each tag
-  return tags.reduce((p, tag) => p.then(() => fetch(tag)), Promise.resolve())
-    .then(() => Promise.resolve(tagToTargetAtoms));
-}
-
-//Deduplicate the targeting urls and retrieve the atoms
-function getAtomUrlToAtom(tagToUrls) {
-  const atomUrls = distinct(flatten(Object.values(tagToUrls)));
-
-  return Promise.all(atomUrls.map(getAtomFromTargetUrl))
-    .then(atoms => {
-      const atomUrlToAtom = {};
-      atoms.forEach(atom => atomUrlToAtom[atom.url] = atom);
-      return atomUrlToAtom;
-    });
+  return Promise.all(atomUrls.map(getAtomFromTargetUrl)).then(atoms => {
+    const atomUrlToAtom = {};
+    atoms.forEach(atom => atomUrlToAtom[atom.url] = atom);
+    return atomUrlToAtom;
+  });
 }
 
 function getAtomFromTargetUrl(url) {
@@ -85,23 +66,6 @@ function getAtomFromTargetUrl(url) {
       atom.url = url;
       return atom;
     });
-}
-
-function resolveAtomsForContent(contentList, tagToUrls, urlToAtom) {
-  return contentList.map(content => {
-    const urls = content.tags
-      .filter(tag => tag.type === "keyword")
-      .map(tag => tagToUrls[tag.id])
-      .filter(url => url !== undefined);
-
-    const atoms = distinct(flatten(urls)).map(url => urlToAtom[url]);
-    return {
-      contentId: content.id,
-      headline: content.fields.headline,
-      internalComposerCode: content.fields.internalComposerCode,
-      atoms: atoms
-    };
-  });
 }
 
 export const SuggestedAtomsPropType = PropTypes.shape({
@@ -129,13 +93,25 @@ export function getSuggestionsForLatestContent() {
       //Filter out any articles that already contain a snippet atom
       .then(contentArray => contentArray.filter(content => !content.atoms || content.atoms.length === 0))
       .then(contentArray => {
-        const tags = getTags(contentArray);
-
-        const tagToUrlsPromise = getTagToTargetUrls(tags);
-        const urlToAtomPromise = tagToUrlsPromise.then(getAtomUrlToAtom);
-
-        return Promise.all([tagToUrlsPromise, urlToAtomPromise])
-          .then(([tagToUrls, urlToAtom]) => resolveAtomsForContent(contentArray, tagToUrls, urlToAtom));
+        return Promise.all(contentArray.map(content => {
+          return getTargetUrls(content.tags).then(urls => {
+            return {
+              contentId: content.id,
+              headline: content.fields.headline,
+              internalComposerCode: content.fields.internalComposerCode,
+              atomUrls: urls
+            };
+          });
+        }));
+      })
+      .then(contentArrayWithAtomUrls => {
+        return getAtomUrlToAtom(contentArrayWithAtomUrls).then(urlToAtom => {
+          //Resolve the atomUrls to the actual atoms
+          return contentArrayWithAtomUrls.map(item => {
+            item.atoms = item.atomUrls.map(url => urlToAtom[url]).filter(atom => atom !== undefined);
+            return item;
+          });
+        });
       })
       .then(results => dispatch(receiveSuggestionsForLatestContent(results)))
       .catch(error => {
