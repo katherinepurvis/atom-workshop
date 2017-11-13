@@ -44,13 +44,20 @@ function getTargetUrls(tags) {
   });
 }
 
+const AllSnippets = ["guide","qanda","timeline","profile"];
+function isSnippet(atomType) {
+  return AllSnippets.indexOf(atomType.toLowerCase()) >= 0;
+}
+
 //Deduplicate the targeting urls across all content, and retrieve the atoms
 function getAtomUrlToAtom(contentArrayWithAtomUrls) {
   const atomUrls = distinct(flatten(contentArrayWithAtomUrls.map(item => item.atomUrls)));
 
   return Promise.all(atomUrls.map(getAtomFromTargetUrl)).then(atoms => {
     const atomUrlToAtom = {};
-    atoms.forEach(atom => atomUrlToAtom[atom.url] = atom);
+    atoms.forEach(atom => {
+      if (isSnippet(atom.atomType)) atomUrlToAtom[atom.url] = atom;
+    });
     return atomUrlToAtom;
   });
 }
