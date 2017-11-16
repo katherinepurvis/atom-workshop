@@ -23,6 +23,12 @@ export default class FormFieldSelectBox extends React.Component {
       );
     }
 
+    if (option.name) {
+        return (
+            <option key={option.name} value={option.value}>{option.name}</option>
+        );
+    }
+
     return (
       <option key={option} value={option}>{option}</option>
     );
