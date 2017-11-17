@@ -70,11 +70,16 @@ dateFormats = [
   // }
 
   updateDateRange = (dateRangeRequired) => {
-      this.setState({
+    this.setState({
           dateRangeRequired: dateRangeRequired
       });
     };
 
+  renderDateRangeSelector = () => {
+      if (this.state.dateRangeRequired) {
+          return (<FormFieldDateTextInput fieldName="ranged-date"/>);
+      }
+  }
 
   render () {
     const value = this.props.fieldValue || {
@@ -91,8 +96,9 @@ dateFormats = [
             <FormFieldDateTextInput/>
           </ManagedField>
           <FormFieldCheckbox fieldName="ranged-date" fieldLabel="Want a date range?" fieldValue={this.state.dateRangeRequired} onUpdateField={this.updateDateRange.bind(this)}/>
+            <div className={!this.state.dateRangeRequired ? "form__row" : " "}></div>
           <ManagedField isRequired={false} fieldLocation="toDate">
-            <FormFieldDateTextInput fieldName="ranged-date" disabled={!this.state.dateRangeRequired}/>
+            {this.renderDateRangeSelector()}
           </ManagedField>
           <ManagedField fieldLocation="dateFormat" name="Date Format" isRequired={false}>
             <FormFieldSelectBox
