@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import ShowErrors from '../Utilities/ShowErrors';
 import { errorPropType } from '../../constants/errorPropType';
-import uuidv4 from 'uuid/v4';
+
 
 export default class FormFieldRadioButtons extends React.Component {
 
@@ -23,8 +23,8 @@ export default class FormFieldRadioButtons extends React.Component {
 
   renderButton(value, label, i) {
     return (
-      <div key={i+uuidv4()} className="form__group--radio">
-        <input key={uuidv4()} className="form__radio-btn" type="radio" value={value} checked={this.props.fieldValue === value ? 'checked' : false} onChange={this.onUpdate} name={this.props.fieldName} />
+      <div key={i} className="form__group--radio">
+        <input className="form__radio-btn" type="radio" value={value} checked={this.props.fieldValue === value ? 'checked' : false} onChange={this.onUpdate} name={this.props.fieldName} />
         <span className="form__label form__label--radio">{label}</span>
       </div>
     );
