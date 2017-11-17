@@ -7,7 +7,7 @@ exports[`test Should render 1`] = `
     test
   </label>
   <div
-    className="form__ group form__group--checkbox">
+    className="form__ group form__group--checkbox--one">
     <input
       checked={true}
       className="form__checkbox"
@@ -21,7 +21,7 @@ exports[`test Should render 1`] = `
     </span>
   </div>
   <div
-    className="form__ group form__group--checkbox">
+    className="form__ group form__group--checkbox--two">
     <input
       checked={true}
       className="form__checkbox"
@@ -35,7 +35,7 @@ exports[`test Should render 1`] = `
     </span>
   </div>
   <div
-    className="form__ group form__group--checkbox">
+    className="form__ group form__group--checkbox--three">
     <input
       checked={false}
       className="form__checkbox"

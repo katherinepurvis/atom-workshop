@@ -20,6 +20,7 @@ export class ManagedField extends React.Component {
     updateFormErrors: PropTypes.func,
     data: PropTypes.object,
     name: PropTypes.string,
+    label: PropTypes.string,
     isRequired: PropTypes.bool,
     customValidation: PropTypes.arrayOf(PropTypes.func)
   };
@@ -51,7 +52,7 @@ export class ManagedField extends React.Component {
     const hydratedChildren = React.Children.map(this.props.children, (child) => {
       return React.cloneElement(child, {
         fieldName: this.props.name,
-        fieldLabel: this.props.name,
+        fieldLabel: this.props.label ? this.props.label : this.props.name,
         fieldValue: _get(this.props.fieldLocation, this.props.data),
         fieldErrors: this.state.touched ? this.state.fieldErrors : undefined,
         onUpdateField: this.updateFn,
