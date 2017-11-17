@@ -81,7 +81,7 @@ dateFormats = [
       title: " ",
       date: Date.now(),
       body: " ",
-      dateFormat: " "
+      dateFormat: "day-month-year"
     };
 
     return (
@@ -94,11 +94,11 @@ dateFormats = [
           <ManagedField isRequired={false} fieldLocation="toDate">
             <FormFieldDateTextInput fieldName="ranged-date" disabled={!this.state.dateRangeRequired}/>
           </ManagedField>
-          <ManagedField fieldLocation="date-format" name="Date Format" isRequired={false}>
+          <ManagedField fieldLocation="dateFormat" name="Date Format" isRequired={false}>
             <FormFieldSelectBox
                 fieldLabel="Date Format"
                 selectValues={this.dateFormats}
-                displayEmptyOptions={true}
+                optionsAsObject={false}
             />
 
             {/*<FormFieldRadioButtons*/}
