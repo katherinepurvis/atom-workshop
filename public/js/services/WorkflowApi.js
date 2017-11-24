@@ -13,6 +13,19 @@ export default {
     const getWorkflowPayload = (atom, section, scheduledLaunchDate, status) => {
 
       const prodOffice = getProductionOffice();
+      const { contentChangeDetails } = atom;
+
+      const lastModifiedDate = contentChangeDetails.lastModified
+        ? moment(contentChangeDetails.lastModified.date)
+        : null;
+
+      const publishedDate = contentChangeDetails.published
+        ? moment(contentChangeDetails.published.date)
+        : null;
+
+      const atomType = atom.atomType.toLowerCase();
+
+      const headline = atom.data[atomType] && atom.data[atomType].title;
 
       const data = {
         contentType: _.camelCase(atom.atomType),
@@ -23,6 +36,12 @@ export default {
         section: section,
         status: status,
         prodOffice: prodOffice,
+        commissioningDesks: atom.commissioningDesks.join(),
+        lastModified: lastModifiedDate,
+        published: !!contentChangeDetails.published,
+        timePublished: publishedDate,
+        headline: headline,
+        path: `atoms/${atom.atomType}/${atom.id}/edit`
       };
 
       if (!scheduledLaunchDate) {
