@@ -23,45 +23,45 @@ export class TimelineItem extends React.Component {
     onFormErrorsUpdate: PropTypes.func
   };
 
-    state = {
-        dateRangeRequired: typeof this.props.fieldValue === PropTypes.shape({
-            title: PropTypes.string,
-            date: PropTypes.number,
-            toDate: PropTypes.number,
-            body: PropTypes.string,
-            dateFormat: PropTypes.string
-        }),
-    };
+  state = {
+    dateRangeRequired: typeof this.props.fieldValue === PropTypes.shape({
+      title: PropTypes.string,
+      date: PropTypes.number,
+      toDate: PropTypes.number,
+      body: PropTypes.string,
+      dateFormat: PropTypes.string
+    }),
+  };
 
 
-       // TODO:
-       //  Remove the date format select option and replace with radio button lists
-       //  Remove ID in dateFormats array as will be superfluous
-       //
-       //  See this PR for further info: https://github.com/facebook/react/pull/11227
-       //
-       //  The radio button code has been left in for now as React devs are working on this bug.
-       //  React cannot handle multiple radio button lists and leaves only one button visibly checked
-       //  regardless of the props. This is only a bug of UX, and the data is being stored correctly
-       //  on the atom. We've chosen to release this feature with a select so to speed up delivery.
+   // TODO:
+   //  Remove the date format select option and replace with radio button lists
+   //  Remove ID in dateFormats array as will be superfluous
+   //
+   //  See this PR for further info: https://github.com/facebook/react/pull/11227
+   //
+   //  The radio button code has been left in for now as React devs are working on this bug.
+   //  React cannot handle multiple radio button lists and leaves only one button visibly checked
+   //  regardless of the props. This is only a bug of UX, and the data is being stored correctly
+   //  on the atom. We've chosen to release this feature with a select so to speed up delivery.
 
-dateFormats = [
-      {
-          value: 'day-month-year',
-          name: 'Calendar date e.g. Monday 13th July 2017'
-      },
-      {
-          value: 'month-year',
-          name: 'Month & year e.g. July 2017'
-      },
-      {
-          value: 'year',
-          name: 'Year e.g. 2017'
-      }
+  dateFormats = [
+    {
+      value: 'day-month-year',
+      name: 'Calendar date e.g. Monday 13th July 2017'
+    },
+    {
+      value: 'month-year',
+      name: 'Month & year e.g. July 2017'
+    },
+    {
+      value: 'year',
+      name: 'Year e.g. 2017'
+    }
   ]
 
   updateItem = (item) => {
-      this.props.onUpdateField(item);
+    this.props.onUpdateField(item);
   }
 
   // getDateFormat = () => {
@@ -71,14 +71,14 @@ dateFormats = [
 
   updateDateRange = (dateRangeRequired) => {
     this.setState({
-          dateRangeRequired: dateRangeRequired
-      });
-    };
+      dateRangeRequired: dateRangeRequired
+    });
+  };
 
   renderDateRangeSelector = () => {
-      if (this.state.dateRangeRequired) {
-          return (<FormFieldDateTextInput fieldName="ranged-date"/>);
-      }
+    if (this.state.dateRangeRequired) {
+      return (<FormFieldDateTextInput fieldName="ranged-date"/>);
+    }
   }
 
   render () {
