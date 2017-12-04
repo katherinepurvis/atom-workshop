@@ -24,13 +24,7 @@ export class TimelineItem extends React.Component {
   };
 
   state = {
-    dateRangeRequired: typeof this.props.fieldValue === PropTypes.shape({
-      title: PropTypes.string,
-      date: PropTypes.number,
-      toDate: PropTypes.number,
-      body: PropTypes.string,
-      dateFormat: PropTypes.string
-    }),
+    dateRangeRequired: this.props.fieldValue && this.props.fieldValue.toDate
   };
 
 
