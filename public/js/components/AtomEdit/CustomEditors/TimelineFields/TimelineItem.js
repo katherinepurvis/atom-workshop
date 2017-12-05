@@ -67,6 +67,12 @@ export class TimelineItem extends React.Component {
     this.setState({
       dateRangeRequired: dateRangeRequired
     });
+
+    //Remove the toDate if no longer set
+    const updated = Object.assign({}, this.props.fieldValue, {
+      toDate: dateRangeRequired ? this.props.fieldValue.toDate : null
+    });
+    this.props.onUpdateField(updated);
   };
 
   renderDateRangeSelector = () => {
