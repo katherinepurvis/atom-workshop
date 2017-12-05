@@ -6,10 +6,13 @@ import FormFieldDateTextInput from '../../../FormFields/FormFieldDateTextInput';
 import FormFieldSelectBox from '../../../FormFields/FormFieldSelectBox';
 // import FormFieldRadioButtons from '../../../FormFields/FormFieldRadioButtons';
 import FormFieldCheckbox from "../../../FormFields/FormFieldCheckbox";
+import ShowErrors from '../../../Utilities/ShowErrors';
+import { errorPropType } from '../../../../constants/errorPropType';
 
 export class TimelineItem extends React.Component {
   static propTypes = {
     fieldLabel: PropTypes.string,
+    fieldErrors: PropTypes.arrayOf(errorPropType),
     fieldName: PropTypes.string,
     fieldValue: PropTypes.shape({
       title: PropTypes.string.isRequired,
@@ -119,9 +122,10 @@ export class TimelineItem extends React.Component {
             <FormFieldTextInput/>
           </ManagedField>
           <ManagedField fieldLocation="body" name="Body">
-            <FormFieldsScribeEditor showWordCount={true} suggestedLength={150} showToolbar={false} tooLongMsg={"Remember that snippets should be concise"}/>
+            <FormFieldsScribeEditor showWordCount={true} showToolbar={false} tooLongMsg={"Remember that snippets should be concise"}/>
           </ManagedField>
         </ManagedForm>
+          <ShowErrors errors={this.props.fieldErrors}/>
       </div>
     );
   }

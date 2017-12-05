@@ -2,6 +2,8 @@ import React, { PropTypes } from 'react';
 import {ManagedForm, ManagedField} from '../../../ManagedEditor';
 import FormFieldsScribeEditor from '../../../FormFields/FormFieldScribeEditor';
 
+const WordLimit = 250;
+
 export class QAItem extends React.Component {
   static propTypes = {
     fieldLabel: PropTypes.string,
@@ -29,7 +31,7 @@ export class QAItem extends React.Component {
       <div className="form__field">
         <ManagedForm data={value} updateData={this.updateItem} onFormErrorsUpdate={this.props.onFormErrorsUpdate} formName="qaEditor">
           <ManagedField fieldLocation="body" name="Answer" isRequired={true}>
-            <FormFieldsScribeEditor showWordCount={true} suggestedLength={150} showToolbar={false} tooLongMsg={"Remember that snippets should be concise"}/>
+            <FormFieldsScribeEditor showWordCount={true} suggestedLength={WordLimit} showToolbar={false} tooLongMsg={`You've exceeded the ${WordLimit} word limit for this atom.`}/>
           </ManagedField>
         </ManagedForm>
       </div>
