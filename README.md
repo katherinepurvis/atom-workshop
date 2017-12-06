@@ -9,6 +9,7 @@ for the composer AWS account from [janus](https://janus.gutools.co.uk). You'll a
 'Install SSL certificates' step in the [dev-nginx readme](https://github.com/guardian/dev-nginx). Then:
 
  - Fetch config from S3: `./fetch-config.sh`
+ - If you get an error message saying that you requred AWS Signature Version 4, configure your aws cli by running `aws configure set default.s3.signature_version s3v4`
  - Setup the nginx mapping by following the instructions in the
  [dev-nginx readme](https://github.com/guardian/dev-nginx#install-config-for-an-application).
  - Install Client Side Dependencies with `./scripts/setup.sh`
