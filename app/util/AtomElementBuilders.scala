@@ -66,7 +66,7 @@ object AtomElementBuilders {
     )
   }
 
-  def buildDefaultHtml(atom: Atom): Option[String] = atom.atomData match {
+  def buildDefaultHtml(atom: Atom): Option[String] = atom.data match {
     case x: AtomData.Storyquestions if isOpen(x.storyquestions) => DefaultAtomRenderer.getHTML(atom)
     case x: AtomData.Storyquestions => Some("")
     case x: AtomData.Guide          => DefaultAtomRenderer.getHTML(atom)
