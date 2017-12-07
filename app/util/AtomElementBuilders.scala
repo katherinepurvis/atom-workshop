@@ -61,19 +61,17 @@ object AtomElementBuilders {
     atom.copy(
       defaultHtml = createAtomFields
         .flatMap(_.defaultHtml)
-        .orElse(buildDefaultHtml(atom))
-        .getOrElse("")
+        .getOrElse(buildDefaultHtml(atom))
     )
   }
 
-  def buildDefaultHtml(atom: Atom): Option[String] = atom.data match {
+  def buildDefaultHtml(atom: Atom): String = atom.data match {
     case x: AtomData.Storyquestions if isOpen(x.storyquestions) => DefaultAtomRenderer.getHTML(atom)
-    case x: AtomData.Storyquestions => Some("")
+    case x: AtomData.Storyquestions => ""
     case x: AtomData.Guide          => DefaultAtomRenderer.getHTML(atom)
     case x: AtomData.Profile        => DefaultAtomRenderer.getHTML(atom)
     case x: AtomData.Qanda          => DefaultAtomRenderer.getHTML(atom)
     case x: AtomData.Timeline       => DefaultAtomRenderer.getHTML(atom)
-    case _ => None
   }
 
   val isOpen: StoryQuestionsAtom => Boolean =
