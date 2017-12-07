@@ -13,7 +13,7 @@ object AtomUpdateOperations {
   def updateTopLevelFields(atom: Atom, user: User, publish: Boolean = false): Atom =
     atom.copy(
       contentChangeDetails = buildContentChangeDetails(user, Some(atom.contentChangeDetails), updateLastModified = true, updatePublished = publish),
-      defaultHtml = buildDefaultHtml(atom.atomType, atom.data)
+      defaultHtml = buildDefaultHtml(atom).getOrElse("")
     )
 
   def updateAtomFromJson(atom: Atom, json: Json, user: User): Either[AtomAPIError, Atom] = jsonToAtom(atom.asJson.deepMerge(json))
