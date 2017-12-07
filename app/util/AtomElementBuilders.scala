@@ -72,7 +72,7 @@ object AtomElementBuilders {
     case x: AtomData.Profile        => DefaultAtomRenderer.getHTML(atom)
     case x: AtomData.Qanda          => DefaultAtomRenderer.getHTML(atom)
     case x: AtomData.Timeline       => DefaultAtomRenderer.getHTML(atom)
-    case _                          => 
+    case _                          => ""
   }
 
   val isOpen: StoryQuestionsAtom => Boolean =
