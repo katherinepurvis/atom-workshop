@@ -61,7 +61,7 @@ object AtomElementBuilders {
     atom.copy(
       defaultHtml = createAtomFields
         .flatMap(_.defaultHtml)
-        .getOrElse(s"<div>${buildDefaultHtml(atom)}</div>")
+        .getOrElse(buildDefaultHtml(atom))
     )
   }
 
@@ -72,7 +72,6 @@ object AtomElementBuilders {
     case x: AtomData.Profile        => DefaultAtomRenderer.getHTML(atom)
     case x: AtomData.Qanda          => DefaultAtomRenderer.getHTML(atom)
     case x: AtomData.Timeline       => DefaultAtomRenderer.getHTML(atom)
-    case _                          => ""
   }
 
   val isOpen: StoryQuestionsAtom => Boolean =
