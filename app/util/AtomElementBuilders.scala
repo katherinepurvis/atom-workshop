@@ -1,6 +1,5 @@
 package util
 
-import com.gu.contentatom.renderer.DefaultAtomRenderer
 import com.gu.contentatom.thrift.atom.cta.CTAAtom
 import com.gu.contentatom.thrift.atom.recipe.{RecipeAtom, Tags => RecipeTags, Time => RecipeTime}
 import com.gu.contentatom.thrift.atom.storyquestions.{RelatedStoryLinkType, StoryQuestionsAtom}
@@ -11,7 +10,7 @@ import com.gu.contentatom.thrift.atom.timeline.TimelineAtom
 import com.gu.contentatom.thrift.{User, _}
 import com.gu.pandomainauth.model.{User => PandaUser}
 import models.CreateAtomFields
-import org.joda.time.{ DateTime, DateTimeZone }
+import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 
 object AtomElementBuilders {
@@ -48,35 +47,65 @@ object AtomElementBuilders {
       AtomType.Timeline -> AtomData.Timeline(TimelineAtom())
     )
 
-    val atom = Atom(
+    Atom(
       title = createAtomFields.flatMap(_.title),
       commissioningDesks = createAtomFields.map(_.commissioningDesks).getOrElse(Nil),
       id = java.util.UUID.randomUUID.toString,
       atomType = atomType,
-      defaultHtml = "",
+      defaultHtml = createAtomFields.flatMap(_.defaultHtml).getOrElse(buildDefaultHtml(atomType = atomType, atomData = defaultAtoms(atomType))),
       data = defaultAtoms(atomType),
       contentChangeDetails = buildContentChangeDetails(user, None, updateCreated = true)
     )
+  }
 
-    atom.copy(
-      defaultHtml = createAtomFields
-        .flatMap(_.defaultHtml)
-        .getOrElse(s"<div>${buildDefaultHtml(atom)}</div>")
+  def buildDefaultHtml(atomType: AtomType, atomData: AtomData): String = {
+    s"""<div class="atom-${atomType.name}">${buildHtml(atomType, atomData).getOrElse("")}</div>"""
+  }
+
+  def buildHtml(atomType: AtomType, atomData: AtomData): Option[String] = atomData match {
+    case x: AtomData.Storyquestions => buildStoryQuestionsHtml(x.storyquestions)
+    case x: AtomData.Guide          => buildGuideHtml(x.guide)
+    case x: AtomData.Profile        => buildProfileHtml(x.profile)
+    case x: AtomData.Qanda          => buildQAndAHtml(x.qanda)
+    case x: AtomData.Timeline       => buildTimelineHtml(x.timeline)
+    case _ => None
+  }
+
+  def buildStoryQuestionsHtml(storyquestions: StoryQuestionsAtom): Option[String] = for {
+    eqs <- storyquestions.editorialQuestions
+  } yield {
+    val list = eqs flatMap (_.questions map { q => s"<li>${q.questionText}</li>" }) mkString ""
+    "<ul>" ++ list ++ "</ul>"
+  }
+
+  def buildGuideHtml(atom: GuideAtom): Option[String] =
+    Some(
+      atom.items.map{ item =>
+        item.title.map(title => s"<p><strong>$title</strong></p>").getOrElse("") ++
+        s"<p>${item.body}</p>"
+      }.mkString("")
     )
-  }
 
-  def buildDefaultHtml(atom: Atom): String = atom.data match {
-    case x: AtomData.Storyquestions if isOpen(x.storyquestions) => DefaultAtomRenderer.getHTML(atom)
-    case x: AtomData.Storyquestions => ""
-    case x: AtomData.Guide          => DefaultAtomRenderer.getHTML(atom)
-    case x: AtomData.Profile        => DefaultAtomRenderer.getHTML(atom)
-    case x: AtomData.Qanda          => DefaultAtomRenderer.getHTML(atom)
-    case x: AtomData.Timeline       => DefaultAtomRenderer.getHTML(atom)
-    case _                          => ""
-  }
+  def buildProfileHtml(atom: ProfileAtom): Option[String] =
+    Some(
+      atom.items.map{ item =>
+        item.title.map(title => s"<p><strong>$title</strong></p>").getOrElse("") ++
+        s"<p>${item.body}</p>"
+      }.mkString("")
+    )
 
-  val isOpen: StoryQuestionsAtom => Boolean =
-    !_.closeDate.exists { closeDate =>
-      closeDate < DateTime.now(DateTimeZone.UTC).getMillis
+  def buildQAndAHtml(atom: QAndAAtom): Option[String] =
+    Some(atom.item).map { item =>
+      item.title.map(title => s"<p><strong>$title</strong></p>").getOrElse("") ++
+      s"<p>${item.body}</p>"
     }
+
+  def buildTimelineHtml(atom: TimelineAtom): Option[String] =
+    Some(
+      atom.events.map{ item =>
+        val date = new DateTime(item.date)
+        s"<p><i>(${DateTimeFormat.longDate.print(date)})</i>&nbsp;<strong>${item.title}</strong></p>" ++
+        item.body.map(body => s"<p>${body}</p>").getOrElse("")
+      }.mkString("")
+    )
 }
