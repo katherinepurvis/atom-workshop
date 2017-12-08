@@ -10,7 +10,7 @@ import com.gu.contentatom.thrift.atom.timeline.TimelineAtom
 import com.gu.contentatom.thrift.{User, _}
 import com.gu.pandomainauth.model.{User => PandaUser}
 import models.CreateAtomFields
-import org.joda.time.DateTime
+import org.joda.time.{ DateTime, DateTimeZone }
 import org.joda.time.format.DateTimeFormat
 
 object AtomElementBuilders {
@@ -63,7 +63,7 @@ object AtomElementBuilders {
   }
 
   def buildHtml(atomType: AtomType, atomData: AtomData): Option[String] = atomData match {
-    case x: AtomData.Storyquestions => buildStoryQuestionsHtml(x.storyquestions)
+    case x: AtomData.Storyquestions if isOpen(x.storyquestions) => buildStoryQuestionsHtml(x.storyquestions)
     case x: AtomData.Guide          => buildGuideHtml(x.guide)
     case x: AtomData.Profile        => buildProfileHtml(x.profile)
     case x: AtomData.Qanda          => buildQAndAHtml(x.qanda)
@@ -71,6 +71,11 @@ object AtomElementBuilders {
     case _ => None
   }
 
+  val isOpen: StoryQuestionsAtom => Boolean =
+    !_.closeDate.exists { closeDate =>
+      closeDate < DateTime.now(DateTimeZone.UTC).getMillis
+    }
+  
   def buildStoryQuestionsHtml(storyquestions: StoryQuestionsAtom): Option[String] = for {
     eqs <- storyquestions.editorialQuestions
   } yield {
