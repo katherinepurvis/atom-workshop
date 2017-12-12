@@ -48,7 +48,7 @@ export class ManagedField extends React.Component {
     this.props.updateData(_set(this.props.fieldLocation, newValue, this.props.data));
   }
 
-  getRevisedLabel() {
+  getLabel() {
       const fieldLabel = this.props.label ? this.props.label : this.props.name;
       return this.props.isRequired ? fieldLabel + " *" : fieldLabel;
   }
@@ -57,7 +57,7 @@ export class ManagedField extends React.Component {
     const hydratedChildren = React.Children.map(this.props.children, (child) => {
       return React.cloneElement(child, {
         fieldName: this.props.name,
-        fieldLabel: this.getRevisedLabel(),
+        fieldLabel: this.getLabel(),
         fieldValue: _get(this.props.fieldLocation, this.props.data),
         fieldErrors: this.state.touched ? this.state.fieldErrors : undefined,
         onUpdateField: this.updateFn,
