@@ -11,6 +11,18 @@ export function parseMimeType(mimeType) {
   return mimeType;
 }
 
+function getMetadata(metadata){
+  const credit = getCredit(metadata);
+  const {copyright, source, byline, suppliersReference} = metadata;
+  return {
+    credit,
+    copyright,
+    source,
+    photographer: byline,
+    suppliersReference
+  };
+}
+
 function getCredit(metadata) {
   const imageType = metadata.imageType ? metadata.imageType : "Photograph";
 
@@ -26,25 +38,31 @@ function getCredit(metadata) {
   return name ? `${imageType}: ${name}` : null;
 }
 
-function parseAsset(asset, credit) {
+function parseAsset(asset, formattedMetadata) {
+  const {secureUrl, mimeType, size, dimensions} = asset;
+  const {credit, copyright, source, photographer, suppliersReference} = formattedMetadata;
   return {
-    file: asset.secureUrl,
-    mimeType: parseMimeType(asset.mimeType),
-    size: asset.size,
+    file: secureUrl,
+    mimeType: parseMimeType(mimeType),
+    size,
     dimensions: {
-      width: asset.dimensions.width,
-      height: asset.dimensions.height
+      width: dimensions.width,
+      height: dimensions.height
     },
-    credit: credit
+    credit,
+    copyright,
+    source,
+    photographer,
+    suppliersReference
   };
 }
 
 export function parseImageFromGridCrop(data) {
   const cropData = data.crop.data;
-  const credit = getCredit(data.image.data.metadata);
+  const formattedMetadata = getMetadata(data.image.data.metadata);
   return {
-    assets: cropData.assets.map(asset => parseAsset(asset, credit)),
-    master: parseAsset(cropData.master, credit),
+    assets: cropData.assets.map(asset => parseAsset(asset, formattedMetadata)),
+    master: parseAsset(cropData.master, formattedMetadata),
     mediaId: cropData.specification.uri
   };
 }
