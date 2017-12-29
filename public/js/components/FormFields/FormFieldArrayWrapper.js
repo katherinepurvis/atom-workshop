@@ -65,6 +65,19 @@ export default class FormFieldArrayWrapper extends React.Component {
       }
     };
 
+    const moveInArrayFn = (arr, fromIndex, toIndex) => {
+        arr.splice(toIndex, 0, arr.splice(fromIndex, 1)[0]);
+    };
+    
+    const moveFn = (currentIndex, newIndex) => {
+     /* we only allow to move if item has been updated and indices are within array bounds */
+     if (value !== undefined && this.props.fieldValue && this.props.fieldValue.length > currentIndex && currentIndex >= 0 && this.props.fieldValue.length > newIndex && newIndex >= 0) {
+        const newFieldValue = this.props.fieldValue.slice();
+        moveInArrayFn(newFieldValue, currentIndex, newIndex);
+        this.props.onUpdateField(newFieldValue);
+     }
+    };
+
     const hydratedChildren = React.Children.map(this.props.children, (child) => {
       return React.cloneElement(child, {
         key: `${this.props.fieldName}-${i}`,
@@ -80,6 +93,10 @@ export default class FormFieldArrayWrapper extends React.Component {
       <div className={this.props.fieldClass ? this.props.fieldClass : 'form__group form__field'}>
         {this.props.numbered ? <span className="form__field-number">{`${i + 1}. `}</span> : false }
         {hydratedChildren}
+        // TODO enable only if value is not undefined and i is not 0 or the last one
+        // TODO style properly so all buttons are one the same line
+        <button className="btn form__field-btn" type="button" onClick= { moveFn.bind(this, i, (i-1) ) } > Move up </button> 
+        <button className="btn form__field-btn" type="button" onClick= { moveFn.bind(this, i, (i+1) ) } > Move down </button>
         <button className="btn form__field-btn btn--red" type="button" onClick={removeFn.bind(this, i)}>Delete</button>
       </div>
     );

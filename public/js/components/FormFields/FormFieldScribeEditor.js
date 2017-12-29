@@ -80,6 +80,14 @@ export class ScribeEditor extends React.Component {
     this.refs.editor.innerHTML = this.props.value;
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    /* 
+     * uncomment line below to have array reordering works correctly but break scribe editor
+     */ 
+    // this.refs.editor.innerHTML = this.props.value; */
+  }
+
+
   configureScribe() {
     // Create an instance of the Scribe toolbar
     if (this.props.showToolbar !== false) {
