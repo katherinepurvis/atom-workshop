@@ -14,7 +14,11 @@ const assetPropType = PropTypes.shape({
     width: PropTypes.number.isRequired
   }).isRequired,
   size: PropTypes.number.isRequired,
-  credit: PropTypes.string
+  credit: PropTypes.string,
+  copyright: PropTypes.string,
+  source: PropTypes.string,
+  photographer: PropTypes.string,
+  suppliersReference: PropTypes.string
 });
 
 const gridImagePropType = PropTypes.shape({
