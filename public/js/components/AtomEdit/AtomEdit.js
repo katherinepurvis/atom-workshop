@@ -40,8 +40,13 @@ class AtomEdit extends React.Component {
   }
 
   updateAtom = (newAtom) => {
-    this.props.atomActions.updateAtom(newAtom);
-    enterPresence(this.props.routeParams.atomType, this.props.routeParams.id);
+    try {
+        enterPresence(this.props.routeParams.atomType, this.props.routeParams.id);
+    } catch (e) {
+      console.warn(e);
+    } finally {
+        this.props.atomActions.updateAtom(newAtom);
+    }
   }
 
   updateFormErrors = (errors) => {

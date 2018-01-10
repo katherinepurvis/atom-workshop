@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react';
+import ReactDOM from 'react-dom';
 import { errorPropType } from '../../constants/errorPropType';
 
 export default class FormFieldArrayWrapper extends React.Component {
@@ -20,7 +21,8 @@ export default class FormFieldArrayWrapper extends React.Component {
 
   //We store new items in state to avoid sending invalid items back to the server before they're ready
   state = {
-    newItems: []
+    newItems: [],
+    childrenVisible: true
   }
 
   onAddClick = () => {
@@ -66,17 +68,28 @@ export default class FormFieldArrayWrapper extends React.Component {
     };
 
     const moveInArrayFn = (arr, fromIndex, toIndex) => {
-        arr.splice(toIndex, 0, arr.splice(fromIndex, 1)[0]);
+      arr.splice(toIndex, 0, arr.splice(fromIndex, 1)[0]);
     };
     
     const moveFn = (currentIndex, newIndex) => {
-     /* we only allow to move if item has been updated and indices are within array bounds */
-     if (value !== undefined && this.props.fieldValue && this.props.fieldValue.length > currentIndex && currentIndex >= 0 && this.props.fieldValue.length > newIndex && newIndex >= 0) {
-        const newFieldValue = this.props.fieldValue.slice();
-        moveInArrayFn(newFieldValue, currentIndex, newIndex);
-        this.props.onUpdateField(newFieldValue);
-     }
-    };
+
+      this.setState({
+          childrenVisible: false
+      }, () => {
+          /* we only allow to move if item has been updated and indices are within array bounds */
+          if (value !== undefined && this.props.fieldValue && this.props.fieldValue.length > currentIndex && currentIndex >= 0 && this.props.fieldValue.length > newIndex && newIndex >= 0) {
+              const arr = this.props.fieldValue.slice();
+              moveInArrayFn(arr, currentIndex, newIndex);
+              this.props.onUpdateField(arr);
+          }
+
+          this.setState({
+            childrenVisible: true
+          });
+
+        });
+    }
+
 
     const hydratedChildren = React.Children.map(this.props.children, (child) => {
       return React.cloneElement(child, {
@@ -89,14 +102,24 @@ export default class FormFieldArrayWrapper extends React.Component {
       });
     });
 
+    const returnMoveBtns = () => {
+      if (i !== 0 && (i+1) < this.props.fieldValue.length) {
+        return <div>
+              <button className="btn form__field-btn form__field--move-btn" type="button" onClick= { moveFn.bind(this, i, (i-1) ) } >Move up</button>
+              <button className="btn form__field-btn form__field--move-btn" type="button" onClick= { moveFn.bind(this, i, (i+1) ) } >Move down </button>
+            </div>
+      } else if (i === 0) {
+        return <div><button className="btn form__field-btn form__field--move-btn" type="button" onClick= { moveFn.bind(this, i, (i+1) ) } >Move down </button></div>
+      } else {
+        return <div><button className="btn form__field-btn form__field--move-btn" type="button" onClick= { moveFn.bind(this, i, (i-1) ) } >Move up</button></div>
+      }
+    }
+
     return (
       <div className={this.props.fieldClass ? this.props.fieldClass : 'form__group form__field'}>
         {this.props.numbered ? <span className="form__field-number">{`${i + 1}. `}</span> : false }
         {hydratedChildren}
-        // TODO enable only if value is not undefined and i is not 0 or the last one
-        // TODO style properly so all buttons are one the same line
-        <button className="btn form__field-btn" type="button" onClick= { moveFn.bind(this, i, (i-1) ) } > Move up </button> 
-        <button className="btn form__field-btn" type="button" onClick= { moveFn.bind(this, i, (i+1) ) } > Move down </button>
+        {returnMoveBtns()}
         <button className="btn form__field-btn btn--red" type="button" onClick={removeFn.bind(this, i)}>Delete</button>
       </div>
     );
@@ -110,7 +133,7 @@ export default class FormFieldArrayWrapper extends React.Component {
         <div className="form__btn-heading">
           <span className="form__label">{this.props.fieldLabel}</span>
        </div>
-          {values.map((value, i) => this.renderValue(value, i))}
+          { this.state.childrenVisible ? values.map((value, i) => this.renderValue(value, i)) : false }
         <button className="form__btn-heading__btn form__btn-heading__add" type="button" onClick={this.onAddClick}>Add</button>
       </div>
     );
