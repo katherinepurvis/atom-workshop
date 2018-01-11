@@ -75,10 +75,10 @@ export class ScribeEditor extends React.Component {
     scribeElement: null
   };
 
-  uid = uuidv4();
+  uuid = uuidv4();
 
   componentDidMount() {
-      this.setState({scribeElement: document.getElementById(this.props.fieldName+this.uid)}, () => {
+      this.setState({scribeElement: document.getElementById(this.props.fieldName+this.uuid)}, () => {
         this.configureScribe();
       });
 
@@ -90,7 +90,7 @@ export class ScribeEditor extends React.Component {
 
     // Create an instance of the Scribe toolbar
     if (this.props.showToolbar !== false) {
-      const toolbar = document.getElementById(`scribe__toolbar-${this.uid}`);
+      const toolbar = document.getElementById(`scribe__toolbar-${this.uuid}`);
       this.scribe.use(scribePluginToolbar(toolbar));
     }
 
@@ -118,7 +118,14 @@ export class ScribeEditor extends React.Component {
     }));
 
     this.scribe.on('content-changed', this.onContentChange);
-    this.state.scribeElement.innerHTML = this.props.value;
+
+    const updatedScribeElem = Object.assign({}, this.state.scribeElement, {
+        innerHtml: this.props.value
+    });
+
+    this.setState({
+        scribeElement: updatedScribeElem
+    });
 
   }
 
@@ -137,7 +144,7 @@ export class ScribeEditor extends React.Component {
     return (
         <div>
           { this.props.showToolbar === false ? null :
-            <div id={`scribe__toolbar-${this.uid}`} className="scribe__toolbar">
+            <div id={`scribe__toolbar-${this.uuid}`} className="scribe__toolbar">
               <button type="button" data-command-name="bold" className="scribe__toolbar__item">Bold</button>
               <button type="button" data-command-name="italic" className="scribe__toolbar__item">Italic</button>
               <button type="button" data-command-name="linkPrompt" className="scribe__toolbar__item">Link</button>
@@ -145,7 +152,7 @@ export class ScribeEditor extends React.Component {
             </div>
           }
 
-          <div id={this.props.fieldName + this.uid} className="scribe__editor"></div>
+          <div id={this.props.fieldName + this.uuid} className="scribe__editor"></div>
         </div>
   );
   }

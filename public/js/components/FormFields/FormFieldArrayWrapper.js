@@ -1,5 +1,4 @@
 import React, {PropTypes} from 'react';
-import ReactDOM from 'react-dom';
 import { errorPropType } from '../../constants/errorPropType';
 
 export default class FormFieldArrayWrapper extends React.Component {
@@ -82,13 +81,22 @@ export default class FormFieldArrayWrapper extends React.Component {
               moveInArrayFn(arr, currentIndex, newIndex);
               this.props.onUpdateField(arr);
           }
+          
+          // When reordering array elements & the child is a scribe editor, we have no way of passing information
+          // down to scribe to force a re-render, as scribe cannot handle update changes once it has been
+          // initialised. To trigger the visual change without a browser refresh, we need to unmount
+          // and remount the child scribe component. However as we only render the root React component
+          // with the DOM, and every other downstream component is rendered via React, there is no way to
+          // remove the children components. Therefore we use this flag in state to identify whether
+          // they should be visible or not. We hide the component until the updates have passed downstream,
+          // and then the further change in state below will trigger a re-render & the lifecycle methods of any children.
 
           this.setState({
             childrenVisible: true
           });
 
         });
-    }
+    };
 
 
     const hydratedChildren = React.Children.map(this.props.children, (child) => {
@@ -102,24 +110,24 @@ export default class FormFieldArrayWrapper extends React.Component {
       });
     });
 
-    const returnMoveBtns = () => {
+    const renderMoveBtns = () => {
       if (i !== 0 && (i+1) < this.props.fieldValue.length) {
         return <div>
               <button className="btn form__field-btn form__field--move-btn" type="button" onClick= { moveFn.bind(this, i, (i-1) ) } >Move up</button>
               <button className="btn form__field-btn form__field--move-btn" type="button" onClick= { moveFn.bind(this, i, (i+1) ) } >Move down </button>
-            </div>
+            </div>;
       } else if (i === 0) {
-        return <div><button className="btn form__field-btn form__field--move-btn" type="button" onClick= { moveFn.bind(this, i, (i+1) ) } >Move down </button></div>
+        return <div><button className="btn form__field-btn form__field--move-btn" type="button" onClick= { moveFn.bind(this, i, (i+1) ) } >Move down </button></div>;
       } else {
-        return <div><button className="btn form__field-btn form__field--move-btn" type="button" onClick= { moveFn.bind(this, i, (i-1) ) } >Move up</button></div>
+        return <div><button className="btn form__field-btn form__field--move-btn" type="button" onClick= { moveFn.bind(this, i, (i-1) ) } >Move up</button></div>;
       }
-    }
+    };
 
     return (
       <div className={this.props.fieldClass ? this.props.fieldClass : 'form__group form__field'}>
         {this.props.numbered ? <span className="form__field-number">{`${i + 1}. `}</span> : false }
         {hydratedChildren}
-        {returnMoveBtns()}
+        {renderMoveBtns()}
         <button className="btn form__field-btn btn--red" type="button" onClick={removeFn.bind(this, i)}>Delete</button>
       </div>
     );
