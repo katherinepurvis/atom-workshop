@@ -119,14 +119,9 @@ export class ScribeEditor extends React.Component {
 
     this.scribe.on('content-changed', this.onContentChange);
 
-    const updatedScribeElem = Object.assign({}, this.state.scribeElement, {
-        innerHtml: this.props.value
-    });
-
     this.setState({
-        scribeElement: updatedScribeElem
+        scribeElement: Object.assign(this.state.scribeElement, {innerHTML: this.props.value})
     });
-
   }
 
   shouldComponentUpdate(nextProps) {
