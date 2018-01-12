@@ -69,6 +69,12 @@
     margin-bottom: 20px;
   }
 
+  &--move-btn {
+    display: inline-block;
+    float: right;
+    margin-right: 2px;
+  }
+
   &--nested {
     border: none;
   }

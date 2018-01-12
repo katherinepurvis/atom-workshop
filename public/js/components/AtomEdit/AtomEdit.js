@@ -7,11 +7,10 @@ import {GuideEditor} from './CustomEditors/GuideEditor';
 import {ProfileEditor} from './CustomEditors/ProfileEditor';
 import {TimelineEditor} from './CustomEditors/TimelineEditor';
 import EmbeddedAtomPick from './EmbeddedAtomPick';
-
 import {subscribeToPresence, enterPresence} from '../../services/presence';
-
 import AtomEditHeader from './AtomEditHeader';
 import {atomPropType} from '../../constants/atomPropType';
+import {logError} from '../../util/logger';
 
 class AtomEdit extends React.Component {
 
@@ -40,8 +39,13 @@ class AtomEdit extends React.Component {
   }
 
   updateAtom = (newAtom) => {
-    this.props.atomActions.updateAtom(newAtom);
-    enterPresence(this.props.routeParams.atomType, this.props.routeParams.id);
+    try {
+        enterPresence(this.props.routeParams.atomType, this.props.routeParams.id);
+    } catch (e) {
+        logError(e);
+    } finally {
+        this.props.atomActions.updateAtom(newAtom);
+    }
   }
 
   updateFormErrors = (errors) => {

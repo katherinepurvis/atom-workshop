@@ -20,7 +20,8 @@ export default class FormFieldArrayWrapper extends React.Component {
 
   //We store new items in state to avoid sending invalid items back to the server before they're ready
   state = {
-    newItems: []
+    newItems: [],
+    childrenVisible: true
   }
 
   onAddClick = () => {
@@ -65,6 +66,39 @@ export default class FormFieldArrayWrapper extends React.Component {
       }
     };
 
+    const moveInArrayFn = (arr, fromIndex, toIndex) => {
+      arr.splice(toIndex, 0, arr.splice(fromIndex, 1)[0]);
+    };
+    
+    const moveFn = (currentIndex, newIndex) => {
+
+      this.setState({
+          childrenVisible: false
+      }, () => {
+          /* we only allow to move if item has been updated and indices are within array bounds */
+          if (value !== undefined && this.props.fieldValue && this.props.fieldValue.length > currentIndex && currentIndex >= 0 && this.props.fieldValue.length > newIndex && newIndex >= 0) {
+              const arr = this.props.fieldValue.slice();
+              moveInArrayFn(arr, currentIndex, newIndex);
+              this.props.onUpdateField(arr);
+          }
+          
+          // When reordering array elements & the child is a scribe editor, we have no way of passing information
+          // down to scribe to force a re-render, as scribe cannot handle update changes once it has been
+          // initialised. To trigger the visual change without a browser refresh, we need to unmount
+          // and remount the child scribe component. However as we only render the root React component
+          // with the DOM, and every other downstream component is rendered via React, there is no way to
+          // remove the children components. Therefore we use this flag in state to identify whether
+          // they should be visible or not. We hide the component until the updates have passed downstream,
+          // and then the further change in state below will trigger a re-render & the lifecycle methods of any children.
+
+          this.setState({
+            childrenVisible: true
+          });
+
+        });
+    };
+
+
     const hydratedChildren = React.Children.map(this.props.children, (child) => {
       return React.cloneElement(child, {
         key: `${this.props.fieldName}-${i}`,
@@ -76,10 +110,24 @@ export default class FormFieldArrayWrapper extends React.Component {
       });
     });
 
+    const renderMoveBtns = () => {
+      if (i !== 0 && (i+1) < this.props.fieldValue.length) {
+        return <div>
+              <button className="btn form__field-btn form__field--move-btn" type="button" onClick= { moveFn.bind(this, i, (i-1) ) } >Move up</button>
+              <button className="btn form__field-btn form__field--move-btn" type="button" onClick= { moveFn.bind(this, i, (i+1) ) } >Move down </button>
+            </div>;
+      } else if (i === 0) {
+        return <div><button className="btn form__field-btn form__field--move-btn" type="button" onClick= { moveFn.bind(this, i, (i+1) ) } >Move down </button></div>;
+      } else {
+        return <div><button className="btn form__field-btn form__field--move-btn" type="button" onClick= { moveFn.bind(this, i, (i-1) ) } >Move up</button></div>;
+      }
+    };
+
     return (
       <div className={this.props.fieldClass ? this.props.fieldClass : 'form__group form__field'}>
         {this.props.numbered ? <span className="form__field-number">{`${i + 1}. `}</span> : false }
         {hydratedChildren}
+        {renderMoveBtns()}
         <button className="btn form__field-btn btn--red" type="button" onClick={removeFn.bind(this, i)}>Delete</button>
       </div>
     );
@@ -93,7 +141,7 @@ export default class FormFieldArrayWrapper extends React.Component {
         <div className="form__btn-heading">
           <span className="form__label">{this.props.fieldLabel}</span>
        </div>
-          {values.map((value, i) => this.renderValue(value, i))}
+          { this.state.childrenVisible ? values.map((value, i) => this.renderValue(value, i)) : false }
         <button className="form__btn-heading__btn form__btn-heading__add" type="button" onClick={this.onAddClick}>Add</button>
       </div>
     );

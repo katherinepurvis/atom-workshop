@@ -6,6 +6,7 @@ import scribePluginLinkPromptCommand from 'scribe-plugin-link-prompt-command';
 import scribePluginSanitizer from 'scribe-plugin-sanitizer';
 import {errorPropType} from '../../constants/errorPropType';
 import ShowErrors from '../Utilities/ShowErrors';
+import uuidv4 from 'uuid/v4';
 
 export default class FormFieldsScribeEditor extends React.Component {
 
@@ -68,22 +69,29 @@ export class ScribeEditor extends React.Component {
     value: PropTypes.string,
     onUpdate: PropTypes.func,
     showToolbar: PropTypes.bool
-  }
+  };
+
+  state = {
+    scribeElement: null
+  };
+
+  uuid = uuidv4();
 
   componentDidMount() {
-    this.scribe = new Scribe(this.refs.editor);
+      this.setState({scribeElement: document.getElementById(this.props.fieldName+this.uuid)}, () => {
+        this.configureScribe();
+      });
 
-    this.configureScribe();
-
-    this.scribe.on('content-changed', this.onContentChange);
-
-    this.refs.editor.innerHTML = this.props.value;
   }
 
-  configureScribe() {
+  configureScribe = () => {
+
+    this.scribe = new Scribe(this.state.scribeElement);
+
     // Create an instance of the Scribe toolbar
     if (this.props.showToolbar !== false) {
-      this.scribe.use(scribePluginToolbar(this.refs.toolbar));
+      const toolbar = document.getElementById(`scribe__toolbar-${this.uuid}`);
+      this.scribe.use(scribePluginToolbar(toolbar));
     }
 
     // Configure Scribe plugins
@@ -109,14 +117,24 @@ export class ScribeEditor extends React.Component {
       }
     }));
 
+    this.scribe.on('content-changed', this.onContentChange);
+
+    const updatedScribeElem = Object.assign({}, this.state.scribeElement, {
+        innerHtml: this.props.value
+    });
+
+    this.setState({
+        scribeElement: updatedScribeElem
+    });
+
   }
 
   shouldComponentUpdate(nextProps) {
-    return nextProps.value !== this.refs.editor.innerHTML;
+    return this.state.scribeElement !== null && nextProps.value !== this.state.scribeElement.innerHTML;
   }
 
   onContentChange = () => {
-    const newContent = this.refs.editor.innerHTML;
+    const newContent = this.state.scribeElement.innerHTML;
     if (newContent !== this.props.value) {
       this.props.onUpdate(newContent);
     }
@@ -126,14 +144,15 @@ export class ScribeEditor extends React.Component {
     return (
         <div>
           { this.props.showToolbar === false ? null :
-            <div ref="toolbar" className="scribe__toolbar">
+            <div id={`scribe__toolbar-${this.uuid}`} className="scribe__toolbar">
               <button type="button" data-command-name="bold" className="scribe__toolbar__item">Bold</button>
               <button type="button" data-command-name="italic" className="scribe__toolbar__item">Italic</button>
               <button type="button" data-command-name="linkPrompt" className="scribe__toolbar__item">Link</button>
               <button type="button" data-command-name="unlink" className="scribe__toolbar__item">Unlink</button>
             </div>
           }
-          <div id={this.props.fieldName} ref="editor" className="scribe__editor"></div>
+
+          <div id={this.props.fieldName + this.uuid} className="scribe__editor"></div>
         </div>
   );
   }
