@@ -10,7 +10,7 @@ import play.api.Logger
 class Support(val wsClient: WSClient) extends Controller with PanDomainAuthActions {
 
   private val signer = new IAMSigner(
-    credentials = Config.capiPreviewCredentials.getCredentials,
+    credentialsProvider = Config.capiPreviewCredentials,
     awsRegion = Config.region.getName
   )
 

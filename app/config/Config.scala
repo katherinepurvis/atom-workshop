@@ -76,7 +76,7 @@ object Config extends AwsInstanceTags {
   val capiPreviewRole = config.getString("capi.previewRole")
   val capiPreviewCredentials: AWSCredentialsProvider = {
     new AWSCredentialsProviderChain(
-      //new ProfileCredentialsProvider("capi"),
+      new ProfileCredentialsProvider("capi"),
       new STSAssumeRoleSessionCredentialsProvider.Builder(capiPreviewRole, "capi").build()
     )
   }
