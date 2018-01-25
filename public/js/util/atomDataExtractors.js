@@ -18,6 +18,7 @@ export function getTitleForAtom(atom) {
         case ("guide"): return atom.title;
         case ("profile"): return atom.title;
         case ("timeline"): return atom.title;
+        case ("explainer"): return atom.data.explainer.title;
     }
 }
 

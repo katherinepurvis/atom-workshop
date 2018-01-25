@@ -72,15 +72,27 @@ export const timeline = {
   description: "A series of key events to help readers navigate an ongoing story"
 };
 
-export const allAtomTypes = [cta, recipe, storyQuestions, quiz, media, qa, guide, profile, timeline];
-export const workshopEditableAtomTypes = [cta, storyQuestions, recipe, qa, guide, profile, timeline];
+export const explainer = {
+  type: "explainer",
+  fullName: "Explainer Text",
+  description: "Edit legacy Explainer snippets - (creating new ones is not supported)",
+};
+
+export const allAtomTypes = [cta, recipe, storyQuestions, quiz, media, qa, guide, profile, timeline, explainer];
+export const workshopEditableAtomTypes = [cta, storyQuestions, recipe, qa, guide, profile, timeline, explainer];
 export const snippetAtomTypes = [qa, guide, profile, timeline];
+export const legacyAtomTypes = [explainer];
+
 export function getNonEditableAtomTypes() {
-   return allAtomTypes.filter((atomType) => workshopEditableAtomTypes.indexOf(atomType) === -1);
+   return allAtomTypes.filter((atomType) => {
+     return !workshopEditableAtomTypes.includes(atomType) && !legacyAtomTypes.includes(atomType);
+   });
 }
 
 export const editableNonSnippetAtomTypes =
-  workshopEditableAtomTypes.filter((atomType) => snippetAtomTypes.indexOf(atomType) === -1);
+  workshopEditableAtomTypes.filter((atomType) => {
+    return !snippetAtomTypes.includes(atomType) && !legacyAtomTypes.includes(atomType);
+  });
 
 export function getAtomByType(typeString) {
   return allAtomTypes.find((atomData) => atomData.type.toLowerCase() === typeString.toLowerCase());
