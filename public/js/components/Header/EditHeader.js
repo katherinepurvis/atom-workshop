@@ -12,7 +12,7 @@ class EditHeader extends React.Component {
 
   static propTypes = {
     atom: atomPropType,
-    presence: PropTypes.object,
+    presence: PropTypes.bool,
     saveState: PropTypes.object,
     atomActions: PropTypes.shape({
       publishAtom: PropTypes.func.isRequired,
@@ -80,7 +80,7 @@ class EditHeader extends React.Component {
     return (
         <div className="toolbar__container">
           {this.props.presence ? <PresenceIndicator presence={this.props.presence} /> : false}
-            <button disabled={atomPublishState.id === 'published'} type="button" onClick={this.publishAtom} className="btn btn--green btn--margin">Publish</button>
+          <button disabled={atomPublishState.id === 'published'} type="button" onClick={this.publishAtom} className="btn btn--green btn--margin">Publish</button>
 
           {this.renderTakeDownButton(atomPublishState)}
 

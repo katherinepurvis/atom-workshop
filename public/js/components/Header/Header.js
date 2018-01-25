@@ -10,6 +10,7 @@ class Header extends React.Component {
 
   static propTypes = {
     atom: atomPropType,
+    presence: PropTypes.bool,
     config: PropTypes.shape({
       isEmbedded: PropTypes.bool.isRequired
     }),
@@ -33,7 +34,7 @@ class Header extends React.Component {
               </Link>
             </header>
           : false}
-          {this.props.isFindPage ? <BrowseHeader /> : <EditHeader atom={this.props.atom} />}
+          {this.props.isFindPage ? <BrowseHeader /> : <EditHeader atom={this.props.atom} presence={this.props.presence}/>}
         </div>
     );
   }
