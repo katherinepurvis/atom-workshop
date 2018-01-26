@@ -35,6 +35,14 @@ class Migration(
   val atomWorkshopDB: AtomWorkshopDBAPI) 
   extends Controller with PanDomainAuthActions {
 
+  
+  // ------------------------------------------------------------
+  // Public API
+  def migrateExplainers() = AuthAction { req =>
+    Await.result(migrate(req.user)(1), Duration.Inf)
+    Ok("Done!")
+  }
+
   // ------------------------------------------------------------
   // CAPI auth stuff
   private val signer = new IAMSigner(
@@ -57,14 +65,8 @@ class Migration(
       })
       .map(ThriftDeserializer.deserialize[AtomsResponse](_, AtomsResponse))
   }
+
   // ------------------------------------------------------------
-
-
-  def migrateExplainers() = AuthAction { req =>
-    Await.result(migrate(req.user)(1), Duration.Inf)
-    Ok("Done!")
-  }
-
   // Here's how it works:
   // - query CAPI for all live explainers
   // - insert each result in the DynamoDB preview and live stores
