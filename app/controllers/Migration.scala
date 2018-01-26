@@ -1,25 +1,19 @@
 package controllers
 // ------------------------------------------------------------
 import cats.syntax.either._
-import com.gu.editorial.permissions.client.{Permission, PermissionGranted, PermissionsUser}
-import com.gu.pandomainauth.action.UserRequest
 import config.Config
 import db.AtomDataStores._
 import db.AtomWorkshopDBAPI
 import play.api.libs.concurrent.Execution.Implicits._
-import models._
+import models.CreateAtomFields
 import play.api.Logger
 import play.api.libs.ws.WSClient
 import play.api.mvc.{ActionBuilder, Controller, Request, Result}
 
 import services.AtomPublishers._
-import services.AtomWorkshopPermissionsProvider
-import util.AtomLogic._
 import util.AtomUpdateOperations._
 import util.AtomElementBuilders
-import play.api.mvc.Action
 
-import config.Config
 import com.gu.contentapi.client.IAMSigner
 import com.gu.contentapi.client.model.v1.AtomsResponse
 import com.gu.contentapi.client.thrift.ThriftDeserializer
