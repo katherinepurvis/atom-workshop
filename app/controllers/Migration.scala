@@ -1,5 +1,5 @@
 package controllers
-
+// ------------------------------------------------------------
 import cats.syntax.either._
 import com.gu.editorial.permissions.client.{Permission, PermissionGranted, PermissionsUser}
 import com.gu.pandomainauth.action.UserRequest
@@ -19,23 +19,49 @@ import util.AtomUpdateOperations._
 import util.AtomElementBuilders
 import play.api.mvc.Action
 
-import com.gu.contentapi.client.model.AtomsQuery
+import config.Config
+import com.gu.contentapi.client.IAMSigner
 import com.gu.contentapi.client.model.v1.AtomsResponse
-import com.gu.contentapi.client.GuardianContentClient
+import com.gu.contentapi.client.thrift.ThriftDeserializer
 import com.gu.contentatom.thrift.{AtomType, AtomData}
 import com.gu.pandomainauth.model.{User => PandaUser}
 
 import scala.concurrent.{Await, Future}
 import scala.concurrent.duration.Duration
+// ------------------------------------------------------------
 
 class Migration(
   val wsClient: WSClient, 
-  val capiClient: GuardianContentClient,
   val atomWorkshopDB: AtomWorkshopDBAPI) 
   extends Controller with PanDomainAuthActions {
-  
+
+  // ------------------------------------------------------------
+  // CAPI auth stuff
+  private val signer = new IAMSigner(
+    credentialsProvider = Config.capiPreviewCredentials,
+    awsRegion = Config.region.getName
+  )
+
+  private def getHeaders(url: String): Seq[(String,String)] = 
+    signer.addIAMHeaders(headers = Map.empty, url = url).toSeq
+
+  private def queryCapi(pageno: Int): Future[AtomsResponse] = {
+    val url = s"${Config.capiPreviewIAMUrl}/atoms?type=explainer&page=$pageno"
+    wsClient
+      .url(url)
+      .withHeaders(getHeaders(url): _*)
+      .get
+      .flatMap(response => response.status match {
+        case 200 => Future.successful(response.bodyAsBytes.toArray)
+        case _ => Future.failed(new Throwable(s"CAPI error response: ${response.status} / ${response.body}"))
+      })
+      .map(ThriftDeserializer.deserialize[AtomsResponse](_, AtomsResponse))
+  }
+  // ------------------------------------------------------------
+
+
   def migrateExplainers() = AuthAction { req =>
-    Await.result(unfoldM(migrate(req.user, 1)), Duration.Inf)
+    Await.result(migrate(req.user)(1), Duration.Inf)
     Ok("Done!")
   }
 
@@ -51,12 +77,6 @@ class Migration(
         else
           Future.successful(())
       }
-
-  // Ask CAPI for a page of explainer atoms
-  private def queryCapi(pageNo: Int): Future[AtomsResponse] = {
-    val query = AtomsQuery().types("explainer").page(pageNo)
-    capiClient.getResponse(query)
-  }
 
   // Publish atoms in the atom workshop datastores
   private def insertIntoDynamo(user: PandaUser)(ar: AtomsResponse): Future[Int] = {
