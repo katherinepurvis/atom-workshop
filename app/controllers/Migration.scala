@@ -48,7 +48,7 @@ class Migration(
     signer.addIAMHeaders(headers = Map.empty, url = url).toSeq
 
   private def queryCapi(pageno: Int): Future[AtomsResponse] = {
-    val url = s"${Config.capiPreviewIAMUrl}/atoms?type=explainer&page=$pageno"
+    val url = s"${Config.capiPreviewIAMUrl}/atoms?format=thrift&type=explainer&page=$pageno"
     wsClient
       .url(url)
       .withHeaders(getHeaders(url): _*)
