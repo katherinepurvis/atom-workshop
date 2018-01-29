@@ -48,3 +48,6 @@ DELETE  /api/live/:atomType/:id/custom/notifications controllers.AtomActions.del
 
 # Explainer migration
 GET     /migration/explainers                    controllers.Migration.migrateExplainers()
+
+# Commons divisions
+GET     /commonsdivisions                        controllers.App.index(placeholder = "")
