@@ -75,7 +75,7 @@ class Migration(
 
   // Publish atoms in the atom workshop datastores
   private def insertIntoDynamo(user: PandaUser)(resp: JsValue): Future[Int] = {
-    (resp \ "results").asOpt[Array[JsValue]].foreach { results =>
+    (resp \ "response" \ "results").asOpt[Array[JsValue]].foreach { results =>
       for {
         result <- results
       } yield {
@@ -94,6 +94,6 @@ class Migration(
       }
     }
 
-    Future.successful((resp \ "pages").as[Int])
+    Future.successful((resp \ "response" \ "pages").as[Int])
   }
 }
