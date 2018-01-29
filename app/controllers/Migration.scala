@@ -48,6 +48,7 @@ class Migration(
     signer.addIAMHeaders(headers = Map.empty, url = url).toSeq
 
   private def queryCapi(pageno: Int): Future[JsValue] = {
+    Logger.info(s"Querying page ${pageno}")
     val url = s"${Config.capiPreviewIAMUrl}/atoms?types=explainer&page=$pageno"
     wsClient
       .url(url)
@@ -55,7 +56,10 @@ class Migration(
       .get
       .flatMap(response => response.status match {
         case 200 => Future.successful(response.json)
-        case _ => Future.failed(new Throwable(s"CAPI error response: ${response.status} / ${response.body}"))
+        case _ => {
+          Logger.error(s"CAPI error response: ${response.status} / ${response.body}")
+          Future.failed(new Throwable(s"CAPI error response: ${response.status} / ${response.body}"))
+        }
       })
   }
 
@@ -67,6 +71,7 @@ class Migration(
     queryCapi(pageNo)
       .flatMap(insertIntoDynamo(user))
       .flatMap { totalPages: Int =>
+        Logger.info(s"Processed $pageNo out of $totalPages pages")
         if (pageNo < totalPages)
           migrate(user)(pageNo + 1)
         else
@@ -76,6 +81,7 @@ class Migration(
   // Publish atoms in the atom workshop datastores
   private def insertIntoDynamo(user: PandaUser)(resp: JsValue): Future[Int] = {
     (resp \ "response" \ "results").asOpt[Array[JsValue]].foreach { results =>
+      Logger.info(s"We've got ${results.length} records to insert...")
       for {
         result <- results
       } yield {
@@ -92,6 +98,7 @@ class Migration(
           _ <- atomWorkshopDB.updateAtom(previewDataStore, updatedAtom)
         } yield ()
       }
+      Logger.info(s"... aaaand Done!")
     }
 
     Future.successful((resp \ "response" \ "pages").as[Int])
