@@ -18,6 +18,7 @@ import util.AtomElementBuilders
 import com.gu.contentapi.client.IAMSigner
 import com.gu.contentapi.client.model.v1.AtomsResponse
 import com.gu.contentatom.thrift.{AtomType, AtomData}
+import com.gu.contentatom.thrift.atom.explainer._
 import com.gu.pandomainauth.model.{User => PandaUser}
 
 import scala.concurrent.{Await, Future}
@@ -91,7 +92,13 @@ class Migration(
           defaultHtml = (result \ "defaultHtml").asOpt[String],
           commissioningDesks = (result \ "commissioningDesks").asOpt[List[String]].getOrElse(Nil)
         )
-        val atomToCreate = AtomElementBuilders.buildDefaultAtom(AtomType.Explainer, user, Some(atomFields))
+        val atomToCreate = AtomElementBuilders
+          .buildDefaultAtom(AtomType.Explainer, user, Some(atomFields))
+          .copy(data = AtomData.Explainer(ExplainerAtom(
+            atomFields.title.getOrElse("-"), 
+            (result \ "data" \ "explainer" \ "body").asOpt[String].getOrElse("-"), 
+            DisplayType.Flat
+          )))
         for {
           atom <- atomWorkshopDB.createAtom(previewDataStore, AtomType.Explainer, user, atomToCreate)
           updatedAtom <- atomWorkshopDB.publishAtom(publishedDataStore, user, updateTopLevelFields(atom, user, publish=true))
