@@ -4,6 +4,9 @@ import cats.syntax.either._
 import config.Config
 import db.AtomDataStores._
 import db.AtomWorkshopDBAPI
+import io.circe._
+import io.circe.syntax._
+import io.circe.generic.auto._
 import play.api.libs.concurrent.Execution.Implicits._
 import models.CreateAtomFields
 import play.api.Logger
@@ -16,8 +19,8 @@ import util.AtomElementBuilders
 
 import com.gu.contentapi.client.IAMSigner
 import com.gu.contentapi.client.model.v1.AtomsResponse
-import com.gu.contentapi.client.thrift.ThriftDeserializer
 import com.gu.contentatom.thrift.{AtomType, AtomData}
+import com.gu.fezziwig.CirceScroogeMacros._
 import com.gu.pandomainauth.model.{User => PandaUser}
 
 import scala.concurrent.{Await, Future}
@@ -48,16 +51,19 @@ class Migration(
     signer.addIAMHeaders(headers = Map.empty, url = url).toSeq
 
   private def queryCapi(pageno: Int): Future[AtomsResponse] = {
-    val url = s"${Config.capiPreviewIAMUrl}/atoms?format=thrift&types=explainer&page=$pageno"
+    val url = s"${Config.capiPreviewIAMUrl}/atoms?types=explainer&page=$pageno"
     wsClient
       .url(url)
       .withHeaders(getHeaders(url): _*)
       .get
       .flatMap(response => response.status match {
-        case 200 => Future.successful(response.bodyAsBytes.toArray)
+        case 200 => Future.successful(response.body.asJson)
         case _ => Future.failed(new Throwable(s"CAPI error response: ${response.status} / ${response.body}"))
       })
-      .map(ThriftDeserializer.deserialize[AtomsResponse](_, AtomsResponse))
+      .flatMap(_.as[AtomsResponse].fold(
+        Future.successful(_),
+        _ => Future.failed(new Throwable(s"CAPI json error"))
+      ))
   }
 
   // ------------------------------------------------------------
