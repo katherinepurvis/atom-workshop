@@ -61,8 +61,8 @@ class Migration(
         case _ => Future.failed(new Throwable(s"CAPI error response: ${response.status} / ${response.body}"))
       })
       .flatMap(_.as[AtomsResponse].fold(
-        Future.successful(_),
-        _ => Future.failed(new Throwable(s"CAPI json error"))
+        e => Future.failed(new Throwable(s"CAPI json error: ${e}")),
+        Future.successful(_)
       ))
   }
 
