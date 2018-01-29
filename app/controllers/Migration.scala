@@ -80,6 +80,7 @@ class Migration(
       result <- ar.results
     } yield {
       val atomFields = CreateAtomFields(
+        id = Some(result.id),
         title = result.data match {
           case a: AtomData.Explainer => Some(a.explainer.title)
           case _ => None
