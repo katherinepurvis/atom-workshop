@@ -5,8 +5,9 @@ import com.gu.contentatom.thrift.{Atom, AtomData, EmailProvider, NotificationPro
 import com.gu.exact_target_lists.ExactTargetLists
 import config.Config
 import models.{AtomAPIError, NotificationListsError}
+import com.amazonaws.services.lambda.AWSLambdaClient
 
-object NotificationLists {
+class NotificationLists(lambda: AWSLambdaClient) {
 
   private val exactTargetLists: Either[NotificationListsError, ExactTargetLists] = {
     Config.exactTargetConfig match {

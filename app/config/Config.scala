@@ -4,6 +4,7 @@ import com.amazonaws.auth.profile.ProfileCredentialsProvider
 import com.amazonaws.auth.{AWSCredentialsProvider, AWSCredentialsProviderChain, InstanceProfileCredentialsProvider, STSAssumeRoleSessionCredentialsProvider}
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient
 import com.amazonaws.services.kinesis.AmazonKinesisClient
+import com.amazonaws.services.lambda.AWSLambdaClient
 import com.gu.cm.{Mode, Configuration => ConfigurationMagic}
 import com.gu.exact_target_lists.ExactTargetConfig
 import services.{AtomWorkshopPermissionsProvider, AwsInstanceTags}
@@ -85,6 +86,12 @@ object Config extends AwsInstanceTags {
 
   val kinesisClient = region.createClient(
     classOf[AmazonKinesisClient],
+    awsCredentialsProvider,
+    null
+  )
+
+  val lambdaClient = region.createClient(
+    classOf[AWSLambdaClient],
     awsCredentialsProvider,
     null
   )

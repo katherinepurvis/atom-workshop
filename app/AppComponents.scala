@@ -1,6 +1,6 @@
 import com.gu.atom.play.ReindexController
 import config.LogConfig
-import config.Config.{config, permissions}
+import config.Config.{config, permissions, lambdaClient}
 import db.AtomDataStores._
 import db.AtomWorkshopDB
 import db.ReindexDataStores._
@@ -22,9 +22,11 @@ class AppComponents(context: Context)
   lazy val loginController = new controllers.Login(wsClient)
   lazy val healthcheckController = new controllers.Healthcheck()
   lazy val supportController = new controllers.Support(wsClient)
-  lazy val atomActionsController = new controllers.AtomActions(wsClient, atomWorkshopDB)
+  lazy val atomActionsController = new controllers.AtomActions(wsClient, atomWorkshopDB, notificationLists)
 
   lazy val reindex = new ReindexController(previewDataStore, publishedDataStore, reindexPreview, reindexPublished, Configuration(config), actorSystem)
 
   lazy val atomWorkshopDB = new AtomWorkshopDB()
+
+  lazy val notificationLists = new NotificationLists(lambdaClient)
 }

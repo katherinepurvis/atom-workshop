@@ -15,13 +15,16 @@ import io.circe._
 import com.gu.fezziwig.CirceScroogeMacros._
 import com.gu.pandomainauth.action.UserRequest
 
-class AtomActions(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI) extends Controller with PanDomainAuthActions {
+class AtomActions(
+  val wsClient: WSClient, 
+  val atomWorkshopDB: AtomWorkshopDBAPI, 
+  val notificationLists: NotificationLists) extends Controller with PanDomainAuthActions {
 
   def createNotificationList(atomType: String, id: String) = AuthAction { req =>
     APIResponse {
       for {
         currentDraftAtom <- getCurrentDraftAtom(atomType, id)
-        postHookAtom <- NotificationLists.createNotificationList(currentDraftAtom)
+        postHookAtom <- notificationLists.createNotificationList(currentDraftAtom)
         updatedAtom <- publishUpdatedAtom(postHookAtom, req)
       } yield updatedAtom
     }
@@ -31,6 +34,12 @@ class AtomActions(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI)
     APIResponse {
       for {
         currentDraftAtom <- getCurrentDraftAtom(atomType, id)
+        postHookAtom <- notificationLists.deleteNotificationList(currentDraftAtom)
+        updatedAtom <- publishUpdatedAtom(postHookAtom, req)
+      } yield updatedAtom
+    }
+  }
+
   def sendNotificationList(atomType: String, id: String) = AuthAction { req =>
     APIResponse {
       for {
