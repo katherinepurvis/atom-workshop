@@ -101,4 +101,14 @@ export default {
           credentials: 'same-origin'
         }
       )
+  ,
+
+  sendNotificationList: (atom) =>
+      pandaFetch(
+        `/api/live/${atom.atomType}/${atom.id}/custom/notifications/send`,
+        {
+          method: 'post',
+          credentials: 'same-origin'
+        }
+      )
 };
