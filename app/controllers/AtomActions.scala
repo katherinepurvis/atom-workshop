@@ -31,7 +31,11 @@ class AtomActions(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI)
     APIResponse {
       for {
         currentDraftAtom <- getCurrentDraftAtom(atomType, id)
-        postHookAtom <- NotificationLists.deleteNotificationList(currentDraftAtom)
+  def sendNotificationList(atomType: String, id: String) = AuthAction { req =>
+    APIResponse {
+      for {
+        currentDraftAtom <- getCurrentDraftAtom(atomType, id)
+        postHookAtom <- notificationLists.sendNotificationList(currentDraftAtom)
         updatedAtom <- publishUpdatedAtom(postHookAtom, req)
       } yield updatedAtom
     }

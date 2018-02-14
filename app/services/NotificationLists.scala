@@ -41,6 +41,8 @@ object NotificationLists {
     case _ => Either.right(atom)
   }
 
+  def sendNotificationList(atom: Atom): Either[AtomAPIError, Atom] = Either.right(atom)
+
   private def createNotificationList(title: String, id: String): Either[AtomAPIError, Int] =
     exactTargetLists.flatMap(_.createExactTargetList(title, Some(id))
       .left.map(e => NotificationListsError(e.message)))

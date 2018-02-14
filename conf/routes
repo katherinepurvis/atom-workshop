@@ -45,6 +45,7 @@ GET     /reindex-publish                         com.gu.atom.play.ReindexControl
 # Custom atom actions
 POST    /api/live/:atomType/:id/custom/notifications controllers.AtomActions.createNotificationList(atomType: String, id: String)
 DELETE  /api/live/:atomType/:id/custom/notifications controllers.AtomActions.deleteNotificationList(atomType: String, id: String)
+POST    /api/live/:atomType/:id/custom/notifications/send controllers.AtomActions.sendNotificationList(atomType: String, id: String)
 
 # Explainer migration
 GET     /migration/explainers                    controllers.Migration.migrateExplainers()
