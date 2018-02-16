@@ -14,3 +14,4 @@ case class NotificationListsError(message: String) extends AtomAPIError(s"Notifi
 case object UnexpectedExceptionError extends AtomAPIError("Atom workshop hit an exception it didn't expect. Please try again!")
 case object BodyRequiredForUpdateError extends AtomAPIError("You must provide a JSON representation of the the new version of the atom you wish to update in the body of your request")
 case object KinesisPublishingFailed extends AtomAPIError("Failed to publish to Content API via kinesis")
+case class LambdaExecutionError(name: String, message: String) extends AtomAPIError("Lambda invocation failed")

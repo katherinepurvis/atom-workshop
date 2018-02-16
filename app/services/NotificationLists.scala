@@ -4,10 +4,15 @@ import cats.implicits._
 import com.gu.contentatom.thrift.{Atom, AtomData, EmailProvider, NotificationProviders}
 import com.gu.exact_target_lists.ExactTargetLists
 import config.Config
-import models.{AtomAPIError, NotificationListsError}
+import io.circe._
+import io.circe.syntax._
+import models._
 import com.amazonaws.services.lambda.AWSLambdaClient
+import com.amazonaws.services.lambda.model.{InvokeRequest, InvocationType}
 
 class NotificationLists(lambda: AWSLambdaClient) {
+  import Answer._
+  import QuestionAnswers._
 
   private val exactTargetLists: Either[NotificationListsError, ExactTargetLists] = {
     Config.exactTargetConfig match {
@@ -42,7 +47,36 @@ class NotificationLists(lambda: AWSLambdaClient) {
     case _ => Either.right(atom)
   }
 
-  def sendNotificationList(atom: Atom): Either[AtomAPIError, Atom] = Either.right(atom)
+  def sendNotificationList(atom: Atom): Either[AtomAPIError, Atom] = atom.data match {
+    case AtomData.Storyquestions(data) => {
+      val result = for {
+        userQuestions <- data.editorialQuestions
+        questionSet <- userQuestions.headOption //We only use the first questionSet in the atom
+      } yield {
+        val results = for {
+          question <- questionSet.questions
+          if question.answers.nonEmpty
+        } yield {
+          val qa = QuestionAnswers.fromThrift(atom.id, question)
+          val request = new InvokeRequest()
+            .withClientContext(s"${Config.appName}-${Config.stage}")
+            .withFunctionName(Config.lambdaFunctionName)
+            .withInvocationType(InvocationType.Event)
+            .withPayload(qa.asJson.toString)
+          lambda.invoke(request)
+        }
+  
+        if (results.forall(_.getStatusCode == 200))
+          Either.right(atom)
+        else
+          Either.left(LambdaExecutionError(Config.lambdaFunctionName, "Unable to trigger email notifications"))
+      }
+
+      result.getOrElse(Either.right(atom))
+    }
+
+    case _ => Either.right(atom)
+  }
 
   private def createNotificationList(title: String, id: String): Either[AtomAPIError, Int] =
     exactTargetLists.flatMap(_.createExactTargetList(title, Some(id))
