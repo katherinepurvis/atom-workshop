@@ -96,6 +96,10 @@ object Config extends AwsInstanceTags {
     null
   )
 
+  // Not sure if we need a full config or if we can just inline the name
+  // of the function here
+  val lambdaFunctionName = config.getString("aws.lambda.notifications.name")
+
   val permissions = new AtomWorkshopPermissionsProvider(stage, awsCredentialsProvider)
 
   val exactTargetConfig: Option[ExactTargetConfig] =
