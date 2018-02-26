@@ -110,5 +110,14 @@ export default {
           method: 'post',
           credentials: 'same-origin'
         }
+      ),
+
+  hasNotificationBeenSent: (atomId, questionId) =>
+      pandaFetch(
+        `/api/live/storyquestions/${atomId}/${questionId}/notifications/sent`,
+        {
+          method: 'get',
+          credentials: 'same-origin'
+        }
       )
 };
