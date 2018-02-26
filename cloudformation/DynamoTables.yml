@@ -19,9 +19,6 @@ Parameters:
       - DEV
       - CODE
       - PROD
-  ReaderQuestionsDynamoRole:
-    Type: String
-    Description: ARN of the Readers Questions DynamoDB read role
 Resources:
   AtomWorkshopPreviewDynamoTable:
     Type: AWS::DynamoDB::Table
@@ -57,18 +54,6 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: !Ref LiveReadCapacity
         WriteCapacityUnits: !Ref LiveWriteCapacity
-  AssumeReaderQuestionsDynamoRolePolicy:
-    Type: AWS::IAM::Policy
-    Properties:
-      PolicyName: assume-rq-db-role
-      PolicyDocument:
-        Statement:
-        - Effect: Allow
-          Action: sts:AssumeRole
-          Resource:
-            Ref: ReaderQuestionsDynamoRole
-      Roles:
-      - Ref: Role
 Outputs:
   PreviewDynamoTableOut:
     Description: Table name for Preview dynamo table
