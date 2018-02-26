@@ -7,13 +7,27 @@ class NotificationList extends Component {
     actions: PropTypes.shape({
       createNotificationList: PropTypes.func.isRequired,
       deleteNotificationList: PropTypes.func.isRequired,
-      sendNotificationList: PropTypes.func.isRequired
+      sendNotificationList: PropTypes.func.isRequired,
+      hasNotificationBeenSent: PropTypes.func.isRequired
     }).isRequired,
     atom: atomPropType
   }
 
   constructor(props) {
     super(props);
+    this.state = { notificationSent: false };
+  }
+
+  componentDidMount() {
+    if (this.props.atom.data.storyquestions.editorialQuestions) {
+      const qs = this.props.atom.data.storyquestions.editorialQuestions
+        .filter(qs => qs.questions.some(q => q.answers.length > 0))
+        .map(qs => qs.questions.find(q => q.answers.length > 0));
+      if (qs.length) {
+        this.props.actions.hasNotificationBeenSent(this.props.atom.atomId, qs[0].questionId)
+          .then(sent => this.setState({ notificationSent: !!sent }));
+      }
+    }
   }
 
   getListData(atom) {
@@ -36,7 +50,7 @@ class NotificationList extends Component {
     const listData = this.getListData(this.props.atom);
 
     const notificationState = listData ?
-      'CREATED' :
+      (this.state.sent ? 'END' : 'CREATED') :
       'START';
 
     return (
@@ -91,6 +105,7 @@ import { bindActionCreators } from 'redux';
 import * as createNotificationList from '../../actions/AtomActions/createNotificationList.js';
 import * as deleteNotificationList from '../../actions/AtomActions/deleteNotificationList.js';
 import * as sendNotificationList from '../../actions/AtomActions/sendNotificationList.js';
+import * as hasNotificationBeenSent from '../../actions/AtomActions/hasNotificationBeenSent.js';
 
 function mapStateToProps(state) {
   return {
@@ -103,7 +118,8 @@ function mapDispatchToProps(dispatch) {
     actions: bindActionCreators(Object.assign({}, 
       createNotificationList, 
       deleteNotificationList, 
-      sendNotificationList
+      sendNotificationList,
+      hasNotificationBeenSent
     ), dispatch)
   };
 }
