@@ -56,6 +56,7 @@ object Config extends AwsInstanceTags {
 
   val previewDynamoTableName = config.getString("aws.dynamo.preview.tableName")
   val publishedDynamoTableName = config.getString("aws.dynamo.live.tableName")
+  val notificationsDynamoTableName = config.getString("aws.dynamo.notifications.tableName")
 
   val gridUrl = config.getString("grid.url")
   val composerUrl = config.getString("composer.url")

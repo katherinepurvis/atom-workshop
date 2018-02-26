@@ -11,6 +11,7 @@ libraryDependencies ++= Seq(
   "com.amazonaws"            %  "aws-java-sdk-core"            % awsVersion,
   "com.amazonaws"            %  "aws-java-sdk-ec2"             % awsVersion,
   "com.amazonaws"            %  "aws-java-sdk-lambda"          % awsVersion,
+  "com.amazonaws"            %   "aws-java-sdk-dynamodb"       % awsVersion,
   "com.gu"                   %% "atom-manager-play"            % atomLibVersion,
   "com.gu"                   %% "atom-publisher-lib"           % atomLibVersion,
   "com.gu"                   %% "editorial-permissions-client" % "0.7",
