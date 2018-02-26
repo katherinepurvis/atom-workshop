@@ -4,6 +4,7 @@ import cats.syntax.either._
 import com.gu.contentatom.thrift.{Atom, EventType}
 import db.AtomDataStores._
 import db.AtomWorkshopDBAPI
+import db.NotificationsDB
 import models._
 import play.api.libs.ws.WSClient
 import play.api.mvc.Controller
@@ -18,6 +19,7 @@ import com.gu.pandomainauth.action.UserRequest
 class AtomActions(
   val wsClient: WSClient, 
   val atomWorkshopDB: AtomWorkshopDBAPI, 
+  val notificationsDB: NotificationsDB,
   val notificationLists: NotificationLists) extends Controller with PanDomainAuthActions {
 
   def createNotificationList(atomType: String, id: String) = AuthAction { req =>
