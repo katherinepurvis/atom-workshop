@@ -48,7 +48,7 @@ class NotificationList extends Component {
               <button className="btn" onClick={this.createNotificationList.bind(this)}>
                 Create List
               </button>
-            ) : this.props.notificationState === 'CREATED' ? (
+            ) : this.props.notificationState === 'CREATED' && listData ? (
               <div>
                 <div className="listId">
                   <b>{listData.email.name} list ID: </b>
@@ -61,7 +61,7 @@ class NotificationList extends Component {
                   </button>
                 </p>
               </div>
-            ) : this.props.notificationState === 'END' (
+            ) : this.props.notificationState === 'END' && listData ? (
               <div>
                 <div className="listId">
                   <b>{listData.email.name} list ID: </b>
@@ -77,7 +77,7 @@ class NotificationList extends Component {
                   </small>
                 </p>
               </div>
-            )}
+            ) : ("")}
           </div>
         </div>
       </div>
