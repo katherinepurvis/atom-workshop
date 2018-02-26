@@ -1,9 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import {atomPropType} from '../../constants/atomPropType';
-
-let CREATE = 'create';
-let SEND = 'send';
-let SENT = 'sent';
+import {
+  notificationStateType
+} from '../../constants/notificationStateType';
 
 class NotificationList extends Component {
 
@@ -13,7 +12,8 @@ class NotificationList extends Component {
       deleteNotificationList: PropTypes.func.isRequired,
       sendNotificationList: PropTypes.func.isRequired
     }).isRequired,
-    atom: atomPropType
+    atom: atomPropType,
+    notificationState: notificationStateType
   }
 
   constructor(props) {
@@ -38,37 +38,46 @@ class NotificationList extends Component {
 
   render() {
     const listData = this.getListData(this.props.atom);
-    const state = CREATE;
 
     return (
       <div className="atom__actions">
         <div className="form">
           <div className="form__row">
             <h3 className="form__subheading">Email notification list</h3>
-            {state === CREATE ? (
+            {this.props.notificationState === 'START' ? (
               <button className="btn" onClick={this.createNotificationList.bind(this)}>
                 Create List
               </button>
-            ) : state === SEND ? (
+            ) : this.props.notificationState === 'CREATED' ? (
               <div>
                 <div className="listId">
                   <b>{listData.email.name} list ID: </b>
                   {listData.email.listId}
                 </div>
-                <button className="btn btn--red" onClick={this.deleteNotificationList.bind(this)}>
-                  Delete List
-                </button>
-                <div>
-                  <p>
-                    Send answer directly to all the readers that asked the question:
-                    <button className="btn" onClick={this.sendNotificationList.bind(this)}>
-                      Send
-                    </button>
-                  </p>
-                </div>
+                <p>
+                  Send your answer directly to all the readers who wanted to see it:
+                  <button className="btn" onClick={this.sendNotificationList.bind(this)}>
+                    Send
+                  </button>
+                </p>
               </div>
-            ) : ("")
-            }
+            ) : this.props.notificationState === 'END' (
+              <div>
+                <div className="listId">
+                  <b>{listData.email.name} list ID: </b>
+                  {listData.email.listId}
+                </div>
+                <p>
+                  <button className="btn btn--red" onClick={this.deleteNotificationList.bind(this)}>
+                    Delete List
+                  </button>
+                  <small>
+                    It may take a few minutes for the email to be sent out, so it is worth
+                    not pushing that button <em>right after</em> having hit "Send".
+                  </small>
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
