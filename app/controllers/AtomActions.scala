@@ -52,6 +52,12 @@ class AtomActions(
     }
   }
 
+  def hasNotificationBeenSent(atomId: String, questionId: String) = AuthAction { req =>
+    APIResponse {
+      notificationsDB.getNotification(atomId, questionId)
+    }
+  }
+
   private def getCurrentDraftAtom(atomType: String, id: String): Either[AtomAPIError, Atom] = for {
     atomType <- validateAtomType(atomType)
     currentDraftAtom <- atomWorkshopDB.getAtom(previewDataStore, atomType, id)
