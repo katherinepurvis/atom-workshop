@@ -27,7 +27,7 @@ function errorSendingNotificationList(error) {
   };
 }
 
-export function deleteNotificationList(atom) {
+export function sendNotificationList(atom) {
   return dispatch => {
     dispatch(requestAtomSendNotificationList(atom));
     return AtomsApi.sendNotificationList(atom)
