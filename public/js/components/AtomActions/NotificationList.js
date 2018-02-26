@@ -1,8 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import {atomPropType} from '../../constants/atomPropType';
-import {
-  notificationStateType
-} from '../../constants/notificationStateType';
 
 class NotificationList extends Component {
 
@@ -12,8 +9,7 @@ class NotificationList extends Component {
       deleteNotificationList: PropTypes.func.isRequired,
       sendNotificationList: PropTypes.func.isRequired
     }).isRequired,
-    atom: atomPropType,
-    notificationState: notificationStateType
+    atom: atomPropType
   }
 
   constructor(props) {
@@ -39,16 +35,20 @@ class NotificationList extends Component {
   render() {
     const listData = this.getListData(this.props.atom);
 
+    const notificationState = listData ?
+      'CREATED' :
+      'START';
+
     return (
       <div className="atom__actions">
         <div className="form">
           <div className="form__row">
             <h3 className="form__subheading">Email notification list</h3>
-            {this.props.notificationState === 'START' ? (
+            {notificationState === 'START' ? (
               <button className="btn" onClick={this.createNotificationList.bind(this)}>
                 Create List
               </button>
-            ) : this.props.notificationState === 'CREATED' && listData ? (
+            ) : notificationState === 'CREATED' ? (
               <div>
                 <div className="listId">
                   <b>{listData.email.name} list ID: </b>
@@ -61,7 +61,7 @@ class NotificationList extends Component {
                   </button>
                 </p>
               </div>
-            ) : this.props.notificationState === 'END' && listData ? (
+            ) : notificationState === 'END' ? (
               <div>
                 <div className="listId">
                   <b>{listData.email.name} list ID: </b>
