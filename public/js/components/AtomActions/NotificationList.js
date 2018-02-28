@@ -21,7 +21,7 @@ class NotificationList extends Component {
 
     this.state = {
       answered,
-      listData: atom.data.storyquestions.notifications,
+      listData: this.props.atom.data.storyquestions.notifications,
       notificationSent: false
     };
   }
@@ -80,15 +80,15 @@ class NotificationList extends Component {
             ) : notificationState === 'CREATED' ? (
               <div>
                 <div className="listId">
-                  <b>{listData.email.name} list ID: </b>
-                  {listData.email.listId}
+                  <b>{this.state.listData.email.name} list ID: </b>
+                    {this.state.listData.email.listId}
                 </div>
               </div>
             ) : notificationState === 'ANSWERED' ? (
               <div>
                 <div className="listId">
-                  <b>{listData.email.name} list ID: </b>
-                  {listData.email.listId}
+                  <b>{this.state.listData.email.name} list ID: </b>
+                  {this.state.listData.email.listId}
                 </div>
                 <p>
                   Send your answer directly to all the readers who wanted to see it:
@@ -100,8 +100,8 @@ class NotificationList extends Component {
             ) : notificationState === 'SENDING' ? (
               <div>
                 <div className="listId">
-                  <b>{listData.email.name} list ID: </b>
-                  {listData.email.listId}
+                  <b>{this.state.listData.email.name} list ID: </b>
+                  {this.state.listData.email.listId}
                 </div>
                 <p>
                   <button className="btn btn--red" onClick={this.deleteNotificationList.bind(this)}>
