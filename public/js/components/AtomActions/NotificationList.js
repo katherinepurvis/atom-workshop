@@ -15,23 +15,25 @@ class NotificationList extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { notificationSent: false };
+
+    const answered = this.props.atom.data.storyquestions.editorialQuestions
+        .some(qs => qs.questions.some(q => q.answers.length > 0));
+
+    this.state = {
+      answered,
+      listData: atom.data.storyquestions.notifications,
+      notificationSent: false
+    };
   }
 
   componentDidMount() {
-    if (this.props.atom.data.storyquestions.editorialQuestions) {
+    if (this.state.answered) {
       const qs = this.props.atom.data.storyquestions.editorialQuestions
         .filter(qs => qs.questions.some(q => q.answers.length > 0))
         .map(qs => qs.questions.find(q => q.answers.length > 0));
-      if (qs.length) {
-        this.props.actions.hasNotificationBeenSent(this.props.atom.atomId, qs[0].questionId)
-          .then(sent => this.setState({ notificationSent: !!sent }));
-      }
+      this.props.actions.hasNotificationBeenSent(this.props.atom.atomId, qs[0].questionId)
+        .then(sent => this.setState({ notificationSent: !!sent }));
     }
-  }
-
-  getListData(atom) {
-    return (atom.data && atom.data.storyquestions && atom.data.storyquestions.notifications);
   }
 
   createNotificationList() {
@@ -47,11 +49,24 @@ class NotificationList extends Component {
   }
 
   render() {
-    const listData = this.getListData(this.props.atom);
-
-    const notificationState = listData ?
-      (this.state.sent ? 'END' : 'CREATED') :
-      'START';
+    let notificationState;
+    if (this.state.listData) {
+      if (this.state.answered) {
+        if (this.state.notificationSent) {
+          notificationState = 'SENDING';
+        } else {
+          notificationState = 'ANSWERED';
+        }
+      } else {
+        notificationState = 'CREATED';
+      }
+    } else {
+      if (this.state.notificationSent) {
+        notificationState = 'END';
+      } else {
+        notificationState = 'START';
+      }
+    }
 
     return (
       <div className="atom__actions">
@@ -68,6 +83,13 @@ class NotificationList extends Component {
                   <b>{listData.email.name} list ID: </b>
                   {listData.email.listId}
                 </div>
+              </div>
+            ) : notificationState === 'ANSWERED' ? (
+              <div>
+                <div className="listId">
+                  <b>{listData.email.name} list ID: </b>
+                  {listData.email.listId}
+                </div>
                 <p>
                   Send your answer directly to all the readers who wanted to see it:
                   <button className="btn" onClick={this.sendNotificationList.bind(this)}>
@@ -75,7 +97,7 @@ class NotificationList extends Component {
                   </button>
                 </p>
               </div>
-            ) : notificationState === 'END' ? (
+            ) : notificationState === 'SENDING' ? (
               <div>
                 <div className="listId">
                   <b>{listData.email.name} list ID: </b>
