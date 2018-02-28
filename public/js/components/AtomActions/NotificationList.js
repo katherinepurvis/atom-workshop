@@ -16,7 +16,8 @@ class NotificationList extends Component {
   constructor(props) {
     super(props);
 
-    const answered = this.props.atom.data.storyquestions.editorialQuestions
+    const answered = this.props.atom.data.storyquestions.editorialQuestions &&
+      this.props.atom.data.storyquestions.editorialQuestions
         .some(qs => qs.questions.some(q => q.answers.length > 0));
 
     this.state = {
