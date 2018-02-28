@@ -37,6 +37,25 @@ class NotificationList extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    let updated = false;
+    let newState = {};
+    if (!this.state.listData && nextProps.atom.data.storyquestions.notifications) {
+      updated = true;
+      newState.listData = nextProps.atom.data.storyquestions.notifications;
+    }
+    else if (!this.state.answered && nextProps.atom.data.storyquestions.editorialQuestions &&
+      nextProps.atom.data.storyquestions.editorialQuestions
+        .some(qs => qs.questions.some(q => q.answers.length > 0))) {
+      updated = true;
+      newState.answered = true;
+    }
+
+    if (updated) {
+      this.setState(st => Object.assign({}, st, newState));
+    }
+  }
+
   createNotificationList() {
     this.props.actions.createNotificationList(this.props.atom);
   }
