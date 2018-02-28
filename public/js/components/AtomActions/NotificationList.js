@@ -84,6 +84,8 @@ class NotificationList extends Component {
                   <b>{this.state.listData.email.name} list ID: </b>
                     {this.state.listData.email.listId}
                 </div>
+                <p>Add an answer to one of the questions in order
+                  to email people who subscribed for a notification.</p>
               </div>
             ) : notificationState === 'ANSWERED' ? (
               <div>
