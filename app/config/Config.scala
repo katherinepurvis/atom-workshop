@@ -97,6 +97,18 @@ object Config extends AwsInstanceTags {
     )
   }
 
+  val capiLambdaClient = region.createClient(
+    classOf[AWSLambdaClient],
+    capiReaderQuestionsCredentials,
+    null
+  )
+
+  val capiDynamoDB = region.createClient(
+    classOf[AmazonDynamoDBClient],
+    capiReaderQuestionsCredentials,
+    null
+  )
+
   val atomEditorGutoolsDomain = config.getString("atom.editors.gutoolsDomain")
 
   val kinesisClient = region.createClient(
