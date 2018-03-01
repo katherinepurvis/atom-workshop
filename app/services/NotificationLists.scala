@@ -10,7 +10,7 @@ import models._
 import com.amazonaws.services.lambda.AWSLambdaClient
 import com.amazonaws.services.lambda.model.{InvokeRequest, InvocationType}
 
-class NotificationLists(lambda: AWSLambdaClient) {
+class NotificationLists {
   import Answer._
   import QuestionAnswers._
 
@@ -58,13 +58,18 @@ class NotificationLists(lambda: AWSLambdaClient) {
           if question.answers.nonEmpty
         } yield {
           val qa = QuestionAnswers.fromThrift(atom.id, question)
+          val lambdaClient = Config.region.createClient(
+            classOf[AWSLambdaClient],
+            Config.capiReaderQuestionsCredentials,
+            null
+          )
+
           var request = new InvokeRequest()
             .withClientContext(s"${Config.appName}-${Config.stage}")
             .withFunctionName(Config.lambdaFunctionName)
             .withInvocationType(InvocationType.Event)
             .withPayload(qa.asJson.toString)
-          request.setRequestCredentialsProvider(Config.capiReaderQuestionsCredentials)
-          lambda.invoke(request)
+          lambdaClient.invoke(request)
         }
   
         if (results.forall(_.getStatusCode == 200))
