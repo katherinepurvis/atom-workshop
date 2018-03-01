@@ -80,19 +80,20 @@ object Config extends AwsInstanceTags {
   val capiPreviewIAMUrl = config.getString("capi.previewIAMUrl")
   val capiLiveUrl = config.getString("capi.liveUrl")
 
+  val capiCredentialsProvider = new ProfileCredentialsProvider("capi")
   val capiPreviewRole = config.getString("capi.previewRole")
   val capiPreviewCredentials: AWSCredentialsProvider = {
     new AWSCredentialsProviderChain(
-      new ProfileCredentialsProvider("capi"),
-      new STSAssumeRoleSessionCredentialsProvider.Builder(capiPreviewRole, "capi").build()
+      capiCredentialsProvider,
+      new STSAssumeRoleSessionCredentialsProvider.Builder(capiPreviewRole, "capi-preview").build()
     )
   }
 
   val capiReaderQuestionsRole = config.getString("capi.readerQuestionsRole")
   val capiReaderQuestionsCredentials: AWSCredentialsProvider = {
     new AWSCredentialsProviderChain(
-      new ProfileCredentialsProvider("capi"),
-      new STSAssumeRoleSessionCredentialsProvider.Builder(capiReaderQuestionsRole, "capi").build()
+      capiCredentialsProvider,
+      new STSAssumeRoleSessionCredentialsProvider.Builder(capiReaderQuestionsRole, "capi-readerquestions").build()
     )
   }
 
