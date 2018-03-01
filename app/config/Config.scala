@@ -105,12 +105,6 @@ object Config extends AwsInstanceTags {
     null
   )
 
-  val lambdaClient = region.createClient(
-    classOf[AWSLambdaClient],
-    awsCredentialsProvider,
-    null
-  )
-
   // Not sure if we need a full config or if we can just inline the name
   // of the function here
   val lambdaFunctionName = config.getString("aws.lambda.notifications.name")
