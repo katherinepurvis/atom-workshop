@@ -36,7 +36,7 @@ class NotificationList extends Component {
         .then(sent => this.setState({ notificationSent: !!sent }));
     }
   }
-
+    
   componentWillReceiveProps(nextProps) {
     let updated = false;
     let newState = {};
@@ -46,13 +46,17 @@ class NotificationList extends Component {
     }
     else if (!this.state.answered && nextProps.atom.data.storyquestions.editorialQuestions &&
       nextProps.atom.data.storyquestions.editorialQuestions
-        .some(qs => qs.questions && qs.questions.some(q => q.answers && q.answers.length > 0))) {
-      updated = true;
-      newState.answered = true;
+      .some(qs => qs.questions && qs.questions.some(q => q.answers && q.answers.length > 0))) {
+        updated = true;
+        newState.answered = true;
     }
-
+      
     if (updated) {
       this.setState(st => Object.assign({}, st, newState));
+      if (newState.answered) {
+        this.props.actions.hasNotificationBeenSent(this.props.atom.id, qs[0].questionId)
+          .then(sent => this.setState({ notificationSent: !!sent }));
+      }
     }
   }
 
