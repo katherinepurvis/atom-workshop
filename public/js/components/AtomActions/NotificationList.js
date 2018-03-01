@@ -87,8 +87,7 @@ class NotificationList extends Component {
   getFirstAnswer(storyquestions) {
     return storyquestions.editorialQuestions
       .filter(qs => qs.questions.some(q => q.answers.length > 0))
-      .map(qs => qs.questions.find(q => q.answers.length > 0))
-      [0];
+      .map(qs => qs.questions.find(q => q.answers.length > 0))[0];
   }
 
   createNotificationList() {
