@@ -1,6 +1,6 @@
 import com.gu.atom.play.ReindexController
 import config.LogConfig
-import config.Config.{config, permissions, lambdaClient, dynamoDB}
+import config.Config.{config, permissions, dynamoDB}
 import db.AtomDataStores._
 import db.AtomWorkshopDB
 import db.NotificationsDB
@@ -28,7 +28,7 @@ class AppComponents(context: Context)
 
   lazy val atomWorkshopDB = new AtomWorkshopDB()
 
-  lazy val notificationLists = new NotificationLists(lambdaClient)
+  lazy val notificationLists = new NotificationLists()
 
-  lazy val notificationsDB = new NotificationsDB(dynamoDB)
+  lazy val notificationsDB = new NotificationsDB()
 }
