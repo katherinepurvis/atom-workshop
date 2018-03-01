@@ -12,7 +12,7 @@ import scala.collection.JavaConverters._
 
 class NotificationsDB {
   def getNotification(atomId: String, questionId: String): Either[AtomAPIError, Option[QuestionAnswers]] = {
-    val dynamoDB = region.createClient(
+    val dynamoDB = Config.region.createClient(
       classOf[AmazonDynamoDBClient],
       Config.capiReaderQuestionsCredentials,
       null
