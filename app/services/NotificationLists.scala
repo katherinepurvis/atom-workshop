@@ -58,12 +58,12 @@ class NotificationLists(lambda: AWSLambdaClient) {
           if question.answers.nonEmpty
         } yield {
           val qa = QuestionAnswers.fromThrift(atom.id, question)
-          val request = new InvokeRequest()
+          var request = new InvokeRequest()
             .withClientContext(s"${Config.appName}-${Config.stage}")
             .withFunctionName(Config.lambdaFunctionName)
             .withInvocationType(InvocationType.Event)
             .withPayload(qa.asJson.toString)
-            .withRequestCredentialsProvider(Config.capiReaderQuestionsCredentials)
+          request.setRequestCredentialsProvider(Config.capiReaderQuestionsCredentials)
           lambda.invoke(request)
         }
   
