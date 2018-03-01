@@ -16,48 +16,79 @@ class NotificationList extends Component {
   constructor(props) {
     super(props);
 
-    const answered = this.props.atom.data.storyquestions.editorialQuestions &&
-      this.props.atom.data.storyquestions.editorialQuestions
-        .some(qs => qs.questions.some(q => q.answers.length > 0));
-
     this.state = {
-      answered,
+      /* has an answer been linked already? */
+      answered: this.isAnswered(this.props.atom.data.storyquestions),
+      /* has a notification list been created? */
       listData: this.props.atom.data.storyquestions.notifications,
+      /* has a notification been sent already? */
       notificationSent: false
     };
   }
 
   componentDidMount() {
+    /* if the atom has been answered, we need to query the email
+       service and see if the notification has been already sent.
+       It is an XHR so done in componentDidMount instead of the
+       constructor (see React lifecycle).
+       (That is not part of the data model) */
     if (this.state.answered) {
-      const qs = this.props.atom.data.storyquestions.editorialQuestions
-        .filter(qs => qs.questions.some(q => q.answers.length > 0))
-        .map(qs => qs.questions.find(q => q.answers.length > 0));
-      this.props.actions.hasNotificationBeenSent(this.props.atom.id, qs[0].questionId)
-        .then(sent => this.setState({ notificationSent: !!sent }));
+      const qs = this.getFirstAnswer(this.props.atom.data.storyquestions);
+      this.props.actions.hasNotificationBeenSent(
+        this.props.atom.id, qs[0].questionId
+      ).then(
+        sent => this.setState({ notificationSent: !!sent })
+      );
     }
   }
     
+  /* Everytime the atom is updated, this component receives a new
+  set of property. We must go through all the hassle of comparing
+  the current and new versions of those properties to see what
+  changed exactly. So much for being reactive. */
   componentWillReceiveProps(nextProps) {
     let updated = false;
     let newState = {};
+    
     if (!this.state.listData && nextProps.atom.data.storyquestions.notifications) {
       updated = true;
       newState.listData = nextProps.atom.data.storyquestions.notifications;
     }
-    else if (!this.state.answered && nextProps.atom.data.storyquestions.editorialQuestions &&
-      nextProps.atom.data.storyquestions.editorialQuestions
-      .some(qs => qs.questions && qs.questions.some(q => q.answers && q.answers.length > 0))) {
-        updated = true;
-        newState.answered = true;
+    
+    if (!this.state.answered && this.isAnswered(nextProps.atom.data.storyquestions)) {
+      updated = true;
+      newState.answered = true;
     }
       
     if (updated) {
       this.setState(st => Object.assign({}, st, newState));
       if (newState.answered) {
-        this.props.actions.hasNotificationBeenSent(this.props.atom.id, qs[0].questionId)
+        const q = this.getFirstAnswer(nextProps.atom.data.storyquestions);
+        this.props.actions.hasNotificationBeenSent(this.props.atom.id, q.questionId)
           .then(sent => this.setState({ notificationSent: !!sent }));
       }
     }
+  }
+
+  /* Determines whether the atom contains at least one answer */
+  isAnswered(storyquestions) {
+    return storyquestions.editorialQuestions &&
+      storyquestions.editorialQuestions.some(
+        qs => qs.questions && qs.questions.some(
+          q => q.answers && q.answers.length > 0
+        )
+      );
+  }
+
+  /* Retrieves the first answer from the set of questions.
+     This is a partial function so you'd better call it only if
+     isAnswered yields true.
+  */
+  getFirstAnswer(storyquestions) {
+    return storyquestions.editorialQuestions
+      .filter(qs => qs.questions.some(q => q.answers.length > 0))
+      .map(qs => qs.questions.find(q => q.answers.length > 0))
+      [0];
   }
 
   createNotificationList() {
