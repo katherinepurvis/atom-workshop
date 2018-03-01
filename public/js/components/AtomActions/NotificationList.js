@@ -32,7 +32,7 @@ class NotificationList extends Component {
       const qs = this.props.atom.data.storyquestions.editorialQuestions
         .filter(qs => qs.questions.some(q => q.answers.length > 0))
         .map(qs => qs.questions.find(q => q.answers.length > 0));
-      this.props.actions.hasNotificationBeenSent(this.props.atom.atomId, qs[0].questionId)
+      this.props.actions.hasNotificationBeenSent(this.props.atom.id, qs[0].questionId)
         .then(sent => this.setState({ notificationSent: !!sent }));
     }
   }
