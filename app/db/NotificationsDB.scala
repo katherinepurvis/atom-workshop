@@ -17,11 +17,12 @@ class NotificationsDB(dynamoDB: AmazonDynamoDBClient) {
       "questionId" -> new AttributeValue().withS(questionId)
     ).toMap.asJava
     var req = new GetItemRequest(Config.notificationsDynamoTableName, key)
-    val res = dynamoDB.getItem(req).getItem.asScala
+    val res = Option(dynamoDB.getItem(req).getItem.asScala)
     
     Either.right(
       res
-        .get("answers").map { as =>
+        .flatMap(_.get("answers"))
+        .map { as =>
           val bs = as.getL().asScala.map { a =>
             val m = a.getM().asScala
             for {
