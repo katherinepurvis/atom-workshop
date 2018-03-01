@@ -58,6 +58,7 @@ class NotificationLists(lambdaClient: AWSLambdaClient) {
           if question.answers.nonEmpty
         } yield {
           val qa = QuestionAnswers.fromThrift(atom.id, question)
+          println(qa.asJson.toString)
           var request = new InvokeRequest()
             .withClientContext(s"${Config.appName}-${Config.stage}")
             .withFunctionName(Config.lambdaFunctionName)
