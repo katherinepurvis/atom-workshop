@@ -10,14 +10,19 @@ import models.{Answer, QuestionAnswers, AtomAPIError}
 
 import scala.collection.JavaConverters._
 
-class NotificationsDB(dynamoDB: AmazonDynamoDBClient) {
+class NotificationsDB {
   def getNotification(atomId: String, questionId: String): Either[AtomAPIError, Option[QuestionAnswers]] = {
+    val dynamoDB = region.createClient(
+      classOf[AmazonDynamoDBClient],
+      Config.capiReaderQuestionsCredentials,
+      null
+    )
+
     val key = Seq(
       "atomId" -> new AttributeValue().withS(atomId), 
       "questionId" -> new AttributeValue().withS(questionId)
     ).toMap.asJava
     var req = new GetItemRequest(Config.notificationsDynamoTableName, key)
-    req.setRequestCredentialsProvider(Config.capiReaderQuestionsCredentials)
     val res = dynamoDB.getItem(req).getItem.asScala
     
     Either.right(
