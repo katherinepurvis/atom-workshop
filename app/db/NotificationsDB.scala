@@ -17,7 +17,7 @@ class NotificationsDB(dynamoDB: AmazonDynamoDBClient) {
       "questionId" -> new AttributeValue().withS(questionId)
     ).toMap.asJava
     var req = new GetItemRequest(Config.notificationsDynamoTableName, key)
-    val res = Option(dynamoDB.getItem(req).getItem.asScala)
+    val res = Option(dynamoDB.getItem(req).getItem).map(_.asScala)
     
     Either.right(
       res
