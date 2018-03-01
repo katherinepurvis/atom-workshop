@@ -46,7 +46,7 @@ class NotificationList extends Component {
     }
     else if (!this.state.answered && nextProps.atom.data.storyquestions.editorialQuestions &&
       nextProps.atom.data.storyquestions.editorialQuestions
-        .some(qs => qs.questions.some(q => q.answers.length > 0))) {
+        .some(qs => qs.questions && qs.questions.some(q => q.answers && q.answers.length > 0))) {
       updated = true;
       newState.answered = true;
     }
