@@ -33,9 +33,9 @@ class NotificationList extends Component {
        constructor (see React lifecycle).
        (That is not part of the data model) */
     if (this.state.answered) {
-      const qs = this.getFirstAnswer(this.props.atom.data.storyquestions);
+      const q = this.getFirstAnswer(this.props.atom.data.storyquestions);
       this.props.actions.hasNotificationBeenSent(
-        this.props.atom.id, qs[0].questionId
+        this.props.atom.id, q.questionId
       ).then(
         sent => this.setState({ notificationSent: !!sent })
       );
