@@ -1,7 +1,12 @@
 package config
 
 import com.amazonaws.auth.profile.ProfileCredentialsProvider
-import com.amazonaws.auth.{AWSCredentialsProvider, AWSCredentialsProviderChain, InstanceProfileCredentialsProvider, STSAssumeRoleSessionCredentialsProvider}
+import com.amazonaws.auth.{
+  AWSCredentialsProvider, 
+  AWSCredentialsProviderChain, 
+  InstanceProfileCredentialsProvider, 
+  STSAssumeRoleSessionCredentialsProvider
+}
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient
 import com.amazonaws.services.kinesis.AmazonKinesisClient
 import com.amazonaws.services.lambda.AWSLambdaClient
@@ -80,6 +85,14 @@ object Config extends AwsInstanceTags {
     new AWSCredentialsProviderChain(
       new ProfileCredentialsProvider("capi"),
       new STSAssumeRoleSessionCredentialsProvider.Builder(capiPreviewRole, "capi").build()
+    )
+  }
+
+  val capiReaderQuestionsRole = config.getString("capi.readerQuestionsRole")
+  val capiReaderQuestionsCredentials: AWSCredentialsProvider = {
+    new AWSCredentialsProviderChain(
+      new ProfileCredentialsProvider("capi"),
+      new STSAssumeRoleSessionCredentialsProvider.Builder(capiReaderQuestionsRole, "capi").build()
     )
   }
 

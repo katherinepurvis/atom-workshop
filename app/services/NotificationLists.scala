@@ -63,6 +63,7 @@ class NotificationLists(lambda: AWSLambdaClient) {
             .withFunctionName(Config.lambdaFunctionName)
             .withInvocationType(InvocationType.Event)
             .withPayload(qa.asJson.toString)
+            .withRequestCredentialsProvider(Config.capiReaderQuestionsCredentials)
           lambda.invoke(request)
         }
   
