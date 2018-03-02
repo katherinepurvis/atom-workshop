@@ -1,14 +1,17 @@
 package services
 
 import cats.implicits._
+import com.amazonaws.services.lambda.AWSLambdaClient
+import com.amazonaws.services.lambda.model.{InvokeRequest, InvocationType, LogType}
 import com.gu.contentatom.thrift.{Atom, AtomData, EmailProvider, NotificationProviders}
 import com.gu.exact_target_lists.ExactTargetLists
 import config.Config
 import io.circe._
 import io.circe.syntax._
+import java.nio.charset.StandardCharsets
+import java.util.Base64
 import models._
-import com.amazonaws.services.lambda.AWSLambdaClient
-import com.amazonaws.services.lambda.model.{InvokeRequest, InvocationType}
+import play.api.Logger
 
 class NotificationLists(lambdaClient: AWSLambdaClient) {
   import Answer._
@@ -61,13 +64,20 @@ class NotificationLists(lambdaClient: AWSLambdaClient) {
           val request = new InvokeRequest()
             .withFunctionName(Config.lambdaFunctionName)
             .withPayload(qa.asJson.toString)
+            .withLogType(LogType.Tail)
           lambdaClient.invoke(request)
         }
   
         if (results.forall(_.getStatusCode == 200))
           Either.right(atom)
-        else
+        else {
+          results
+            .foreach { r => 
+              Logger.warn(s"Unable to trigger email notifications (${r.getStatusCode})")
+              Logger.warn(new String(Base64.getDecoder.decode(r.getLogResult), StandardCharsets.UTF_8))
+            }
           Either.left(LambdaExecutionError(Config.lambdaFunctionName, "Unable to trigger email notifications"))
+        }
       }
 
       result.getOrElse(Either.right(atom))
