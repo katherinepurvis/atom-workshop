@@ -101,4 +101,23 @@ export default {
           credentials: 'same-origin'
         }
       )
+  ,
+
+  sendNotificationList: (atom) =>
+      pandaFetch(
+        `/api/live/${atom.atomType}/${atom.id}/custom/notifications/send`,
+        {
+          method: 'post',
+          credentials: 'same-origin'
+        }
+      ),
+
+  hasNotificationBeenSent: (atomId, questionId) =>
+      pandaFetch(
+        `/api/live/storyquestions/${atomId}/${questionId}/notifications/sent`,
+        {
+          method: 'get',
+          credentials: 'same-origin'
+        }
+      )
 };

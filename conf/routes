@@ -45,6 +45,8 @@ GET     /reindex-publish                         com.gu.atom.play.ReindexControl
 # Custom atom actions
 POST    /api/live/:atomType/:id/custom/notifications controllers.AtomActions.createNotificationList(atomType: String, id: String)
 DELETE  /api/live/:atomType/:id/custom/notifications controllers.AtomActions.deleteNotificationList(atomType: String, id: String)
+POST    /api/live/:atomType/:id/custom/notifications/send controllers.AtomActions.sendNotificationList(atomType: String, id: String)
+GET     /api/live/storyquestions/:atomId/:questionId/notifications/sent controllers.AtomActions.hasNotificationBeenSent(atomId: String, questionId: String)
 
 # Commons divisions
 GET     /commonsdivisions                        controllers.App.index(placeholder = "")

@@ -1,9 +1,15 @@
 package config
 
 import com.amazonaws.auth.profile.ProfileCredentialsProvider
-import com.amazonaws.auth.{AWSCredentialsProvider, AWSCredentialsProviderChain, InstanceProfileCredentialsProvider, STSAssumeRoleSessionCredentialsProvider}
+import com.amazonaws.auth.{
+  AWSCredentialsProvider, 
+  AWSCredentialsProviderChain, 
+  InstanceProfileCredentialsProvider, 
+  STSAssumeRoleSessionCredentialsProvider
+}
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient
 import com.amazonaws.services.kinesis.AmazonKinesisClient
+import com.amazonaws.services.lambda.AWSLambdaClient
 import com.gu.cm.{Mode, Configuration => ConfigurationMagic}
 import com.gu.exact_target_lists.ExactTargetConfig
 import services.{AtomWorkshopPermissionsProvider, AwsInstanceTags}
@@ -55,6 +61,7 @@ object Config extends AwsInstanceTags {
 
   val previewDynamoTableName = config.getString("aws.dynamo.preview.tableName")
   val publishedDynamoTableName = config.getString("aws.dynamo.live.tableName")
+  val notificationsDynamoTableName = config.getString("aws.dynamo.notifications.tableName")
 
   val gridUrl = config.getString("grid.url")
   val composerUrl = config.getString("composer.url")
@@ -73,13 +80,34 @@ object Config extends AwsInstanceTags {
   val capiPreviewIAMUrl = config.getString("capi.previewIAMUrl")
   val capiLiveUrl = config.getString("capi.liveUrl")
 
+  val capiCredentialsProvider = new ProfileCredentialsProvider("capi")
   val capiPreviewRole = config.getString("capi.previewRole")
   val capiPreviewCredentials: AWSCredentialsProvider = {
     new AWSCredentialsProviderChain(
-      new ProfileCredentialsProvider("capi"),
-      new STSAssumeRoleSessionCredentialsProvider.Builder(capiPreviewRole, "capi").build()
+      capiCredentialsProvider,
+      new STSAssumeRoleSessionCredentialsProvider.Builder(capiPreviewRole, "capi-preview").build()
     )
   }
+
+  val capiReaderQuestionsRole = config.getString("capi.readerQuestionsRole")
+  val capiReaderQuestionsCredentials: AWSCredentialsProvider = {
+    new AWSCredentialsProviderChain(
+      capiCredentialsProvider,
+      new STSAssumeRoleSessionCredentialsProvider.Builder(capiReaderQuestionsRole, "capi-readerquestions").build()
+    )
+  }
+
+  val capiLambdaClient = region.createClient(
+    classOf[AWSLambdaClient],
+    capiReaderQuestionsCredentials,
+    null
+  )
+
+  val capiDynamoDB = region.createClient(
+    classOf[AmazonDynamoDBClient],
+    capiReaderQuestionsCredentials,
+    null
+  )
 
   val atomEditorGutoolsDomain = config.getString("atom.editors.gutoolsDomain")
 
@@ -88,6 +116,10 @@ object Config extends AwsInstanceTags {
     awsCredentialsProvider,
     null
   )
+
+  // Not sure if we need a full config or if we can just inline the name
+  // of the function here
+  val lambdaFunctionName = config.getString("aws.lambda.notifications.name")
 
   val permissions = new AtomWorkshopPermissionsProvider(stage, awsCredentialsProvider)
 

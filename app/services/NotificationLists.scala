@@ -1,12 +1,21 @@
 package services
 
 import cats.implicits._
+import com.amazonaws.services.lambda.AWSLambdaClient
+import com.amazonaws.services.lambda.model.{InvokeRequest, InvocationType, LogType}
 import com.gu.contentatom.thrift.{Atom, AtomData, EmailProvider, NotificationProviders}
 import com.gu.exact_target_lists.ExactTargetLists
 import config.Config
-import models.{AtomAPIError, NotificationListsError}
+import io.circe._
+import io.circe.syntax._
+import java.nio.charset.StandardCharsets
+import java.util.Base64
+import models._
+import play.api.Logger
 
-object NotificationLists {
+class NotificationLists(lambdaClient: AWSLambdaClient) {
+  import Answer._
+  import QuestionAnswers._
 
   private val exactTargetLists: Either[NotificationListsError, ExactTargetLists] = {
     Config.exactTargetConfig match {
@@ -37,6 +46,42 @@ object NotificationLists {
         }
       }
       result.getOrElse(Either.right(atom))
+
+    case _ => Either.right(atom)
+  }
+
+  def sendNotificationList(atom: Atom): Either[AtomAPIError, Atom] = atom.data match {
+    case AtomData.Storyquestions(data) => {
+      val result = for {
+        userQuestions <- data.editorialQuestions
+        questionSet <- userQuestions.headOption //We only use the first questionSet in the atom
+      } yield {
+        val results = for {
+          question <- questionSet.questions
+          if question.answers.nonEmpty
+        } yield {
+          val qa = QuestionAnswers.fromThrift(atom.id, question)
+          val request = new InvokeRequest()
+            .withFunctionName(Config.lambdaFunctionName)
+            .withPayload(qa.asJson.toString)
+            .withLogType(LogType.Tail)
+          lambdaClient.invoke(request)
+        }
+  
+        if (results.forall(_.getStatusCode == 200))
+          Either.right(atom)
+        else {
+          results
+            .foreach { r => 
+              Logger.error(s"Unable to trigger email notifications (${r.getStatusCode})")
+              Logger.error(new String(Base64.getDecoder.decode(r.getLogResult), StandardCharsets.UTF_8))
+            }
+          Either.left(LambdaExecutionError(Config.lambdaFunctionName, "Unable to trigger email notifications"))
+        }
+      }
+
+      result.getOrElse(Either.right(atom))
+    }
 
     case _ => Either.right(atom)
   }
