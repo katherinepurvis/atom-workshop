@@ -73,8 +73,8 @@ class NotificationLists(lambdaClient: AWSLambdaClient) {
         else {
           results
             .foreach { r => 
-              Logger.warn(s"Unable to trigger email notifications (${r.getStatusCode})")
-              Logger.warn(new String(Base64.getDecoder.decode(r.getLogResult), StandardCharsets.UTF_8))
+              Logger.error(s"Unable to trigger email notifications (${r.getStatusCode})")
+              Logger.error(new String(Base64.getDecoder.decode(r.getLogResult), StandardCharsets.UTF_8))
             }
           Either.left(LambdaExecutionError(Config.lambdaFunctionName, "Unable to trigger email notifications"))
         }
