@@ -23,15 +23,15 @@ class NotificationsDB(dynamoDB: AmazonDynamoDBClient) {
       res
         .flatMap(_.get("answers"))
         .map { as =>
-          val bs = as.getL().asScala.map { a =>
-            val m = a.getM().asScala
+          val answers = as.getL().asScala.map { answer =>
+            val details = answer.getM().asScala
             for {
-              path <- m.get("answerPath").map(_.getS)
-              `type` <- m.get("answerType").map(_.getS)
+              path <- details.get("answerPath").map(_.getS)
+              `type` <- details.get("answerType").map(_.getS)
             } yield Answer(path, `type`)
           }.flatten
 
-          QuestionAnswers(atomId, questionId, bs)
+          QuestionAnswers(atomId, questionId, answers)
         }
     )
   }
