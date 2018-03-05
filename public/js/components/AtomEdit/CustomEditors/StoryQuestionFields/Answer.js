@@ -19,26 +19,18 @@ export class StoryQuestionsAnswer extends React.Component {
 
   onUpdate = (answer) => {
     const answerWithType = Object.assign({}, answer, {
-      answerType: answer.answerType || "ATOM"
+      answerType: "ATOM"
     });
 
     this.props.onUpdateField(answerWithType);
   }
 
-  getPlaceholder = (answerType) => answerType === "CONTENT"
-    ? "e.g. world/2017/sep/21/an-explainer-article"
-    : "e.g. atom/guide/d12c3782-2d4b-4335-9701-830ac29c7d3b";
-
   render () {
-    const answerType = _get(this.props, "fieldValue.answerType", "ATOM");
-    const placeholder = this.getPlaceholder(answerType);
+    const placeholder = "e.g. atom/guide/d12c3782-2d4b-4335-9701-830ac29c7d3b";
 
     return (
       <div className="form__field form__field--nested">
         <ManagedForm data={this.props.fieldValue} updateData={this.onUpdate} onFormErrorsUpdate={this.props.onFormErrorsUpdate} formName="storyquestionsEditor">
-          <ManagedField fieldLocation="answerType" name="Answer type" isRequired={true}>
-            <SearchSelectBox selectValues={["ATOM", "CONTENT"]} isRequired={true}/>
-          </ManagedField>
           <ManagedField fieldLocation="answerId" name="Answer ID" isRequired={true}>
             <FormFieldTextInput fieldPlaceholder={placeholder}/>
           </ManagedField>
