@@ -1,8 +1,6 @@
 import React, { PropTypes } from 'react';
 import {ManagedForm, ManagedField} from '../../../ManagedEditor';
 import FormFieldTextInput from '../../../FormFields/FormFieldTextInput';
-import SearchSelectBox from '../../../FormFields/SearchFields/SearchSelectBox';
-import _get from 'lodash/fp/get';
 
 export class StoryQuestionsAnswer extends React.Component {
   static propTypes = {
