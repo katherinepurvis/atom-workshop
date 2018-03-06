@@ -1,8 +1,6 @@
 import React, { PropTypes } from 'react';
 import {ManagedForm, ManagedField} from '../../../ManagedEditor';
 import FormFieldTextInput from '../../../FormFields/FormFieldTextInput';
-import FormFieldArrayWrapper from '../../../FormFields/FormFieldArrayWrapper';
-import {StoryQuestionsAnswer} from './Answer';
 import uuidv4 from 'uuid/v4';
 
 export class StoryQuestionsQuestion extends React.Component {
@@ -35,11 +33,6 @@ export class StoryQuestionsQuestion extends React.Component {
         <ManagedForm data={this.props.fieldValue} updateData={this.updateQuestion} onFormErrorsUpdate={this.props.onFormErrorsUpdate} formName="storyquestionsEditor">
           <ManagedField fieldLocation="questionText" name="Question" isRequired={true}>
             <FormFieldTextInput />
-          </ManagedField>
-          <ManagedField fieldLocation="answers" name={`Answers (${answersCount})`} >
-            <FormFieldArrayWrapper>
-              <StoryQuestionsAnswer/>
-            </FormFieldArrayWrapper>
           </ManagedField>
         </ManagedForm>
       </div>
