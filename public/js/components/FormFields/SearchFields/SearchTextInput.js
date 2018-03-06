@@ -8,18 +8,30 @@ export default class SearchTextInput extends React.Component {
     fieldName: PropTypes.string,
     fieldValue: PropTypes.string,
     fieldPlaceholder: PropTypes.string,
-    onUpdateField: PropTypes.func
+    onUpdateField: PropTypes.func,
+    onKeyUp: PropTypes.func
   };
 
   onUpdate = (e) => {
     this.props.onUpdateField(e.target.value);
   }
 
+  onKeyUp = (e) => {
+    this.props.onKeyUp(e.target.key, e.target.code);
+  }
+
   render() {
     return (
         <div className="atom-search__row">
           <label htmlFor={this.props.fieldName} className="visually-hidden">{this.props.fieldLabel}</label>
-          <input type="search" className="atom-search__input"  id={this.props.fieldName} placeholder={this.props.fieldPlaceholder || ''} onChange={this.onUpdate}  value={this.props.fieldValue || ""}/>
+          <input type="search" 
+                 className="atom-search__input"  
+                 id={this.props.fieldName} 
+                 placeholder={this.props.fieldPlaceholder || ''} 
+                 onChange={this.onUpdate}  
+                 onKeyUp={this.onKeyUp}
+                 value={this.props.fieldValue || ""}
+                 />
         </div>
 
     );
