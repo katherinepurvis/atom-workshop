@@ -26,8 +26,6 @@ export class StoryQuestionsQuestion extends React.Component {
   }
 
   render () {
-    const answersCount = (this.props.fieldValue && this.props.fieldValue.answers) ? this.props.fieldValue.answers.length : 0;
-
     return (
       <div className="form__field form__field--nested">
         <ManagedForm data={this.props.fieldValue} updateData={this.updateQuestion} onFormErrorsUpdate={this.props.onFormErrorsUpdate} formName="storyquestionsEditor">
