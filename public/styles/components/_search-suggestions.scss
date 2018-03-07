@@ -1,0 +1,36 @@
+// -----------------------------------------------------------------------------
+// This file contains styles for search suggestions
+// -----------------------------------------------------------------------------
+
+.search-suggestions {
+    position: relative;
+}
+
+.search-suggestions .atom-search__row {
+    margin: 0;
+    display: flex;
+
+    > .atom-search__input {
+        flex: 1;
+    }
+}
+
+.search-suggestions > ul {
+    position: absolute;
+    top: 100%;
+    background: white;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.search-suggestions > ul > li {
+    padding: .75em 1em;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    
+    &:hover,
+    &:focus {
+        background: lightblue;
+    }
+}

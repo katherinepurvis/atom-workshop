@@ -6,3 +6,29 @@
 .atom__content {
   flex-grow: 2;
 }
+
+.atom__answers__header {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  background: #f0f0f0;
+
+  .search-suggestions {
+    flex: 1;
+    margin-left: 20px;
+  }
+}
+
+.atom__answers {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.atom__answer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  border-bottom: 1px solid #ccc;
+}
