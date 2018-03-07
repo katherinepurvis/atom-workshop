@@ -259,12 +259,11 @@
       background: $brandColor;
     }
   }
+}
 
-  &__add {
-    display: table;
-    margin-left: auto;
-  }
-
+.form__btn-group {
+  margin-top: 20px;
+  text-align: right;
 }
 
 // Flex container for side by side fields and other adventures

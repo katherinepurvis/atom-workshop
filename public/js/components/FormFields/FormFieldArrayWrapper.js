@@ -142,7 +142,9 @@ export default class FormFieldArrayWrapper extends React.Component {
           <span className="form__label">{this.props.fieldLabel}</span>
        </div>
           { this.state.childrenVisible ? values.map((value, i) => this.renderValue(value, i)) : false }
-        <button className="form__btn-heading__btn form__btn-heading__add" type="button" onClick={this.onAddClick}>Add</button>
+        <div className="form__btn-group">
+          <button className="form__btn-heading__btn form__btn-heading__add" type="button" onClick={this.onAddClick}>Add</button>
+        </div>
       </div>
     );
   }
