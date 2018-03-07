@@ -124,7 +124,7 @@ export default class FormFieldArrayWrapper extends React.Component {
     };
 
     return (
-      <div className={this.props.fieldClass ? this.props.fieldClass : 'form__group form__field'}>
+      <div className={this.props.fieldClass ? this.props.fieldClass : null}>
         {this.props.numbered ? <span className="form__field-number">{`${i + 1}. `}</span> : false }
         {hydratedChildren}
         {renderMoveBtns()}
