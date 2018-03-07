@@ -3,6 +3,7 @@ import {ManagedForm, ManagedField} from '../../../ManagedEditor';
 import FormFieldTextInput from '../../../FormFields/FormFieldTextInput';
 import SearchSuggestions from '../../../FormFields/SearchFields/SearchSuggestions';
 import uuidv4 from 'uuid/v4';
+import { fetchCapiAtom, searchAtoms } from '../../../../services/capi';
 
 const filters = {
   types: ['guide', 'profile', 'qanda', 'timeline'].join(',')
@@ -31,26 +32,59 @@ export class StoryQuestionsQuestion extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.state.answers.forEach((answer, i) => {
+      /* eslint-disable-next-line no-unused-vars */
+      const [_, atomType, atomId] = answer.answerId.split('/');
+      fetchCapiAtom(atomType, atomId)
+        .then(atom => {
+          this.setState(prevState => {
+            const answers = prevState.answers.slice();
+            answers[i].title = atom.title;
+          });
+        });
+    });
+  }
+
   updateQuestion = (questionObject) => {
     const questionWithId = Object.assign({}, questionObject, {
-      questionId: questionObject.questionId || uuidv4()
+      questionId: questionObject.questionId || uuidv4(),
+      answers: this.state.answers
     });
 
     this.props.onUpdateField(questionWithId);
   }
 
   onSelect = (snippet) => {
-    this.setState((oldState) => Object.assign({}, oldState, { answers: oldState.answers.concat({
-      title: snippet.title,
-      answerId: `atom/${snippet.atomType}/${snippet.id}`, 
-      answerType: 'ATOM' 
-    })}));
+    this.setState(
+      (oldState) => Object.assign({}, oldState, { answers: oldState.answers.concat({
+        title: snippet.title,
+        answerId: `atom/${snippet.atomType}/${snippet.id}`, 
+        answerType: 'ATOM' 
+      })}),
+      () => {
+        this.props.onUpdateField({
+          questionId: this.props.fieldValue.questionId,
+          questionText: this.props.fieldValue.questionText,
+          answers: this.state.answers
+        });
+      }
+    );
   }
-
+  
   onDelete = (i) => {
-    this.setState((oldState) => Object.assign({}, oldState, {
-      answers: oldState.answers.slice(0, i).concat(oldState.answers.slice(i + 1))
-    }));
+    this.setState(
+      (oldState) => Object.assign({}, oldState, {
+        answers: oldState.answers.slice(0, i).concat(oldState.answers.slice(i + 1))
+      }),
+      () => {
+        this.props.onUpdateField({
+          questionId: this.props.fieldValue.questionId,
+          questionText: this.props.fieldValue.questionText,
+          answers: this.state.answers
+        });
+      }
+    );
   }
 
   render () {
