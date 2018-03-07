@@ -1,7 +1,12 @@
 import React, { PropTypes } from 'react';
 import {ManagedForm, ManagedField} from '../../../ManagedEditor';
 import FormFieldTextInput from '../../../FormFields/FormFieldTextInput';
+import SearchSuggestions from '../../../FormFields/SearchFields/SearchSuggestions';
 import uuidv4 from 'uuid/v4';
+
+const filters = {
+  types: ['guide', 'profile', 'qanda', 'timeline'].join(',')
+};
 
 export class StoryQuestionsQuestion extends React.Component {
   static propTypes = {
@@ -17,12 +22,35 @@ export class StoryQuestionsQuestion extends React.Component {
     onFormErrorsUpdate: PropTypes.func
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      answers: props.fieldValue && props.fieldValue.answers && props.fieldValue.answers.length ?
+        props.fieldValue.answers :
+        []
+    };
+  }
+
   updateQuestion = (questionObject) => {
     const questionWithId = Object.assign({}, questionObject, {
       questionId: questionObject.questionId || uuidv4()
     });
 
     this.props.onUpdateField(questionWithId);
+  }
+
+  onSelect = (snippet) => {
+    this.setState((oldState) => Object.assign({}, oldState, { answers: oldState.answers.concat({
+      title: snippet.title,
+      answerId: `atom/${snippet.atomType}/${snippet.id}`, 
+      answerType: 'ATOM' 
+    })}));
+  }
+
+  onDelete = (i) => {
+    this.setState((oldState) => Object.assign({}, oldState, {
+      answers: oldState.answers.slice(0, i).concat(oldState.answers.slice(i + 1))
+    }));
   }
 
   render () {
@@ -33,6 +61,21 @@ export class StoryQuestionsQuestion extends React.Component {
             <FormFieldTextInput />
           </ManagedField>
         </ManagedForm>
+        <div className="atom__answers__header">
+          <h5>Answers</h5>
+          <SearchSuggestions fieldPlaceholder="Search for snippets" filters={filters} onSelect={this.onSelect} />
+        </div>
+        <ul className="atom__answers">
+          {this.state.answers.map((answer, i) => 
+            <li className="atom__answer">
+              <div>
+                <div>{answer.title}</div>
+                <small>{answer.answerId}</small>
+              </div>
+              <button type="button" className="btn btn--red" onClick={() => this.onDelete(i)}>Delete</button>
+            </li>
+          )}
+        </ul>
       </div>
     );
   }
