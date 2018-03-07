@@ -34,8 +34,8 @@ export class StoryQuestionsQuestion extends React.Component {
 
   componentDidMount() {
     this.state.answers.forEach((answer, i) => {
-      /* eslint-disable-next-line no-unused-vars */
-      const [_, atomType, atomId] = answer.answerId.split('/');
+    // eslint-disable-next-line
+    const [_, atomType, atomId] = answer.answerId.split('/');
       fetchCapiAtom(atomType, atomId)
         .then(atom => {
           this.setState(prevState => {
