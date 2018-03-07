@@ -3,7 +3,7 @@ import {ManagedForm, ManagedField} from '../../../ManagedEditor';
 import FormFieldTextInput from '../../../FormFields/FormFieldTextInput';
 import SearchSuggestions from '../../../FormFields/SearchFields/SearchSuggestions';
 import uuidv4 from 'uuid/v4';
-import { fetchCapiAtom, searchAtoms } from '../../../../services/capi';
+import { fetchCapiAtom } from '../../../../services/capi';
 
 const filters = {
   types: ['guide', 'profile', 'qanda', 'timeline'].join(',')
