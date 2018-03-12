@@ -37,24 +37,20 @@ export default class SearchSuggestions extends React.Component {
     }
   };
   
-  constructor(props) {
-    super(props);
-      
-    this.state = {
-      machineState: this.initialState,
-      query: undefined,
-      results: undefined,
-      timer: undefined
-    };
-    
-    this.commands = {
-      idle: this.reset,
-      type: this.isTyping,
-      search: this.search,
-      results: noop,
-      error: this.displayError
-    };
-  }
+  state = {
+    machineState: this.initialState,
+    query: undefined,
+    results: undefined,
+    timer: undefined
+  };
+  
+  commands = {
+    idle: this.reset,
+    type: this.isTyping,
+    search: this.search,
+    results: noop,
+    error: this.displayError
+  };
 
   transition(action) {
     const { machineState } = this.state;
