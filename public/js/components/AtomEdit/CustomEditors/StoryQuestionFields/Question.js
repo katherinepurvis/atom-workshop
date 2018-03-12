@@ -5,6 +5,7 @@ import SearchSuggestions from '../../../FormFields/SearchFields/SearchSuggestion
 import uuidv4 from 'uuid/v4';
 import { fetchCapiAtom } from '../../../../services/capi';
 import { snippets } from '../../../../constants/snippets';
+import _get from 'lodash/fp/get';
 
 const filters = {
   types: snippets.join(',')
@@ -24,13 +25,8 @@ export class StoryQuestionsQuestion extends React.Component {
     onFormErrorsUpdate: PropTypes.func
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      answers: props.fieldValue && props.fieldValue.answers && props.fieldValue.answers.length ?
-        props.fieldValue.answers :
-        []
-    };
+  state = {
+    answers: _get(this.props, 'fieldValue.answers', [])
   }
 
   componentDidMount() {
