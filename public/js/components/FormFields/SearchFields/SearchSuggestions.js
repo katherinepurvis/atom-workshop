@@ -1,8 +1,23 @@
 import React, {PropTypes} from 'react';
+import { createStore } from 'redux';
 import { searchAtoms } from '../../../services/capi';
 import SearchTextInput from './SearchTextInput';
 
 const noop = () => {};
+
+const KEY = 'KEY';
+const ESC = 'ESC';
+const SEL = 'SEL';
+const TIMEOUT = 'TIMEOUT';
+const RESOLVE = 'RESOLVE';
+const REJECT = 'REJECT';
+
+const key = () => ({ type: KEY });
+const esc = () => ({ type: ESC });
+const sel = () => ({ type: SEL });
+const timeout = () => ({ type: TIMEOUT });
+const resolve = () => ({ type: RESOLVE });
+const reject = () => ({ type: REJECT });
 
 export default class SearchSuggestions extends React.Component {
   static propTypes = {
@@ -12,6 +27,8 @@ export default class SearchSuggestions extends React.Component {
   };
 
   initialState = 'idle';
+
+  store = createStore(this.transition, this.initialState);
   
   machine = {
     idle: {
@@ -38,7 +55,6 @@ export default class SearchSuggestions extends React.Component {
   };
   
   state = {
-    machineState: this.initialState,
     query: undefined,
     results: undefined,
     timer: undefined
@@ -52,27 +68,28 @@ export default class SearchSuggestions extends React.Component {
     error: this.displayError
   };
 
-  transition(action) {
-    const { machineState } = this.state;
-    const nextState = this.machine[machineState][action];
-    const command = this.commands[nextState];
-    this.setState({ machineState: nextState }, command);
+  transition(machineState, action) {
+    const nextState = this.machine[machineState][action.type];
+    if (this.commands[nextState]) {
+      this.commands[nextState]();
+    }
+    return nextState;
   }
 
   onChange = (query) => {
     this.setState({ query });
-    this.transition('KEY');
+    this.store.dispatch(key());
   }
 
   onKey = (key) => {
     if (key === 27) {
-      this.transition('ESC');
+      this.store.dispatch(esc());
     }
   }
 
   onClick = (i) => () => {
     this.props.onSelect(this.state.results[i]);
-    this.transition('SEL');
+    this.store.dispatch(sel());
   }
 
   reset = () => {
@@ -95,13 +112,13 @@ export default class SearchSuggestions extends React.Component {
     this.setState({
       results: undefined,
       error: undefined,
-      timer: setTimeout(() => { this.transition('TIMEOUT'); },200)
+      timer: setTimeout(() => { this.store.dispatch(timeout()); },200)
     });
   }
 
   search = () => {
     if (!(this.state.query && this.state.query.length > 2)) {
-      this.transition('ESC');
+      this.store.dispatch(esc());
       return;
     }
     
@@ -112,11 +129,11 @@ export default class SearchSuggestions extends React.Component {
     searchAtoms(query)
       .then(results => {
         this.setState({ results });
-        this.transition('RESOLVE');
+        this.store.dispatch(resolve());
       })
       .catch(error => {
         this.setState({ error });
-        this.transition('REJECT');
+        this.store.dispatch(reject());
       });
   }
 
