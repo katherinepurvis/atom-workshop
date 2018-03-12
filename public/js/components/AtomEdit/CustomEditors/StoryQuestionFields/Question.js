@@ -54,7 +54,7 @@ export class StoryQuestionsQuestion extends React.Component {
 
   onSelect = (snippet) => {
     this.setState(
-      (oldState) => Object.assign({}, oldState, { answers: oldState.answers.concat({
+      (oldState) => ({ answers: oldState.answers.concat({
         title: snippet.title,
         answerId: `atom/${snippet.atomType}/${snippet.id}`, 
         answerType: 'ATOM' 
@@ -71,7 +71,7 @@ export class StoryQuestionsQuestion extends React.Component {
   
   onDelete = (i) => {
     this.setState(
-      (oldState) => Object.assign({}, oldState, {
+      (oldState) => ({
         answers: oldState.answers.slice(0, i).concat(oldState.answers.slice(i + 1))
       }),
       () => {
