@@ -4,9 +4,10 @@ import FormFieldTextInput from '../../../FormFields/FormFieldTextInput';
 import SearchSuggestions from '../../../FormFields/SearchFields/SearchSuggestions';
 import uuidv4 from 'uuid/v4';
 import { fetchCapiAtom } from '../../../../services/capi';
+import { snippets } from '../../../../constants/snippets';
 
 const filters = {
-  types: ['guide', 'profile', 'qanda', 'timeline'].join(',')
+  types: snippets.join(',')
 };
 
 export class StoryQuestionsQuestion extends React.Component {
