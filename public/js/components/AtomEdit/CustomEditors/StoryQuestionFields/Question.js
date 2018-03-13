@@ -26,7 +26,8 @@ export class StoryQuestionsQuestion extends React.Component {
   };
 
   state = {
-    answers: _get(this.props, 'fieldValue.answers', [])
+    answers: this.props.fieldValue && this.props.fieldValue.answers ?
+      this.props.fieldValue.answers : []
   }
 
   componentDidMount() {
