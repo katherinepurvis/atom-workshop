@@ -36,15 +36,13 @@ export class StoryQuestionsQuestionSet extends React.Component {
       questions: []
     };
     return (
-      <div className="form__field form__field--questions">
-        <ManagedForm data={value} updateData={this.updateQuestionSet} onFormErrorsUpdate={this.props.onFormErrorsUpdate} formName="storyquestionsEditor">
-          <ManagedField fieldLocation="questions" name="Questions" isRequired={true}>
-            <FormFieldArrayWrapper>
-              <StoryQuestionsQuestion />
-            </FormFieldArrayWrapper>
-          </ManagedField>
-        </ManagedForm>
-      </div>
+      <ManagedForm data={value} updateData={this.updateQuestionSet} onFormErrorsUpdate={this.props.onFormErrorsUpdate} formName="storyquestionsEditor">
+        <ManagedField fieldLocation="questions" name="Questions" isRequired={true}>
+          <FormFieldArrayWrapper>
+            <StoryQuestionsQuestion />
+          </FormFieldArrayWrapper>
+        </ManagedField>
+      </ManagedForm>
     );
   }
 }

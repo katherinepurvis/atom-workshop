@@ -64,11 +64,6 @@
     border-color: $cRedB5;
   }
 
-  &--questions {
-    border: 1px solid $color300Grey;
-    margin-bottom: 20px;
-  }
-
   &--move-btn {
     display: inline-block;
     float: right;
@@ -264,12 +259,11 @@
       background: $brandColor;
     }
   }
+}
 
-  &__add {
-    display: table;
-    margin-left: auto;
-  }
-
+.form__btn-group {
+  margin-top: 20px;
+  text-align: right;
 }
 
 // Flex container for side by side fields and other adventures

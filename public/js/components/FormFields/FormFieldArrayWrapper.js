@@ -124,7 +124,7 @@ export default class FormFieldArrayWrapper extends React.Component {
     };
 
     return (
-      <div className={this.props.fieldClass ? this.props.fieldClass : 'form__group form__field'}>
+      <div className={this.props.fieldClass ? this.props.fieldClass : null}>
         {this.props.numbered ? <span className="form__field-number">{`${i + 1}. `}</span> : false }
         {hydratedChildren}
         {renderMoveBtns()}
@@ -142,7 +142,9 @@ export default class FormFieldArrayWrapper extends React.Component {
           <span className="form__label">{this.props.fieldLabel}</span>
        </div>
           { this.state.childrenVisible ? values.map((value, i) => this.renderValue(value, i)) : false }
-        <button className="form__btn-heading__btn form__btn-heading__add" type="button" onClick={this.onAddClick}>Add</button>
+        <div className="form__btn-group">
+          <button className="form__btn-heading__btn form__btn-heading__add" type="button" onClick={this.onAddClick}>Add</button>
+        </div>
       </div>
     );
   }
