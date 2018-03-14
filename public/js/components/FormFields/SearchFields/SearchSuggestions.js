@@ -7,7 +7,6 @@ class SearchSuggestions extends React.Component {
     filters: PropTypes.object,
     onSelect: PropTypes.func.isRequired,
     results: PropTypes.array,
-    query: PropTypes.object,
     queryStr: PropTypes.string,
     searchActions: PropTypes.shape({
       update: PropTypes.func.isRequired,
@@ -102,8 +101,7 @@ import * as update from '../../../actions/SearchSuggestionsActions/update.js';
 function mapStateToProps(state) {
   return {
     queryStr: state.searchSuggestions.queryStr,
-    results: state.searchSuggestions.results,
-    query: state.searchSuggestions.query
+    results: state.searchSuggestions.results
   };
 }
 
