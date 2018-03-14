@@ -31,7 +31,7 @@ export class QAItem extends React.Component {
       <div className="form__field">
         <ManagedForm data={value} updateData={this.updateItem} onFormErrorsUpdate={this.props.onFormErrorsUpdate} formName="qaEditor">
           <ManagedField fieldLocation="body" name="Answer" isRequired={true}>
-            <FormFieldsScribeEditor showWordCount={true} suggestedLength={WordLimit} showToolbar={false} tooLongMsg={`You've exceeded the ${WordLimit} word limit for this atom.`}/>
+            <FormFieldsScribeEditor showWordCount={true} suggestedLength={WordLimit} showToolbar={true} tooLongMsg={`You've exceeded the ${WordLimit} word limit for this atom.`}/>
           </ManagedField>
         </ManagedForm>
       </div>
