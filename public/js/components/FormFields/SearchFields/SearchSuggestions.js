@@ -1,107 +1,48 @@
 import React, {PropTypes} from 'react';
-import { createStore } from 'redux';
-import { searchAtoms } from '../../../services/capi';
 import SearchTextInput from './SearchTextInput';
 
-const noop = () => {};
-
-const KEY = 'KEY';
-const ESC = 'ESC';
-const SEL = 'SEL';
-const TIMEOUT = 'TIMEOUT';
-const RESOLVE = 'RESOLVE';
-const REJECT = 'REJECT';
-
-const key = () => ({ type: KEY });
-const esc = () => ({ type: ESC });
-const sel = () => ({ type: SEL });
-const timeout = () => ({ type: TIMEOUT });
-const resolve = () => ({ type: RESOLVE });
-const reject = () => ({ type: REJECT });
-
-export default class SearchSuggestions extends React.Component {
+class SearchSuggestions extends React.Component {
   static propTypes = {
     placeholder: PropTypes.string,
     filters: PropTypes.object,
-    onSelect: PropTypes.func
+    onSelect: PropTypes.func.isRequired,
+    results: PropTypes.array,
+    query: PropTypes.object,
+    queryStr: PropTypes.string,
+    searchActions: PropTypes.shape({
+      update: PropTypes.func.isRequired,
+      cancel: PropTypes.func.isRequired,
+      search: PropTypes.func.isRequired
+    }).isRequired
   };
 
-  initialState = 'idle';
-
-  store = createStore(this.transition, this.initialState);
-  
-  machine = {
-    idle: {
-      KEY: 'type'
-    },
-    type: {
-      KEY: 'type',
-      TIMEOUT: 'search',
-      ESC: 'idle'
-    },
-    search: {
-      KEY: 'type',
-      RESOLVE: 'results',
-      REJECT: 'error'
-    },
-    results: {
-      KEY: 'type',
-      ESC: 'idle',
-      SEL: 'idle'
-    },
-    error: {
-      KEY: 'type'
-    }
-  };
-  
   state = {
-    query: undefined,
-    results: undefined,
     timer: undefined
   };
   
-  commands = {
-    idle: this.reset,
-    type: this.isTyping,
-    search: this.search,
-    results: noop,
-    error: this.displayError
-  };
-
-  transition(machineState, action) {
-    const nextState = this.machine[machineState][action.type];
-    if (this.commands[nextState]) {
-      this.commands[nextState]();
-    }
-    return nextState;
-  }
-
   onChange = (query) => {
-    this.setState({ query });
-    this.store.dispatch(key());
+    this.props.searchActions.update(query);
+    this.isTyping();
   }
 
   onKey = (key) => {
     if (key === 27) {
-      this.store.dispatch(esc());
+      this.reset();
     }
   }
 
   onClick = (i) => () => {
-    this.props.onSelect(this.state.results[i]);
-    this.store.dispatch(sel());
+    this.props.searchActions.cancel();
+    this.props.onSelect(this.props.results[i]);
   }
 
   reset = () => {
     if (this.state.timer) {
       clearTimeout(this.state.timer);
+      this.setState({ timer: undefined });
     }
     
-    this.setState({
-      query: undefined,
-      results: undefined,
-      timer: undefined
-    });
+    this.props.searchActions.cancel();
   }
 
   isTyping = () => {
@@ -110,41 +51,24 @@ export default class SearchSuggestions extends React.Component {
     }
 
     this.setState({
-      results: undefined,
-      error: undefined,
-      timer: setTimeout(() => { this.store.dispatch(timeout()); },200)
+      timer: setTimeout(this.search, 300)
     });
   }
 
   search = () => {
-    if (!(this.state.query && this.state.query.length > 2)) {
-      this.store.dispatch(esc());
-      return;
-    }
-    
+    if (!this.props.queryStr.length > 2) return;
+
     const query = Object.assign({}, this.props.filters, {
-      q: this.state.query
+      q: this.props.queryStr
     });
 
-    searchAtoms(query)
-      .then(results => {
-        this.setState({ results });
-        this.store.dispatch(resolve());
-      })
-      .catch(error => {
-        this.setState({ error });
-        this.store.dispatch(reject());
-      });
-  }
-
-  displayError = () => {
-
+    this.props.searchActions.search(query);
   }
 
   renderResults() {
-    if (this.state.results) {
-      const results = this.state.results.map((result, i) =>
-        <li onClick={this.onClick(i)}>{result.title}</li>
+    if (this.props.results) {
+      const results = this.props.results.map((result, i) =>
+        <li onClick={this.onClick(i)} key={result.title}>{result.title}</li>
       );
       return (
         <ul>
@@ -157,7 +81,7 @@ export default class SearchSuggestions extends React.Component {
   render() {
     return (
       <div className="search-suggestions">
-        <SearchTextInput fieldValue={this.state.query} 
+        <SearchTextInput fieldValue={this.props.queryStr} 
                          fieldPlaceholder={this.props.placeholder} 
                          onUpdateField={this.onChange} 
                          onKeyUp={this.onKey} 
@@ -167,3 +91,26 @@ export default class SearchSuggestions extends React.Component {
     );
   }
 }
+
+//REDUX CONNECTIONS
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as cancel from '../../../actions/SearchSuggestionsActions/cancel.js';
+import * as search from '../../../actions/SearchSuggestionsActions/search.js';
+import * as update from '../../../actions/SearchSuggestionsActions/update.js';
+
+function mapStateToProps(state) {
+  return {
+    queryStr: state.searchSuggestions.queryStr,
+    results: state.searchSuggestions.results,
+    query: state.searchSuggestions.query
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    searchActions: bindActionCreators(Object.assign({}, cancel, search, update), dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchSuggestions);

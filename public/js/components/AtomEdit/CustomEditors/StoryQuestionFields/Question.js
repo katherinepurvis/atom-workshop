@@ -5,7 +5,6 @@ import SearchSuggestions from '../../../FormFields/SearchFields/SearchSuggestion
 import uuidv4 from 'uuid/v4';
 import { fetchCapiAtom } from '../../../../services/capi';
 import { snippets } from '../../../../constants/snippets';
-import _get from 'lodash/fp/get';
 
 const filters = {
   types: snippets.join(',')
