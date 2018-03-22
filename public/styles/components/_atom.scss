@@ -32,3 +32,9 @@
   padding: 5px;
   border-bottom: 1px solid #ccc;
 }
+
+.atom__question {
+    & + & {
+        margin-top: 10px;
+    }
+}

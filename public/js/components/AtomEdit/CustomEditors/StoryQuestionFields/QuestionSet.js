@@ -38,7 +38,7 @@ export class StoryQuestionsQuestionSet extends React.Component {
     return (
       <ManagedForm data={value} updateData={this.updateQuestionSet} onFormErrorsUpdate={this.props.onFormErrorsUpdate} formName="storyquestionsEditor">
         <ManagedField fieldLocation="questions" name="Questions" isRequired={true}>
-          <FormFieldArrayWrapper>
+          <FormFieldArrayWrapper fieldClass="atom__question">
             <StoryQuestionsQuestion />
           </FormFieldArrayWrapper>
         </ManagedField>
