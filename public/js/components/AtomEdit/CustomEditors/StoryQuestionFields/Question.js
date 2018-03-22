@@ -32,7 +32,7 @@ export class StoryQuestionsQuestion extends React.Component {
   searchSuggestionsId = this.genKey()
 
   genKey() {
-    return 'xxxxxxx'.replace(/x/g, () => (Math.random() * 36 | 0).toString(36));
+    return Math.random().toString(36).substr(2);
   }
 
   componentDidMount() {
