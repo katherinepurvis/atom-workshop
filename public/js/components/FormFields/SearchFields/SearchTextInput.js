@@ -17,7 +17,7 @@ export default class SearchTextInput extends React.Component {
   }
 
   onKeyUp = (e) => {
-    this.props.onKeyUp(e.target.keyCode);
+    this.props.onKeyUp(e.keyCode);
   }
 
   render() {

@@ -1,12 +1,13 @@
-function updateRequest(queryStr) { 
+function updateRequest(id, queryStr) { 
   return { 
     type: 'SEARCH_SUGGESTIONS_UPDATE',
-    queryStr
+    queryStr,
+    id
   };
 }
 
-export function update(queryStr) {
+export function update(id, queryStr) {
   return dispatch => {
-    dispatch(updateRequest(queryStr));
+    dispatch(updateRequest(id, queryStr));
   };
 }
