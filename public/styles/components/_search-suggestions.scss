@@ -29,10 +29,15 @@
 .search-suggestions > ul > li {
     padding: .75rem 1rem;
     border-bottom: 1px solid #ddd;
-    cursor: pointer;
     
-    &:hover,
-    &:focus {
+    &:not(.disabled):hover,
+    &:not(.disabled):focus {
         background: lightblue;
+        cursor: pointer;
     }
+}
+
+.disabled {
+    color: $disabledColor;
+    font-style: italic;
 }

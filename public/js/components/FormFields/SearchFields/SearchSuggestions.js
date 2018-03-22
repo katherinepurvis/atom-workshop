@@ -56,8 +56,6 @@ class SearchSuggestions extends React.Component {
   }
 
   search = () => {
-    if (!this.props.queryStr.length > 2) return;
-
     const query = Object.assign({}, this.props.filters, {
       q: this.props.queryStr
     });
@@ -66,13 +64,17 @@ class SearchSuggestions extends React.Component {
   }
 
   renderResults() {
-    if (this.props.results) {
+    if (this.props.results && this.props.queryStr) {
       const results = this.props.results.map((result, i) =>
         <li onClick={this.onClick(i)} key={result.title}>{result.title}</li>
       );
+      const noresult = this.props.results.length === 0 ?
+        <li className="disabled">No snippet found matching the word "{this.props.queryStr}"</li> : null;
+
       return (
         <ul>
           {results}
+          {noresult}
         </ul>
       );
     }
