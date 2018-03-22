@@ -1,31 +1,34 @@
 import { searchAtoms } from '../../services/capi';
 
-function searchRequest(query) { 
+function searchRequest(id, query) { 
   return { 
     type: 'SEARCH_SUGGESTIONS_SEARCH_REQUEST',
-    query
+    query,
+    id
   };
 }
 
-function searchResponse(results) {
+function searchResponse(id, results) {
   return {
     type: 'SEARCH_SUGGESTIONS_SEARCH_RESPONSE',
-    results
+    results,
+    id
   };
 }
 
-function searchError(err) {
+function searchError(id, err) {
   return {
     type: 'SEARCH_SUGGESTIONS_SEARCH_ERROR',
-    err
+    err,
+    id
   };
 }
 
-export function search(query) {
+export function search(id, query) {
   return dispatch => {
-    dispatch(searchRequest(query));
+    dispatch(searchRequest(id, query));
     searchAtoms(query)
-      .then(results => dispatch(searchResponse(results)))
-      .catch(err => dispatch(searchError(err)));
+      .then(results => dispatch(searchResponse(id, results)))
+      .catch(err => dispatch(searchError(id, err)));
   };
 }

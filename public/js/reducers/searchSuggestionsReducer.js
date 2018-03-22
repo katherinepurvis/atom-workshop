@@ -1,25 +1,33 @@
-export default function suggestions(state = { queryStr: '', query: null, results: null }, action) {
+export default function suggestions(state = {}, action) {
   switch(action.type) {
   case 'SEARCH_SUGGESTIONS_CANCEL':
-    return {
-      queryStr: '',
-      query: null,
-      results: null
-    };
+    return Object.assign({}, state, {
+      [action.id]: {
+        queryStr: '',
+        query: null,
+        results: null
+      }
+    });
 
   case 'SEARCH_SUGGESTIONS_UPDATE':
     return Object.assign({}, state, {
-      queryStr: action.queryStr
+      [action.id]: Object.assign({}, state[action.id], {
+        queryStr: action.queryStr
+      })
     });
 
   case 'SEARCH_SUGGESTIONS_SEARCH_REQUEST':
     return Object.assign({}, state, {
-      query: action.query
+      [action.id]: Object.assign({}, state[action.id], {
+        query: action.query
+      })
     });
 
   case 'SEARCH_SUGGESTIONS_SEARCH_RESPONSE':
     return Object.assign({}, state, {
-      results: action.results
+      [action.id]: Object.assign({}, state[action.id], {
+        results: action.results
+      })
     });
 
   default:

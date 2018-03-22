@@ -3,6 +3,7 @@ import SearchTextInput from './SearchTextInput';
 
 class SearchSuggestions extends React.Component {
   static propTypes = {
+    id: PropTypes.string.isRequired,
     placeholder: PropTypes.string,
     filters: PropTypes.object,
     onSelect: PropTypes.func.isRequired,
@@ -20,7 +21,7 @@ class SearchSuggestions extends React.Component {
   };
   
   onChange = (query) => {
-    this.props.searchActions.update(query);
+    this.props.searchActions.update(this.props.id, query);
     this.isTyping();
   }
 
@@ -31,7 +32,7 @@ class SearchSuggestions extends React.Component {
   }
 
   onClick = (i) => () => {
-    this.props.searchActions.cancel();
+    this.props.searchActions.cancel(this.props.id);
     this.props.onSelect(this.props.results[i]);
   }
 
@@ -41,7 +42,7 @@ class SearchSuggestions extends React.Component {
       this.setState({ timer: undefined });
     }
     
-    this.props.searchActions.cancel();
+    this.props.searchActions.cancel(this.props.id);
   }
 
   isTyping = () => {
@@ -61,7 +62,7 @@ class SearchSuggestions extends React.Component {
       q: this.props.queryStr
     });
 
-    this.props.searchActions.search(query);
+    this.props.searchActions.search(this.props.id, query);
   }
 
   renderResults() {
@@ -79,7 +80,7 @@ class SearchSuggestions extends React.Component {
 
   render() {
     return (
-      <div className="search-suggestions">
+      <div id={this.props.id} className="search-suggestions">
         <SearchTextInput fieldValue={this.props.queryStr} 
                          fieldPlaceholder={this.props.placeholder} 
                          onUpdateField={this.onChange} 
@@ -98,10 +99,13 @@ import * as cancel from '../../../actions/SearchSuggestionsActions/cancel.js';
 import * as search from '../../../actions/SearchSuggestionsActions/search.js';
 import * as update from '../../../actions/SearchSuggestionsActions/update.js';
 
-function mapStateToProps(state) {
-  return {
-    queryStr: state.searchSuggestions.queryStr,
-    results: state.searchSuggestions.results
+function mapStateToProps(state, props) {
+  return state.searchSuggestions[props.id] ? {
+    queryStr: state.searchSuggestions[props.id].queryStr,
+    results: state.searchSuggestions[props.id].results
+  } : {
+    queryStr: '',
+    results: []
   };
 }
 

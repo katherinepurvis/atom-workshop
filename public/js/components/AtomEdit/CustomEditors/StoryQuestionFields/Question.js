@@ -29,6 +29,12 @@ export class StoryQuestionsQuestion extends React.Component {
       this.props.fieldValue.answers : []
   }
 
+  searchSuggestionsId = this.genKey()
+
+  genKey() {
+    return 'xxxxxxx'.replace(/x/g, () => (Math.random() * 36 | 0).toString(36));
+  }
+
   componentDidMount() {
     this.state.answers.forEach((answer, i) => {
     // eslint-disable-next-line
@@ -94,7 +100,7 @@ export class StoryQuestionsQuestion extends React.Component {
         </ManagedForm>
         <div className="atom__answers__header">
           <h5>Answers</h5>
-          <SearchSuggestions fieldPlaceholder="Search for snippets" filters={filters} onSelect={this.onSelect} />
+          <SearchSuggestions id={this.searchSuggestionsId} fieldPlaceholder="Search for snippets" filters={filters} onSelect={this.onSelect} />
         </div>
         <ul className="atom__answers">
           {this.state.answers.map((answer, i) => 
