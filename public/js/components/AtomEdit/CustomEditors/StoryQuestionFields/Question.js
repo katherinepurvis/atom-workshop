@@ -98,6 +98,7 @@ export class StoryQuestionsQuestion extends React.Component {
             <FormFieldTextInput />
           </ManagedField>
         </ManagedForm>
+        <div><small>Answer by searching for snippets below</small></div>
         <div className="atom__answers__header">
           <h5>Answers</h5>
           <SearchSuggestions id={this.searchSuggestionsId} fieldPlaceholder="Search for snippets" filters={filters} onSelect={this.onSelect} />
