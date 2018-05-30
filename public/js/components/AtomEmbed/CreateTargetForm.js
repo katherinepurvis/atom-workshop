@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import {createTarget} from '../../services/TargetingApi';
-import {addYears} from 'date-fns'
+import {addYears} from 'date-fns';
 
 import {ManagedForm, ManagedField} from '../ManagedEditor';
 import FormFieldTextInput from '../FormFields/FormFieldTextInput';

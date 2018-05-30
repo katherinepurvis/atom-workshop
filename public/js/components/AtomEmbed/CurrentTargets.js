@@ -1,7 +1,6 @@
 import React from 'react';
 import {atomPropType} from '../../constants/atomPropType';
 import {fetchTargetsForAtomPath, deleteTarget} from '../../services/TargetingApi';
-import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 
 import CreateTargetForm from './CreateTargetForm';
 
