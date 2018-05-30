@@ -61,7 +61,6 @@ class CurrentTargets extends React.Component {
         <ul className="targeting__target__tags">
           {target.tagPaths.map((tagPath) => <li key={tagPath}>{tagPath}</li>)}
         </ul>
-        <div>Expires {distanceInWordsToNow(target.activeUntil, {addSuffix: true})} </div>
       </div>
     );
   }

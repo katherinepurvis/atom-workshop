@@ -1,10 +1,10 @@
 import React, {PropTypes} from 'react';
 import {createTarget} from '../../services/TargetingApi';
+import {addYears} from 'date-fns'
 
 import {ManagedForm, ManagedField} from '../ManagedEditor';
 import FormFieldTextInput from '../FormFields/FormFieldTextInput';
 import FormFieldTagPicker from '../FormFields/FormFieldTagPicker';
-import FormFieldDateInput from '../FormFields/FormFieldDateInput';
 import FormFieldArrayWrapper from '../FormFields/FormFieldArrayWrapper';
 
 
@@ -18,6 +18,7 @@ class CreateTargetForm extends React.Component {
   }
 
   state = {
+    pendingUpdate: false,
     creating: false,
     currentTarget: {},
     formHasError: true
@@ -43,7 +44,8 @@ class CreateTargetForm extends React.Component {
     });
 
     const target = Object.assign({}, this.state.currentTarget, {
-      url: this.props.atomPath
+      url: this.props.atomPath,
+      activeUntil: addYears(Date.now(), 50).valueOf()
     });
 
     createTarget(target).then((response) => {
@@ -59,6 +61,7 @@ class CreateTargetForm extends React.Component {
 
   updateCurrentTarget = (newTarget) => {
     this.setState({
+      pendingUpdate: true,
       currentTarget: newTarget
     });
   }
@@ -86,13 +89,10 @@ class CreateTargetForm extends React.Component {
               <FormFieldTagPicker/>
             </FormFieldArrayWrapper>
           </ManagedField>
-          <ManagedField fieldLocation="activeUntil" name="Active Until" isRequired={true}>
-            <FormFieldDateInput/>
-          </ManagedField>
         </ManagedForm>
         <button
-          className="btn"
-          disabled={this.state.formHasError || this.state.creating}
+          className="btn btn--green"
+          disabled={!this.state.pendingUpdate || this.state.formHasError || this.state.creating}
           onClick={this.createTarget}
           >
           {this.state.creating ? "Creating..." : "Create Suggestion"}
