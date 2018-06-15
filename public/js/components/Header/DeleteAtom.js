@@ -31,14 +31,12 @@ export default class DeleteAtom extends React.Component {
     };
 
     return (
-      <li className="action-list__item">
-          <button
-            className="btn label__expired action-list__button"
-            onClick={doDelete}
-          >
-            {deleteMsg}
-          </button>
-      </li>
+      <button
+        className="btn btn--margin btn--red"
+        onClick={doDelete}
+      >
+        {deleteMsg}
+      </button>
     );
   }
 
@@ -46,6 +44,8 @@ export default class DeleteAtom extends React.Component {
     if (!this.showActions) {
       return false;
     }
+
+    return this.renderDelete();
 
     return (
       <div>
