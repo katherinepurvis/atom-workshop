@@ -27,9 +27,6 @@ object AtomLogic {
     Either.cond(t.isDefined, t.get, InvalidAtomTypeError)
   }
 
-  def checkAtomCanBeDeletedFromPreview(responseFromLiveDatastore:Either[AtomAPIError, Atom]): Either[AtomAPIError, String] =
-    responseFromLiveDatastore.fold(_ => Right("Atom does not exist on live"), _ => Left(DeleteAtomFromPreviewError))
-
   def processException(exception: Exception): Either[AtomAPIError, Nothing] = {
     val atomApiError = exception match {
       case e: ParsingFailure => AtomJsonParsingError(e.message)

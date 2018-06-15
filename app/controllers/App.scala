@@ -1,21 +1,18 @@
 package controllers
 
 import cats.syntax.either._
-import com.gu.contentatom.thrift.EventType
+import com.gu.contentatom.thrift.{Atom, AtomType, EventType}
 import com.gu.editorial.permissions.client.{Permission, PermissionGranted, PermissionsUser}
 import com.gu.fezziwig.CirceScroogeMacros._
 import com.gu.pandomainauth.action.UserRequest
 import config.Config
 import db.AtomDataStores._
 import db.AtomWorkshopDBAPI
-import io.circe._
 import play.api.libs.concurrent.Execution.Implicits._
-import io.circe.syntax._
 import models._
 import play.api.Logger
 import play.api.libs.ws.WSClient
 import play.api.mvc.{ActionBuilder, Controller, Request, Result}
-
 import services.AtomPublishers._
 import services.AtomWorkshopPermissionsProvider
 import util.AtomElementBuilders
@@ -24,11 +21,16 @@ import util.AtomUpdateOperations._
 import util.Parser._
 import util.CORSable
 import play.api.mvc.Action
+import com.gu.pandomainauth.model.{User => PandaUser}
 
 import scala.concurrent.Future
 
 class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI,
           val permissions: AtomWorkshopPermissionsProvider) extends Controller with PanDomainAuthActions {
+
+  // These are required even though IntelliJ thinks they are not
+  import io.circe._
+  import io.circe.syntax._
 
   def allowCORSAccess(methods: String, args: Any*) = CORSable(Config.workflowUrl) {
     Action { implicit req =>
@@ -141,17 +143,29 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI,
     }
   }
 
-  def deleteAtom(atomType: String, id: String) = AuthAction {
+  def deleteAtom(atomType: String, id: String) = AuthAction { req =>
     APIResponse {
-      for {
-        atomType <- validateAtomType(atomType)
-        liveAtom = atomWorkshopDB.getAtom(publishedDataStore, atomType, id)
-        _ <- checkAtomCanBeDeletedFromPreview(liveAtom)
-        previewDataStore = getDataStore(Preview)
-        result <- atomWorkshopDB.deleteAtom(previewDataStore, atomType, id)
-        atom <- liveAtom
-        _ <- sendKinesisEvent(atom, previewAtomPublisher, EventType.Takedown)
-      } yield AtomWorkshopAPIResponse("Atom deleted from preview")
+      validateAtomType(atomType).flatMap { atomType =>
+        atomWorkshopDB.getAtom(publishedDataStore, atomType, id) match {
+          case Right(publishedAtom) =>
+            for {
+              _ <- takedown(atomType, id, req.user)
+              _ <- atomWorkshopDB.deleteAtom(previewDataStore, atomType, id)
+              _ <- sendKinesisEvent(publishedAtom, previewAtomPublisher, EventType.Takedown)
+            } yield AtomWorkshopAPIResponse(s"Atom $atomType/$id taken down and deleted")
+
+          case Left(UnknownAtomError(_, _)) =>
+            atomWorkshopDB.getAtom(previewDataStore, atomType, id).flatMap { unpublishedAtom =>
+              for {
+                _ <- atomWorkshopDB.deleteAtom(previewDataStore, atomType, id)
+                _ <- sendKinesisEvent(unpublishedAtom, previewAtomPublisher, EventType.Takedown)
+              } yield AtomWorkshopAPIResponse(s"Atom $atomType/$id deleted")
+            }
+
+          case Left(err) =>
+            Left(err)
+        }
+      }
     }
   }
 
@@ -159,12 +173,8 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI,
     APIResponse {
       for {
         atomType <- validateAtomType(atomType)
-        atom <- atomWorkshopDB.getAtom(publishedDataStore, atomType, id)
-        updatedAtom <- atomWorkshopDB.updateAtom(previewDataStore, updateTakenDownChangeRecord(atom, req.user))
-        result <- atomWorkshopDB.deleteAtom(publishedDataStore, atomType, id)
-        _ <- sendKinesisEvent(updatedAtom, liveAtomPublisher, EventType.Takedown)
-        _ <- sendKinesisEvent(updatedAtom, previewAtomPublisher, EventType.Update)
-      } yield updatedAtom
+        result <- takedown(atomType, id, req.user)
+      } yield result
     }
   }
 
@@ -184,4 +194,11 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI,
     }
   }
 
+  private def takedown(atomType: AtomType, id: String, user: PandaUser): Either[AtomAPIError, Atom] = for {
+    atom <- atomWorkshopDB.getAtom(publishedDataStore, atomType, id)
+    updatedAtom <- atomWorkshopDB.updateAtom(previewDataStore, updateTakenDownChangeRecord(atom, user))
+    result <- atomWorkshopDB.deleteAtom(publishedDataStore, atomType, id)
+    _ <- sendKinesisEvent(updatedAtom, liveAtomPublisher, EventType.Takedown)
+    _ <- sendKinesisEvent(updatedAtom, previewAtomPublisher, EventType.Update)
+  } yield updatedAtom
 }

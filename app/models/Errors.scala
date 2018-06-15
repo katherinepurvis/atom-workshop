@@ -1,8 +1,11 @@
 package models
 
+import com.gu.contentatom.thrift.AtomType
+
 sealed abstract class AtomAPIError(val msg: String)
 
 case object InvalidAtomTypeError extends AtomAPIError("Atom type not valid - did you make a typo? Correct examples: 'cta', 'media")
+case class UnknownAtomError(atomType: AtomType, id: String) extends AtomAPIError(s"Unknown atom $atomType/$id")
 case object UnsupportedAtomTypeError extends AtomAPIError("Atom type not supported. Currently supported types: unknown")
 case object DeleteAtomFromPreviewError extends AtomAPIError("Could not delete atom from preview. Atom is live.")
 case class CreateAtomDynamoError(atomJson: String, message: String) extends AtomAPIError(s"Error thrown by Dynamo when attempting to create atom. JSON of atom: $atomJson, error message: $message")
