@@ -1,19 +1,10 @@
 import AtomsApi from '../../services/AtomsApi';
 import {logError} from '../../util/logger';
 
-
 function requestAtomDelete(atom) {
   return {
     type:       'ATOM_DELETE_REQUEST',
     atom:        atom,
-    receivedAt: Date.now()
-  };
-}
-
-function receiveAtomDelete(atom) {
-  return {
-    type:       'ATOM_DELETE_RECEIVE',
-    atom:       atom,
     receivedAt: Date.now()
   };
 }
@@ -31,11 +22,13 @@ function errorDeletingAtom(error) {
 export function deleteAtom(atom) {
   return dispatch => {
     dispatch(requestAtomDelete(atom));
+
     return AtomsApi.deleteAtom(atom)
         .then(res => res.json())
-        .then(atom => {
-          dispatch(receiveAtomDelete(atom));
-        })
-        .catch(error => dispatch(errorDeletingAtom(error)));
+        .then(() =>
+          window.location.href = window.location.origin + '/'
+        ).catch(error =>
+          dispatch(errorDeletingAtom(error))
+        );
   };
 }

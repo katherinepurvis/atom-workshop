@@ -46,13 +46,5 @@ export default class DeleteAtom extends React.Component {
     }
 
     return this.renderDelete();
-
-    return (
-      <div>
-        <ul className="action-list">
-          {this.renderDelete()}
-        </ul>
-      </div>
-    );
   }
 }
