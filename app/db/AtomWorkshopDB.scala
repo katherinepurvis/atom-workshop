@@ -4,13 +4,14 @@ import cats.syntax.either._
 import com.gu.atom.data.{DataStoreResultUtil, DynamoDataStore, IDNotFound}
 import com.gu.contentatom.thrift.{Atom, AtomType}
 import com.gu.pandomainauth.model.User
-import models.{AtomAPIError, AtomWorkshopDynamoDatastoreError}
+import models.{AtomAPIError, AtomWorkshopDynamoDatastoreError, UnknownAtomError}
 import play.api.Logger
 import util.AtomLogic._
 
 trait AtomWorkshopDBAPI {
 
-  def transformAtomLibResult[T](result: DataStoreResultUtil.DataStoreResult[T]): Either[AtomAPIError, T] = result match {
+  def transformAtomLibResult[T](atomType: AtomType, id: String, result: DataStoreResultUtil.DataStoreResult[T]): Either[AtomAPIError, T] = result match {
+    case Left(IDNotFound) => Left(UnknownAtomError(atomType, id))
     case Left(e) => Left(AtomWorkshopDynamoDatastoreError(e.msg))
     case Right(r) => Right(r)
   }
@@ -33,20 +34,20 @@ class AtomWorkshopDB() extends AtomWorkshopDBAPI {
     try {
       val result = datastore.createAtom(buildKey(atomType, atom.id), atom)
       Logger.info(s"Successfully created atom of type ${atomType.name} with id ${atom.id}")
-      transformAtomLibResult(result)
+      transformAtomLibResult(atomType, atom.id, result)
     } catch {
       case e: Exception => processException(e)
     }
   }
 
   def getAtom(datastore: DynamoDataStore, atomType: AtomType, id: String) =
-    transformAtomLibResult(datastore.getAtom(buildKey(atomType, id)))
+    transformAtomLibResult(atomType, id, datastore.getAtom(buildKey(atomType, id)))
 
   def updateAtom(datastore: DynamoDataStore, atom: Atom): Either[AtomAPIError, Atom] = {
     try {
       val result = datastore.updateAtom(atom)
       Logger.info(s"Successfully updated atom of type ${atom.atomType.name} with id ${atom.id}")
-      transformAtomLibResult(result)
+      transformAtomLibResult(atom.atomType, atom.id, result)
     } catch {
       case e: Exception => processException(e)
     }
@@ -67,5 +68,5 @@ class AtomWorkshopDB() extends AtomWorkshopDBAPI {
   }
 
   def deleteAtom(datastore: DynamoDataStore, atomType: AtomType, id: String) =
-    transformAtomLibResult(datastore.deleteAtom(buildKey(atomType, id)))
+    transformAtomLibResult(atomType, id, datastore.deleteAtom(buildKey(atomType, id)))
 }
