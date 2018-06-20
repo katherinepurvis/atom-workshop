@@ -24,7 +24,8 @@ libraryDependencies ++= Seq(
   "com.gu"                   %% "exact-target-lists"           % "0.1",
   "com.gu"                   %% "content-api-client-aws"       % "0.5",
   "com.gu"                   %% "content-api-client"           % "11.51",
-  "org.elasticsearch.client" % "elasticsearch-rest-high-level-client" % "6.3.0"
+  "org.elasticsearch.client" % "elasticsearch-rest-high-level-client" % "6.3.0",
+  "com.gu" %% "scanamo" % "1.0.0-M6"
 )
 
 resolvers ++= Seq(
