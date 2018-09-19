@@ -4,7 +4,7 @@ version := "1.0"
 scalaVersion := "2.11.8"
 
 lazy val awsVersion = "1.11.8"
-lazy val atomLibVersion = "1.1.17"
+lazy val atomLibVersion = "1.1.19"
 
 libraryDependencies ++= Seq(
   ws,
@@ -23,7 +23,7 @@ libraryDependencies ++= Seq(
   "net.logstash.logback"     %  "logstash-logback-encoder"     % "4.2",
   "com.gu"                   %% "exact-target-lists"           % "0.1",
   "com.gu"                   %% "content-api-client-aws"       % "0.5",
-  "com.gu"                   %% "content-api-client"           % "11.51"
+  "com.gu"                   %% "content-api-client"           % "12.10"
 )
 
 resolvers ++= Seq(
