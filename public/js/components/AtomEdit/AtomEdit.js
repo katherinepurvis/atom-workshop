@@ -20,7 +20,8 @@ class AtomEdit extends React.Component {
   static propTypes = {
     routeParams: PropTypes.shape({
       atomType: PropTypes.string.isRequired,
-      id: PropTypes.string.isRequired
+      id: PropTypes.string.isRequired,
+      defaultHtml: PropTypes.string
     }).isRequired,
     atomActions: PropTypes.shape({
       updateAtom: PropTypes.func.isRequired,
@@ -81,7 +82,7 @@ class AtomEdit extends React.Component {
       case ("commonsdivision"):
         return <CommonsDivisionEditor atom={this.props.atom} onUpdate={this.updateAtom} onFormErrorsUpdate={this.updateFormErrors} />;
        case ("chart"):
-        return <ChartEditor atomId={this.props.atom.id} config={this.props.config} />;
+        return <ChartEditor atom={this.props.atom} config={this.props.config} />;
       default:
         return (
           <div>Atom Workshop cannot edit this type of atom currently</div>
