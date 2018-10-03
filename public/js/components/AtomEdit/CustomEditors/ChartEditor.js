@@ -1,10 +1,11 @@
 import React, { PropTypes } from 'react';
 import Modal from '../../Utilities/Modal';
+import {atomPropType} from '../../../constants/atomPropType';
 
 export class ChartEditor extends React.Component {
 
   static propTypes = {
-    atomId: PropTypes.string,
+    atom: atomPropType.isRequired,
     config: PropTypes.shape({
       visualsUrl: PropTypes.string.isRequired
     }).isRequired
@@ -42,7 +43,7 @@ export class ChartEditor extends React.Component {
   }
 
   handleFrameTasks = (e) => {
-    if(e.origin === this.props.config.visualsUrl && e.data === "save_atom"){
+    if(e.origin === this.props.config.visualsUrl && e.data === "saving_atom"){
       this.toggleModal(e);
     }
   }
@@ -55,8 +56,10 @@ export class ChartEditor extends React.Component {
           Edit Chart
         </button>
         <Modal isOpen={this.state.modalOpen} dismiss={this.closeModal}>
-          <iframe className="chartembedder__modal" src={`${this.props.config.visualsUrl}/basichartool?atom=${this.props.atomId}`} />
+          <iframe className="chartembedder__modal" src={`${this.props.config.visualsUrl}/basichartool?atom=${this.props.atom.id}`} />
         </Modal>
+        <p>Soon to be beautifully rendered chart html.</p>
+        {this.props.atom.defaultHtml}
       </div>
     );
   }
