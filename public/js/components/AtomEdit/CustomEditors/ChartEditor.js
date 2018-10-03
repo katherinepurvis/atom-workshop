@@ -33,6 +33,20 @@ export class ChartEditor extends React.Component {
     window.addEventListener('message', this.onMessage, false);
   };
 
+  componentDidMount() {
+    window.addEventListener("message", this.handleFrameTasks);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("message", this.handleFrameTasks);
+  }
+
+  handleFrameTasks = (e) => {
+    if(e.origin === this.props.config.visualsUrl && e.data === "save_atom"){
+      this.toggleModal(e);
+    }
+  }
+
   render () {
 
     return (
