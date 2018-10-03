@@ -32,6 +32,7 @@ class AtomEdit extends React.Component {
     atom: atomPropType,
     config: PropTypes.shape({
       gridUrl: PropTypes.string,
+      visualsUrl: PropTypes.string,
       embeddedMode: PropTypes.string,
       isEmbedded: PropTypes.bool.isRequired
     })
@@ -80,7 +81,7 @@ class AtomEdit extends React.Component {
       case ("commonsdivision"):
         return <CommonsDivisionEditor atom={this.props.atom} onUpdate={this.updateAtom} onFormErrorsUpdate={this.updateFormErrors} />;
        case ("chart"):
-        return <ChartEditor />;
+        return <ChartEditor atomId={this.props.atom.id} config={this.props.config} />;
       default:
         return (
           <div>Atom Workshop cannot edit this type of atom currently</div>

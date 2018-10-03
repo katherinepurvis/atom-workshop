@@ -32,7 +32,7 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI,
   import io.circe._
   import io.circe.syntax._
 
-  def allowCORSAccess(methods: String, args: Any*) = CORSable(Config.workflowUrl) {
+  def allowCORSAccess(methods: String, args: Any*) = CORSable(Config.workflowUrl, Config.visualsUrl) {
     Action { implicit req =>
       val requestedHeaders = req.headers("Access-Control-Request-Headers")
       NoContent.withHeaders("Access-Control-Allow-Methods" -> methods, "Access-Control-Allow-Headers" -> requestedHeaders)
@@ -56,7 +56,8 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI,
         atomEditorGutoolsDomain = Config.atomEditorGutoolsDomain,
         presenceEnabled = Config.presenceEnabled,
         presenceDomain = Config.presenceDomain,
-        permissions
+        permissions,
+        visualsUrl = Config.visualsUrl
       )
 
       val jsFileName = "build/app.js"
@@ -117,15 +118,17 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI,
     }
   }
 
-  def updateEntireAtom(atomType: String, id: String) = AuthAction { req =>
-    APIResponse {
-      for {
-        atomType <- validateAtomType(atomType)
-        payload <- extractRequestBody(req.body.asJson.map(_.toString))
-        newAtom <- stringToAtom(payload)
-        updatedAtom <- atomWorkshopDB.updateAtom(previewDataStore, updateTopLevelFields(newAtom, req.user))
-        _ <- sendKinesisEvent(updatedAtom, previewAtomPublisher, EventType.Update)
-      } yield updatedAtom
+  def updateEntireAtom(atomType: String, id: String) = CORSable(Config.visualsUrl) {
+    AuthAction { req =>
+      APIResponse {
+        for {
+          atomType <- validateAtomType(atomType)
+          payload <- extractRequestBody(req.body.asJson.map(_.toString))
+          newAtom <- stringToAtom(payload)
+          updatedAtom <- atomWorkshopDB.updateAtom(previewDataStore, updateTopLevelFields(newAtom, req.user))
+          _ <- sendKinesisEvent(updatedAtom, previewAtomPublisher, EventType.Update)
+        } yield updatedAtom
+      }
     }
   }
 

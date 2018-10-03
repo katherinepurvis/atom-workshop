@@ -23,7 +23,8 @@ case class ClientConfig(
                          atomEditorGutoolsDomain: String,
                          presenceEnabled: Boolean,
                          presenceDomain: String,
-                         permissions: Permissions
+                         permissions: Permissions,
+                         visualsUrl: String
                        )
 
 object ClientConfig {
