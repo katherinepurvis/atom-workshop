@@ -50,6 +50,10 @@ export class ChartEditor extends React.Component {
 
   render () {
 
+    const chartHtml = {
+        __html: this.props.atom.defaultHtml
+    }
+
     return (
       <div>
         <button className="btn" onClick={this.toggleModal}>
@@ -59,7 +63,7 @@ export class ChartEditor extends React.Component {
           <iframe className="chartembedder__modal" src={`${this.props.config.visualsUrl}/basichartool?atom=${this.props.atom.id}`} />
         </Modal>
         <p>Soon to be beautifully rendered chart html.</p>
-        {this.props.atom.defaultHtml}
+        <div dangerouslySetInnerHTML={chartHtml}></div>
       </div>
     );
   }

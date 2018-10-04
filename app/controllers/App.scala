@@ -80,13 +80,15 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI,
     }
   }
 
-  def getAtom(atomType: String, id: String, version: String) = AuthAction {
-    APIResponse {
-      for {
-        atomType <- validateAtomType(atomType)
-        ds = getDataStore(getVersion(version))
-        atom <- atomWorkshopDB.getAtom(ds, atomType, id)
-      } yield atom
+  def getAtom(atomType: String, id: String, version: String) = CORSable(Config.visualsUrl) {
+    AuthAction {
+      APIResponse {
+        for {
+          atomType <- validateAtomType(atomType)
+          ds = getDataStore(getVersion(version))
+          atom <- atomWorkshopDB.getAtom(ds, atomType, id)
+        } yield atom
+      }
     }
   }
 
