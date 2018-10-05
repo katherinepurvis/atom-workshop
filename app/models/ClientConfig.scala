@@ -24,7 +24,8 @@ case class ClientConfig(
                          presenceEnabled: Boolean,
                          presenceDomain: String,
                          permissions: Permissions,
-                         visualsUrl: String
+                         visualsUrl: String,
+                         stage: String
                        )
 
 object ClientConfig {

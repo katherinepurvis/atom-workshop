@@ -7,7 +7,8 @@ export class ChartEditor extends React.Component {
   static propTypes = {
     atom: atomPropType.isRequired,
     config: PropTypes.shape({
-      visualsUrl: PropTypes.string.isRequired
+      visualsUrl: PropTypes.string.isRequired,
+      stage: PropTypes.string.isRequired
     }).isRequired
   }
 
@@ -49,6 +50,11 @@ export class ChartEditor extends React.Component {
   }
 
   render () {
+    const chartHtml = {
+      __html: this.props.atom.defaultHtml
+    };
+
+    const iFrameSrc = (this.props.config.stage === "PROD") ? `${this.props.config.visualsUrl}/basichartool`: `${this.props.config.visualsUrl}`;
 
     return (
       <div>
@@ -56,10 +62,9 @@ export class ChartEditor extends React.Component {
           Edit Chart
         </button>
         <Modal isOpen={this.state.modalOpen} dismiss={this.closeModal}>
-          <iframe className="chartembedder__modal" src={`${this.props.config.visualsUrl}/basichartool?atom=${this.props.atom.id}`} />
+          <iframe className="chartembedder__modal" src={`${iFrameSrc}?atom=${this.props.atom.id}`} />
         </Modal>
-        <p>Soon to be beautifully rendered chart html.</p>
-        {this.props.atom.defaultHtml}
+        <div dangerouslySetInnerHTML={chartHtml}></div>
       </div>
     );
   }

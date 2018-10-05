@@ -57,7 +57,8 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI,
         presenceEnabled = Config.presenceEnabled,
         presenceDomain = Config.presenceDomain,
         permissions,
-        visualsUrl = Config.visualsUrl
+        visualsUrl = Config.visualsUrl,
+        stage = Config.stage
       )
 
       val jsFileName = "build/app.js"
@@ -80,13 +81,15 @@ class App(val wsClient: WSClient, val atomWorkshopDB: AtomWorkshopDBAPI,
     }
   }
 
-  def getAtom(atomType: String, id: String, version: String) = AuthAction {
-    APIResponse {
-      for {
-        atomType <- validateAtomType(atomType)
-        ds = getDataStore(getVersion(version))
-        atom <- atomWorkshopDB.getAtom(ds, atomType, id)
-      } yield atom
+  def getAtom(atomType: String, id: String, version: String) = CORSable(Config.visualsUrl){
+    AuthAction {
+      APIResponse {
+        for {
+          atomType <- validateAtomType(atomType)
+          ds = getDataStore(getVersion(version))
+          atom <- atomWorkshopDB.getAtom(ds, atomType, id)
+        } yield atom
+      }
     }
   }
 
