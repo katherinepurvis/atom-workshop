@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import Modal from '../../Utilities/Modal';
 import {atomPropType} from '../../../constants/atomPropType';
+import {logInfo, logError} from '../../../util/logger';
 
 export class ChartEditor extends React.Component {
 
@@ -35,19 +36,30 @@ export class ChartEditor extends React.Component {
     window.addEventListener('message', this.onMessage, false);
   };
 
-  componentDidMount() {
-    window.addEventListener("message", this.handleFrameTasks);
+  validMessage(data) {
+    return data === "saving_atom";
   }
 
-  componentWillUnmount() {
-    window.removeEventListener("message", this.handleFrameTasks);
-  }
-
-  handleFrameTasks = (e) => {
-    if(e.origin === this.props.config.visualsUrl && e.data === "saving_atom"){
-      this.toggleModal(e);
+  onMessage = event => {
+    if (event.origin !== this.props.config.visualsUrl) {
+      logInfo("Event did not come from visuals tool.");
+      return;
     }
-  }
+
+    const data = event.data;
+
+    if (!data) {
+      logInfo("No data from event");
+      return;
+    }
+
+    if (!this.validMessage(data)) {
+      logError("Invalid message");
+      return;
+    }
+
+    this.closeModal();
+  };
 
   render () {
     const chartHtml = {
