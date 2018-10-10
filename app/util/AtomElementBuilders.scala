@@ -1,5 +1,7 @@
 package util
 
+import com.gu.contentatom.thrift.AtomData.Chart
+import com.gu.contentatom.thrift.atom.chart._
 import com.gu.contentatom.thrift.atom.cta.CTAAtom
 import com.gu.contentatom.thrift.atom.recipe.{RecipeAtom, Tags => RecipeTags, Time => RecipeTime}
 import com.gu.contentatom.thrift.atom.storyquestions.{RelatedStoryLinkType, StoryQuestionsAtom}
@@ -12,7 +14,7 @@ import com.gu.contentatom.thrift.atom.commonsdivision.{CommonsDivision, Votes}
 import com.gu.contentatom.thrift.{User, _}
 import com.gu.pandomainauth.model.{User => PandaUser}
 import models.CreateAtomFields
-import org.joda.time.{ DateTime, DateTimeZone }
+import org.joda.time.{DateTime, DateTimeZone}
 import org.joda.time.format.DateTimeFormat
 
 object AtomElementBuilders {
@@ -50,7 +52,13 @@ object AtomElementBuilders {
       AtomType.Guide -> AtomData.Guide(GuideAtom(None, None, Nil)),
       AtomType.Profile -> AtomData.Profile(ProfileAtom(None, None, Nil, None)),
       AtomType.Timeline -> AtomData.Timeline(TimelineAtom()),
-      AtomType.Commonsdivision -> AtomData.CommonsDivision(CommonsDivision("-", None, DateTime.now.getMillis, Votes()))
+      AtomType.Commonsdivision -> AtomData.CommonsDivision(CommonsDivision("-", None, DateTime.now.getMillis, Votes())),
+      AtomType.Chart -> AtomData.Chart(ChartAtom(
+        chartType = ChartType.Bar,
+        furniture = Furniture(headline = "headline", source = "source"),
+        tabularData = TabularData(RowType.String),
+        displaySettings = DisplaySettings(true, true)
+      ))
     )
 
     Atom(

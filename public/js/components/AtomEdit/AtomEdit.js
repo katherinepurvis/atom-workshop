@@ -8,6 +8,7 @@ import {ProfileEditor} from './CustomEditors/ProfileEditor';
 import {TimelineEditor} from './CustomEditors/TimelineEditor';
 import {ExplainerEditor} from './CustomEditors/ExplainerEditor';
 import {CommonsDivisionEditor} from './CustomEditors/CommonsDivisionEditor';
+import {ChartEditor} from './CustomEditors/ChartEditor';
 import EmbeddedAtomPick from './EmbeddedAtomPick';
 import {subscribeToPresence, enterPresence} from '../../services/presence';
 import AtomEditHeader from './AtomEditHeader';
@@ -19,7 +20,8 @@ class AtomEdit extends React.Component {
   static propTypes = {
     routeParams: PropTypes.shape({
       atomType: PropTypes.string.isRequired,
-      id: PropTypes.string.isRequired
+      id: PropTypes.string.isRequired,
+      defaultHtml: PropTypes.string
     }).isRequired,
     atomActions: PropTypes.shape({
       updateAtom: PropTypes.func.isRequired,
@@ -31,6 +33,7 @@ class AtomEdit extends React.Component {
     atom: atomPropType,
     config: PropTypes.shape({
       gridUrl: PropTypes.string,
+      visualsUrl: PropTypes.string,
       embeddedMode: PropTypes.string,
       isEmbedded: PropTypes.bool.isRequired
     })
@@ -78,6 +81,8 @@ class AtomEdit extends React.Component {
         return <ExplainerEditor atom={this.props.atom} onUpdate={this.updateAtom} onFormErrorsUpdate={this.updateFormErrors} />;
       case ("commonsdivision"):
         return <CommonsDivisionEditor atom={this.props.atom} onUpdate={this.updateAtom} onFormErrorsUpdate={this.updateFormErrors} />;
+       case ("chart"):
+        return <ChartEditor atom={this.props.atom} config={this.props.config} />;
       default:
         return (
           <div>Atom Workshop cannot edit this type of atom currently</div>

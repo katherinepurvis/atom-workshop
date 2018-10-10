@@ -68,6 +68,7 @@ object Config extends AwsInstanceTags {
   val viewerUrl = config.getString("viewer.url")
   val targetingUrl = config.getString("targeting.url")
   val workflowUrl = config.getString("workflow.url")
+  val visualsUrl = config.getString("visuals.url")
 
   val liveKinesisStreamName = getPropertyIfEnabled(kinesisEnabled, "aws.kinesis.publish.live")
   val previewKinesisStreamName = getPropertyIfEnabled(kinesisEnabled, "aws.kinesis.publish.preview")

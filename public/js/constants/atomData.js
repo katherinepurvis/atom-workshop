@@ -84,8 +84,15 @@ export const commonsDivision = {
   description: "House of Commons division results"
 };
 
-export const allAtomTypes = [cta, recipe, storyQuestions, quiz, media, qa, guide, profile, timeline, explainer, commonsDivision];
-export const workshopEditableAtomTypes = [cta, storyQuestions, recipe, qa, guide, profile, timeline, explainer, commonsDivision];
+export const chart = {
+  type: "chart",
+  fullName: "Chart",
+  description: "A variety of different charts"
+};
+
+
+export const allAtomTypes = [cta, recipe, storyQuestions, quiz, media, qa, guide, profile, timeline, explainer, commonsDivision, chart];
+export const workshopEditableAtomTypes = [cta, storyQuestions, recipe, qa, guide, profile, timeline, explainer, commonsDivision, chart];
 
 export const snippetAtomTypes = [qa, guide, profile, timeline];
 export const legacyAtomTypes = [explainer];
