@@ -25,7 +25,7 @@ const store = configureStore();
 const history = syncHistoryWithStore(browserHistory, store);
 
 const config = extractConfigFromPage();
-const presenceClient = config.presenceEnabled ? configurePresence(config.domain, config.user) : {};
+const presenceClient = config.presenceEnabled ? configurePresence(config.presenceDomain, config.user) : {};
 
 setStore(store);
 
