@@ -17,16 +17,6 @@ export class ChartEditor extends React.Component {
     modalOpen: false
   };
 
-  constructor(props) {
-    super(props);
-
-    const {visualsUrl} = this.props.config;
-
-    fetch(visualsUrl)
-      .then(res => this.setState({visualsAuthenticated: res.status >= 200 && res.status < 300}))
-      .catch(() => this.setState({visualsAuthenticated: false}));
-  }
-
   toggleModal = (e) => {
     e.preventDefault();
     if (this.state.modalOpen) {
@@ -71,27 +61,12 @@ export class ChartEditor extends React.Component {
     this.closeModal();
   };
 
-  renderVisualsApp() {
-    const {visualsUrl} = this.props.config;
-
-    if (this.state.visualsAuthenticated) {
-      const iFrameSrc = (this.props.config.stage === "PROD") ? `${visualsUrl}/basichartool`: `${visualsUrl}`;
-      return (
-          <iframe className="chartembedder__modal" src={`${iFrameSrc}?atom=${this.props.atom.id}`} />
-      );
-    } else {
-      return (
-        <div className="chartembedder__modal chartembedder__no-auth">
-          ⛔️ <a href={visualsUrl} target="_blank" rel="noreferrer noopener" onClick={this.closeModal}>Click here to login to the Chart Tool (then come back!)</a>
-        </div>
-      );
-    }
-  }
-
   render () {
     const chartHtml = {
       __html: this.props.atom.defaultHtml
     };
+
+    const iFrameSrc = (this.props.config.stage === "PROD") ? `${this.props.config.visualsUrl}/basichartool`: `${this.props.config.visualsUrl}`;
 
     return (
       <div>
@@ -99,7 +74,7 @@ export class ChartEditor extends React.Component {
           Edit Chart
         </button>
         <Modal isOpen={this.state.modalOpen} dismiss={this.closeModal}>
-          {this.renderVisualsApp()}
+          <iframe className="chartembedder__modal" src={`${iFrameSrc}?atom=${this.props.atom.id}`} />
         </Modal>
         <div dangerouslySetInnerHTML={chartHtml}></div>
       </div>
