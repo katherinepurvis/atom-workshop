@@ -22,7 +22,7 @@ export class ChartEditor extends React.Component {
 
     const {visualsUrl} = this.props.config;
 
-    fetch(visualsUrl, {credentials: "include"})
+    fetch(visualsUrl)
       .then(res => this.setState({visualsAuthenticated: res.status >= 200 && res.status < 300}))
       .catch(() => this.setState({visualsAuthenticated: false}));
   }
