@@ -11,6 +11,7 @@ import com.gu.contentatom.thrift.atom.guide.GuideAtom
 import com.gu.contentatom.thrift.atom.timeline.TimelineAtom
 import com.gu.contentatom.thrift.atom.explainer.{DisplayType, ExplainerAtom}
 import com.gu.contentatom.thrift.atom.commonsdivision.{CommonsDivision, Votes}
+import com.gu.contentatom.thrift.atom.audio.{AudioAtom, OffPlatform}
 import com.gu.contentatom.thrift.{User, _}
 import com.gu.pandomainauth.model.{User => PandaUser}
 import models.CreateAtomFields
@@ -58,6 +59,14 @@ object AtomElementBuilders {
         furniture = Furniture(headline = "headline", source = "source"),
         tabularData = TabularData(RowType.String),
         displaySettings = DisplaySettings(true, true)
+      )),
+      AtomType.Audio -> AtomData.Audio(AudioAtom(
+        kicker = "",
+        coverUrl = "",
+        trackUrl = "",
+        duration = 45,
+        contentId = "",
+        offPlatformLinks = None
       ))
     )
 

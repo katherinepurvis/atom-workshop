@@ -8,7 +8,7 @@ export const AtomTypeCard = (props) => (
     </div>
     <div className="atom-card__details">
       <h3 className="atom-card__heading">{props.atomType.fullName}</h3>
-      <p className="atom-card__description">{props.atomType.description}</p>
+      <p className="atom-card__description" dangerouslySetInnerHTML={{ __html: props.atomType.description }}></p>
     </div>
   </div>
 );
