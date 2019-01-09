@@ -1,10 +1,10 @@
 name := "atom-workshop"
 version := "1.0"
 
-scalaVersion := "2.11.8"
+scalaVersion := "2.11.12"
 
 lazy val awsVersion = "1.11.8"
-lazy val atomLibVersion = "1.1.20-SNAPSHOT"
+lazy val atomLibVersion = "1.1.20"
 
 libraryDependencies ++= Seq(
   ws,
@@ -23,7 +23,7 @@ libraryDependencies ++= Seq(
   "net.logstash.logback"     %  "logstash-logback-encoder"     % "4.2",
   "com.gu"                   %% "exact-target-lists"           % "0.1",
   "com.gu"                   %% "content-api-client-aws"       % "0.5",
-  "com.gu"                   %% "content-api-client"           % "12.14-SNAPSHOT"
+  "com.gu"                   %% "content-api-client"           % "12.14"
 )
 
 resolvers ++= Seq(
@@ -43,10 +43,8 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala, RiffRaffArtifact
     topLevelDirectory := Some(normalizedName.value),
     riffRaffPackageName := name.value,
     riffRaffManifestProjectName := s"editorial-tools:${name.value}",
-    riffRaffBuildIdentifier :=  Option(System.getenv("BUILD_NUMBER")).getOrElse("DEV"),
     riffRaffUploadArtifactBucket := Option("riffraff-artifact"),
     riffRaffUploadManifestBucket := Option("riffraff-builds"),
-    riffRaffManifestBranch := Option(System.getenv("BRANCH_NAME")).getOrElse("unknown_branch"),
 
     riffRaffPackageType := (packageBin in Debian).value,
 

@@ -20,7 +20,7 @@ export const enterPresence = (atomType, atomId) => {
   const store = getStore();
   const presenceClient = store.getState().presenceClient;
   presenceClient.enter(`${atomType}-${atomId}`, 'document')
-    .catch(err => logError(err));
+    .catch(err => logError(`This user does not have presence enabled in their config: ${err}`));
 };
 
 const updatePresence = (presence) => {

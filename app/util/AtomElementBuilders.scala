@@ -61,11 +61,11 @@ object AtomElementBuilders {
         displaySettings = DisplaySettings(true, true)
       )),
       AtomType.Audio -> AtomData.Audio(AudioAtom(
-        kicker = "",
-        coverUrl = "",
-        trackUrl = "",
-        duration = 45,
-        contentId = "",
+        kicker = title,
+        coverUrl = "-",
+        trackUrl = "-",
+        duration = 0,
+        contentId = "-",
         offPlatformLinks = None
       ))
     )
