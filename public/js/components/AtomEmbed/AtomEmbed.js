@@ -86,7 +86,7 @@ class AtomEmbed extends React.Component {
           <div className="form__row">
             <Link to={`/atoms/${this.props.atom.atomType}/${this.props.atom.id}/stats`}
                   className="atom-list__link">
-              Where can I embed this atom?
+              Where has this atom been used?
             </Link>
           </div>
         </div>
