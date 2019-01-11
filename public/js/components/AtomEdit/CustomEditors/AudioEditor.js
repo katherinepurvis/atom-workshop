@@ -26,10 +26,10 @@ export class AudioEditor extends React.Component {
           <ManagedField fieldLocation="contentId" name="Content ID" isRequired={true}>
             <FormFieldTextInput/>
           </ManagedField>
-          <ManagedField fieldLocation="duration" name="Duration (seconds)">
+          <ManagedField fieldLocation="duration" name="Duration (seconds)" isRequired={true}>
             <FormFieldNumericInput/>
           </ManagedField>
-          <ManagedField fieldLocation="coverUrl" name="Image url" customValidation={[isHttpsUrl]}>
+          <ManagedField fieldLocation="coverUrl" name="Image url" isRequired={true} customValidation={[isHttpsUrl]}>
             <FormFieldTextInput />
           </ManagedField>
 
@@ -45,6 +45,6 @@ export class AudioEditor extends React.Component {
 
         </ManagedForm>
       </div>
-    )
+    );
   }
 }
