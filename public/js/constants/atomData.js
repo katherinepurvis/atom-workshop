@@ -90,9 +90,15 @@ export const chart = {
   description: "A variety of different charts"
 };
 
+export const audio = {
+  type: "audio",
+  fullName: "Audio",
+  description: "An audio player for clips or full podcasts"
+};
 
-export const allAtomTypes = [cta, recipe, storyQuestions, quiz, media, qa, guide, profile, timeline, explainer, commonsDivision, chart];
-export const workshopEditableAtomTypes = [cta, storyQuestions, recipe, qa, guide, profile, timeline, explainer, commonsDivision, chart];
+
+export const allAtomTypes = [cta, recipe, qa, guide, profile, timeline, media, chart, audio,  storyQuestions, quiz, explainer, commonsDivision];
+export const workshopEditableAtomTypes = [cta, storyQuestions, recipe, qa, guide, profile, timeline, explainer, commonsDivision, chart, audio];
 
 export const snippetAtomTypes = [qa, guide, profile, timeline];
 export const legacyAtomTypes = [explainer];
