@@ -17,29 +17,29 @@ export class AudioEditor extends React.Component {
     return (
       <div>
         <ManagedForm formName="audioEditor" data={this.props.atom} updateData={this.props.onUpdate} onFormErrorsUpdate={this.props.onFormErrorsUpdate} >
-          <ManagedField fieldLocation="title" name="Title" isRequired={true}>
+          <ManagedField fieldLocation="data.audio.title" name="Title" isRequired={true}>
             <FormFieldTextInput />
           </ManagedField>
-          <ManagedField fieldLocation="trackUrl" name="Track url" isRequired={true} customValidation={[isHttpsUrl]}>
+          <ManagedField fieldLocation="data.audio.trackUrl" name="Track url" isRequired={true} customValidation={[isHttpsUrl]}>
             <FormFieldTextInput />
           </ManagedField>
-          <ManagedField fieldLocation="contentId" name="Content ID" isRequired={true}>
+          <ManagedField fieldLocation="data.audio.contentId" name="Content ID" isRequired={true}>
             <FormFieldTextInput/>
           </ManagedField>
-          <ManagedField fieldLocation="duration" name="Duration (seconds)" isRequired={true}>
+          <ManagedField fieldLocation="data.audio.duration" name="Duration (seconds)" isRequired={true}>
             <FormFieldNumericInput/>
           </ManagedField>
-          <ManagedField fieldLocation="coverUrl" name="Image url" isRequired={true} customValidation={[isHttpsUrl]}>
+          <ManagedField fieldLocation="data.audio.coverUrl" name="Image url" isRequired={true} customValidation={[isHttpsUrl]}>
             <FormFieldTextInput />
           </ManagedField>
 
-          <ManagedField fieldLocation="crossPlatformLinks.apple" name="Subscription: Apple Podcasts" customValidation={[isHttpsUrl]}>
+          <ManagedField fieldLocation="data.audio.subscriptionLinks.apple" name="Subscription: Apple Podcasts" customValidation={[isHttpsUrl]}>
             <FormFieldTextInput/>
           </ManagedField>
-          <ManagedField fieldLocation="crossPlatformLinks.google" name="Subscription: Google Podcasts" customValidation={[isHttpsUrl]}>
+          <ManagedField fieldLocation="data.audio.subscriptionLinks.google" name="Subscription: Google Podcasts" customValidation={[isHttpsUrl]}>
             <FormFieldTextInput/>
           </ManagedField>
-          <ManagedField fieldLocation="crossPlatformLinks.spotify" name="Subscription: Spotify" customValidation={[isHttpsUrl]}>
+          <ManagedField fieldLocation="data.audio.subscriptionLinks.spotify" name="Subscription: Spotify" customValidation={[isHttpsUrl]}>
             <FormFieldTextInput/>
           </ManagedField>
 
