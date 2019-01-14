@@ -17,7 +17,7 @@ export class AudioEditor extends React.Component {
     return (
       <div>
         <ManagedForm formName="audioEditor" data={this.props.atom} updateData={this.props.onUpdate} onFormErrorsUpdate={this.props.onFormErrorsUpdate} >
-          <ManagedField fieldLocation="data.audio.title" name="Title" isRequired={true}>
+          <ManagedField fieldLocation="data.audio.kicker" name="Kicker (title)" isRequired={true}>
             <FormFieldTextInput />
           </ManagedField>
           <ManagedField fieldLocation="data.audio.trackUrl" name="Track url" isRequired={true} customValidation={[isHttpsUrl]}>
