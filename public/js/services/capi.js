@@ -56,7 +56,7 @@ export const fetchAtomUsages = (atomType, atomId) => {
 
 export const getByPath = (path) => {
   return pandaFetch(
-    `/support/previewCapi/${path}?show-fields=all`,
+    `/support/previewCapi/${path}?show-fields=all&show-elements=all&show-tags=all`,
     {
       method: 'get',
       credentials: 'same-origin'
