@@ -23,24 +23,36 @@ export function getAudioPageData (url, atom) {
 function extractFields (audioPage) {
   let audioEl = audioPage.elements.find(el => el.type === "audio");
   let seriesTag = audioPage.tags.find(tag => tag.type === "series" && tag.podcast);
-  let {subscriptionUrl, googlePodcastsUrl, spotifyUrl} = seriesTag.podcast;
-  let durationSeconds = parseInt(audioEl.assets[0].typeData.durationMinutes) * 60 + parseInt(audioEl.assets[0].typeData.durationSeconds);
+  let audioAsset = audioEl.assets.find(asset => asset.type === "audio");
+  let storyImage = audioPage.fields.thumbnail || "";
 
-  return {
-    contentId: audioEl.id,
-    trackUrl: audioEl.assets[0].file,
-    duration: durationSeconds,
-    kicker: seriesTag.webTitle,
-    subscriptionLinks: {
+  let durationSeconds = audioAsset ? parseInt(audioAsset.typeData.durationMinutes) * 60 + parseInt(audioAsset.typeData.durationSeconds) : 0;
+  let trackUrl = audioAsset ? audioAsset.file : "";
+  let contentId = audioEl ? audioEl.id : "";
+
+  // subscription links are optional
+  var subscriptionLinks = {};
+  if (seriesTag) {
+    let {subscriptionUrl, googlePodcastsUrl, spotifyUrl} = seriesTag.podcast;
+    subscriptionLinks = {
       apple: subscriptionUrl,
       google: googlePodcastsUrl,
       spotify: spotifyUrl
     }
   }
+
+  return {
+    contentId,
+    trackUrl,
+    duration: durationSeconds,
+    kicker: seriesTag.webTitle,
+    coverUrl: storyImage,
+    subscriptionLinks
+  }
 }
 
 function addDataToAtom (audioPage, atom) {
-  let {contentId, trackUrl, duration, kicker, subscriptionLinks} = extractFields(audioPage);
+  let {contentId, trackUrl, duration, kicker, coverUrl, subscriptionLinks} = extractFields(audioPage);
   let atomData = {
     data: {
       audio: {
@@ -49,12 +61,11 @@ function addDataToAtom (audioPage, atom) {
         duration,
         trackUrl,
         subscriptionLinks,
-        coverUrl: "https://uploads.guim.co.uk/2018/10/18/Podcast_ident_3000px.jpg",
+        coverUrl,
       }
     }
   };
-  let newAtom = Object.assign({}, atom, atomData);
-  return newAtom;
+  return Object.assign({}, atom, atomData);
 }
 
 function requestAudioPageData () {

@@ -10,7 +10,6 @@ export default function audioPageData (state = null, action) {
     }
 
     case 'RECEIVE_AUDIO_PAGE_DATA': {
-      console.log("receive state happened action.audioPageData", action.audioPageData);
       const newState = {
         message: action.message,
         audioPageData: action.audioPageData.content

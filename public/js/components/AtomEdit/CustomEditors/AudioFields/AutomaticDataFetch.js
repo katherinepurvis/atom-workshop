@@ -1,6 +1,13 @@
 import React, { PropTypes } from 'react';
 import {ManualDataInput} from "./ManualDataInput";
 
+//REDUX CONNECTIONS
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { getAudioPageData } from '../../../../actions/AtomActions/getAudioPageData.js';
+import {atomPropType} from "../../../../constants/atomPropType";
+
+
 class AutomaticDataFetch extends React.Component {
 
   static propTypes = {
@@ -27,7 +34,7 @@ class AutomaticDataFetch extends React.Component {
   }
 
   checkUrlIsAudioPage (url) {
-    return url.startsWith('https://www.theguardian.com/news/audio');
+    return url.startsWith('https://www.theguardian.com') && url.includes('audio');
   }
 
   handleChange (e) {
@@ -42,7 +49,7 @@ class AutomaticDataFetch extends React.Component {
           <label>Paste the url of a Guardian audio page</label>
           <input id="audio-url" className="form__field" type="text" value={this.state.audioPageUrl} onChange={this.handleChange.bind(this)}></input>
           <button type="button" className="form__btn-heading__btn" onClick={this.getAudioDataFromCapi.bind(this)}>Get values</button>
-          <p>{ this.state.urlError }</p>
+          { this.state.urlError ? (<p>{ this.state.urlError }</p>) : null }
           <p>{ this.props.audioPageData ? this.props.audioPageData.message : "" }</p>
 
         </div>
@@ -56,11 +63,7 @@ class AutomaticDataFetch extends React.Component {
   }
 }
 
-//REDUX CONNECTIONS
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { getAudioPageData } from '../../../../actions/AtomActions/getAudioPageData.js';
-import {atomPropType} from "../../../../constants/atomPropType";
+/* REDUX FUNCTIONS */
 
 function mapStateToProps(state) {
   return {
