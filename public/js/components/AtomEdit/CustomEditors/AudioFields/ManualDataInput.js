@@ -46,8 +46,8 @@ export class ManualDataInput extends React.Component {
           </ManagedField>
         </ManagedForm>
       </div>
-    )
-  };
+    );
+  }
 }
 
 

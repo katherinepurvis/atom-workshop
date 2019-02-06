@@ -1,4 +1,4 @@
-import {fetchPageData, getByPath} from '../../services/capi';
+import {getByPath} from '../../services/capi';
 import {logError} from '../../util/logger';
 import {updateAtom} from "./updateAtom";
 
@@ -16,9 +16,34 @@ export function getAudioPageData (url, atom) {
         dispatch(updateAtom(updatedAtom));
         return res;
       })
-      .catch(error => dispatch(errorReceivingAudioPageData(error)))
-  }
+      .catch(error => dispatch(errorReceivingAudioPageData(error)));
+  };
 }
+
+function requestAudioPageData () {
+  return {
+    type: 'REQUEST_AUDIO_PAGE_DATA',
+    audioPageUrl: ''
+  };
+}
+
+function receiveAudioPageData (content) {
+  return {
+    type: 'RECEIVE_AUDIO_PAGE_DATA',
+    audioPageData: { content },
+    message: `You selected: ${content.webTitle}`
+  };
+}
+
+function errorReceivingAudioPageData (error) {
+  logError(error);
+  return {
+    type: 'ERROR_RECEIVING_AUDIO_PAGE_DATA',
+    message: 'Could not get data from the url above, please double check it or report the problem',
+    error: `${error.status}: ${error.statusText}`
+  };
+}
+
 
 function extractFields (audioPage) {
   let audioEl = audioPage.elements.find(el => el.type === "audio");
@@ -38,7 +63,7 @@ function extractFields (audioPage) {
       apple: subscriptionUrl,
       google: googlePodcastsUrl,
       spotify: spotifyUrl
-    }
+    };
   }
 
   return {
@@ -48,7 +73,7 @@ function extractFields (audioPage) {
     kicker: seriesTag.webTitle,
     coverUrl: storyImage,
     subscriptionLinks
-  }
+  };
 }
 
 function addDataToAtom (audioPage, atom) {
@@ -66,28 +91,4 @@ function addDataToAtom (audioPage, atom) {
     }
   };
   return Object.assign({}, atom, atomData);
-}
-
-function requestAudioPageData () {
-  return {
-    type: 'REQUEST_AUDIO_PAGE_DATA',
-    audioPageUrl: ''
-  }
-}
-
-function receiveAudioPageData (content) {
-  return {
-    type: 'RECEIVE_AUDIO_PAGE_DATA',
-    audioPageData: { content },
-    message: `You selected: ${content.webTitle}`
-  }
-}
-
-function errorReceivingAudioPageData (error) {
-  logError(error);
-  return {
-    type: 'ERROR_RECEIVING_AUDIO_PAGE_DATA',
-    message: 'Could not get data from the url above, please double check it or report the problem',
-    error: `${error.status}: ${error.statusText}`
-  }
 }

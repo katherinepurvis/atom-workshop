@@ -27,9 +27,9 @@ class AutomaticDataFetch extends React.Component {
   getAudioDataFromCapi () {
     if(this.checkUrlIsAudioPage(this.state.audioPageUrl)){
       this.props.getAudioPageData(this.state.audioPageUrl, this.props.atom);
-      this.setState({urlError: ''})
+      this.setState({urlError: ''});
     } else {
-      this.setState({urlError: 'The url is not a valid Guardian audio page'})
+      this.setState({urlError: 'The url is not a valid Guardian audio page'});
     }
   }
 
@@ -59,7 +59,7 @@ class AutomaticDataFetch extends React.Component {
           <ManualDataInput atom={this.props.atom} onUpdate={this.props.onUpdate} audioPageData={this.props.audioPageData}/>
         </div>
       </div>
-    )
+    );
   }
 }
 
