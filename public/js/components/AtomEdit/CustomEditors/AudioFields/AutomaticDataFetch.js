@@ -56,7 +56,7 @@ class AutomaticDataFetch extends React.Component {
 
         <div className="audio--manual-selection-box">
           <h3>Or manually add the data in here</h3>
-          <ManualDataInput atom={this.props.atom} onUpdate={this.props.onUpdate} audioPageData={this.props.audioPageData}/>
+          <ManualDataInput atom={this.props.atom} onUpdate={this.props.onUpdate} />
         </div>
       </div>
     );

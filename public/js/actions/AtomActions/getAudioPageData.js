@@ -30,7 +30,6 @@ function requestAudioPageData () {
 function receiveAudioPageData (content) {
   return {
     type: 'RECEIVE_AUDIO_PAGE_DATA',
-    audioPageData: { content },
     message: `You selected: ${content.webTitle}`
   };
 }

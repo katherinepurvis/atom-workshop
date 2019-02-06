@@ -10,9 +10,7 @@ export class ManualDataInput extends React.Component {
 
   static propTypes = {
     atom: atomPropType.isRequired,
-    onUpdate: PropTypes.func.isRequired,
-    onFormErrorsUpdate: PropTypes.func,
-    audioPageData: PropTypes.object
+    onUpdate: PropTypes.func.isRequired
   };
 
   render () {
