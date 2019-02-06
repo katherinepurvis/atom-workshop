@@ -16,6 +16,7 @@ import queryParams from '../reducers/queryParamsReducer';
 import workflow from '../reducers/workflowReducer';
 import commonsDivisions from '../reducers/commonsDivisionsReducer';
 import searchSuggestions from '../reducers/searchSuggestionsReducer';
+import audioPageData from './audioPageDataReducer';
 import {routerReducer} from 'react-router-redux';
 
 export const rootReducer = combineReducers({
@@ -35,5 +36,6 @@ export const rootReducer = combineReducers({
   workflow,
   commonsDivisions,
   searchSuggestions,
+  audioPageData,
   routing: routerReducer
 });
