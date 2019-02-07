@@ -12,7 +12,6 @@ export default function audioPageData (state = null, action) {
     case 'RECEIVE_AUDIO_PAGE_DATA': {
       const newState = {
         message: action.message,
-        audioPageData: action.audioPageData.content
       };
       return Object.assign({}, state, newState);
     }
@@ -20,7 +19,6 @@ export default function audioPageData (state = null, action) {
     case 'ERROR_RECEIVING_AUDIO_PAGE_DATA': {
       const newState = {
         error: action.error,
-        audioPageData: {},
         message: action.message
       };
       return Object.assign({}, state, newState);
