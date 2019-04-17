@@ -25,12 +25,11 @@ class Header extends React.Component {
           {!this.props.config.isEmbedded ?
             <header className="toolbar__container">
               <Link className="toolbar__title" href="/">
-                <div className="toolbar__logo"></div>
                 <div className="toolbar__page-icon"></div>
-                <div className="toolbar__title__hover-state">
-                  <span className="toolbar__title__hover-state__subtitle">Back to</span><br />
-                  <span className="toolbar__title__hover-state__title">Dashboard</span>
-                </div>
+                <div className="toolbar__logo"></div>
+                <span className="toolbar__title__hover-state__title">
+                  Back to <strong>dashboard</strong>
+                </span>
               </Link>
             </header>
           : false}
