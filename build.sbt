@@ -23,7 +23,7 @@ libraryDependencies ++= Seq(
   "net.logstash.logback"     %  "logstash-logback-encoder"     % "4.2",
   "com.gu"                   %% "exact-target-lists"           % "0.1",
   "com.gu"                   %% "content-api-client-aws"       % "0.5",
-  "com.gu"                   %% "content-api-client"           % "14.2"
+  "com.gu"                   %% "content-api-client"           % "14.1"
 )
 
 resolvers ++= Seq(
