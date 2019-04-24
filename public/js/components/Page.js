@@ -1,8 +1,8 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import Header from './Header/Header';
 import AppMessage from './AppMessage/AppMessage';
 
-import {routerShape} from 'react-router/lib/PropTypes';
+import { routerShape } from 'react-router/lib/PropTypes';
 
 class Page extends React.Component {
 
@@ -22,8 +22,10 @@ class Page extends React.Component {
   render() {
     return (
       <div className={this.props.config.isEmbedded ? "page is-embedded" : "page"}>
-        <Header router={this.props.router} isFindPage={this.isFindPage()}/>
-        <AppMessage error={this.props.error} />
+        <div className="page__header">
+          <Header router={this.props.router} isFindPage={this.isFindPage()} />
+          <AppMessage error={this.props.error} />
+        </div>
         <div className="page__content">
           {this.props.children}
         </div>
