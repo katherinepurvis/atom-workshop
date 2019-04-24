@@ -35,4 +35,5 @@ html {
 .page__header {
   position: sticky;
   top: 0;
+  z-index: $zIndex-header;
 }
