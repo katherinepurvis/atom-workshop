@@ -4,7 +4,7 @@
     top: 0;
     width: 100%;
     height: 100%;
-    z-index: 99;
+    z-index: $zIndex-modal;
     background-color: rgba(0, 0, 0, 0.7);
     text-align: left;
     cursor: default;
