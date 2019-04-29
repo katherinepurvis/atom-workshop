@@ -43,7 +43,7 @@ GET     /reindex-preview                         com.gu.atom.play.ReindexControl
 GET     /reindex-publish                         com.gu.atom.play.ReindexController.publishedReindexJobStatus()
 
 #Temporary explainers reindex
-GET     /explainers/reindex                      controllers.ExplainerReindexController.reindex(stack: String)
+POST    /explainers/reindex                      controllers.ExplainerReindexController.reindex(stack: String)
 
 # Custom atom actions
 POST    /api/live/:atomType/:id/custom/notifications controllers.AtomActions.createNotificationList(atomType: String, id: String)
