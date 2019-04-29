@@ -10,6 +10,7 @@ import com.gu.contentatom.thrift.{ContentAtomEvent, EventType}
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Try
 import play.api.libs.json.Json
+import play.api.Logger
 
 class ExplainerReindexController(
   val wsClient: WSClient,
@@ -56,6 +57,8 @@ class ExplainerReindexController(
     Ok(Json.parse(s"""{ "status": "completed", "documentsIndexed": $result, "documentsExpected": $result }"""))
 
   private val displayError: PartialFunction[Throwable, Result] = {
-    case x: Throwable => InternalServerError(Json.parse(s"""{ "status": "failed", "documentsIndexed": 0, "documentsExpected": 0 }"""))
+    case x: Throwable => 
+      Logger.error("Something went wrong", x)
+      InternalServerError(Json.parse(s"""{ "status": "failed", "documentsIndexed": 0, "documentsExpected": 0 }"""))
   }
 }
