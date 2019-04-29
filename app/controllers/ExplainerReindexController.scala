@@ -8,7 +8,7 @@ import play.api.libs.ws.WSClient
 import play.api.mvc.{ Action, ActionBuilder, AnyContent, Controller, Result, Request }
 import com.gu.contentatom.thrift.{ContentAtomEvent, EventType}
 import scala.concurrent.{ExecutionContext, Future}
-import scala.util.Try
+import scala.util.{ Failure, Success, Try }
 import play.api.libs.json.Json
 import play.api.Logger
 
@@ -21,6 +21,9 @@ class ExplainerReindexController(
   publishedReindexer: PublishedAtomReindexer,
   config: Configuration
 )(implicit ec: ExecutionContext) extends Controller with PanDomainAuthActions {
+
+  var lastPublished: Int = 0
+  var lastPreview: Int = 0
 
   // Copy-pasted from the atom-maker library
   object ApiKeyAction extends ActionBuilder[Request] {
@@ -36,9 +39,17 @@ class ExplainerReindexController(
 
   def reindex(stack: String): Action[AnyContent] = ApiKeyAction.async { req => 
     stack match {
-      case "preview" => run(previewDataStore, previewReindexer) map displayResult recover displayError
-      case "published" => run(publishedDataStore, publishedReindexer) map displayResult recover displayError
+      case "preview" => run(previewDataStore, previewReindexer).andThen(updateState(true)) map displayResult recover displayError
+      case "published" => run(publishedDataStore, publishedReindexer).andThen(updateState(false)) map displayResult recover displayError
       case x => Future.successful(BadRequest(s"$x is not a valid stack identifier"))
+    }
+  }
+
+  def status(stack: String): Action[AnyContent] = ApiKeyAction { req =>
+    stack match {
+      case "preview" => displayResult(lastPreview)
+      case "published" => displayResult(lastPublished)
+      case x => BadRequest(s"$x is not a valid stack identifier")
     }
   }
 
@@ -51,6 +62,10 @@ class ExplainerReindexController(
         reindexer.startReindexJob(events.iterator, events.size).execute
       }
     )
+  }
+
+  private def updateState(isPreview: Boolean): PartialFunction[Try[Int], _] = {
+    case Success(x) => if (isPreview) lastPreview = x else lastPublished = x
   }
 
   private def displayResult(result: Int): Result =
