@@ -57,7 +57,7 @@ class ExplainerReindexController(
     explainerDB.listAtoms(datastore).fold(
       apiError => Future.failed(new RuntimeException(apiError.msg)),
       { atoms =>
-        val timestamp = System.nanoTime
+        val timestamp = System.currentTimeMillis
         val events = atoms.map(ContentAtomEvent(_, EventType.Update, timestamp))
         reindexer.startReindexJob(events.iterator, events.size).execute
       }
@@ -73,7 +73,7 @@ class ExplainerReindexController(
 
   private val displayError: PartialFunction[Throwable, Result] = {
     case x: Throwable => 
-      Logger.error("Something went wrong", x)
+      Logger.error("Failed to reindex explainer atoms", x)
       InternalServerError(Json.parse(s"""{ "status": "failed", "documentsIndexed": 0, "documentsExpected": 0 }"""))
   }
 }
