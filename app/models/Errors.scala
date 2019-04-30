@@ -11,6 +11,7 @@ case object DeleteAtomFromPreviewError extends AtomAPIError("Could not delete at
 case class CreateAtomDynamoError(atomJson: String, message: String) extends AtomAPIError(s"Error thrown by Dynamo when attempting to create atom. JSON of atom: $atomJson, error message: $message")
 case class AmazonDynamoError(message: String) extends AtomAPIError(s"Error thrown by Dynamo: $message")
 case class AtomWorkshopDynamoDatastoreError(message: String) extends AtomAPIError(message)
+case class ExplainerDynamoDatastoreError(message: String) extends AtomAPIError(message)
 case class AtomJsonParsingError(message: String) extends AtomAPIError(s"Failed to parse Json string with error: $message")
 case class AtomThriftDeserialisingError(message: String) extends AtomAPIError(s"Failed to deserialise JSON into thrift with error: $message")
 case class NotificationListsError(message: String) extends AtomAPIError(s"Notification lists error for atom: $message")

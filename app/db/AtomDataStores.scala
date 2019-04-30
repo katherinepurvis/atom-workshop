@@ -13,6 +13,9 @@ object AtomDataStores {
 
   val previewDataStore = new PreviewDynamoDataStore(dynamoDB, previewDynamoTableName)
   val publishedDataStore = new PublishedDynamoDataStore(dynamoDB, publishedDynamoTableName)
+  
+  val explainerPreviewDataStore = new PreviewDynamoDataStore(dynamoDB, explainerPreviewDynamoTableName)
+  val explainerPublishedDataStore = new PublishedDynamoDataStore(dynamoDB, explainerPublishedDynamoTableName)
 }
 
 object ReindexDataStores {
