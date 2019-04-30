@@ -39,8 +39,8 @@ class ExplainerReindexController(
 
   def reindex(stack: String): Action[AnyContent] = ApiKeyAction.async { req => 
     stack match {
-      case "preview" => run(previewDataStore, previewReindexer).andThen(updateState(true)) map displayResult recover displayError
-      case "published" => run(publishedDataStore, publishedReindexer).andThen(updateState(false)) map displayResult recover displayError
+      case "preview" => run(previewDataStore, previewReindexer).andThen(updateState(true)) map displayResult recover displayError(stack)
+      case "published" => run(publishedDataStore, publishedReindexer).andThen(updateState(false)) map displayResult recover displayError(stack)
       case x => Future.successful(BadRequest(s"$x is not a valid stack identifier"))
     }
   }
@@ -71,9 +71,9 @@ class ExplainerReindexController(
   private def displayResult(result: Int): Result =
     Ok(Json.parse(s"""{ "status": "completed", "documentsIndexed": $result, "documentsExpected": $result }"""))
 
-  private val displayError: PartialFunction[Throwable, Result] = {
+  private def displayError(stack: String): PartialFunction[Throwable, Result] = {
     case x: Throwable => 
-      Logger.error("Failed to reindex explainer atoms", x)
+      Logger.error(s"Failed to reindex $stack explainer atoms", x)
       InternalServerError(Json.parse(s"""{ "status": "failed", "documentsIndexed": 0, "documentsExpected": 0 }"""))
   }
 }
