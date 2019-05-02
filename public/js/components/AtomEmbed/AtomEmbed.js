@@ -78,7 +78,7 @@ class AtomEmbed extends React.Component {
             <Workflow atom={this.props.atom} config={this.props.config} workflow={this.props.workflow} workflowActions={this.props.workflowActions}/>
           </div>
           <div className="form__row">
-            <h3 className="form__subheading">Suggest This Atom</h3>
+            <h3 className="form__subheading">Tag This Atom *</h3>
             <div className="form__row">
               <CurrentTargets atom={this.props.atom} />
             </div>

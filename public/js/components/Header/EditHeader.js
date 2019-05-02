@@ -1,12 +1,13 @@
-import React, {PropTypes} from 'react';
-import {Link} from 'react-router';
+import React, { PropTypes } from 'react';
+import { Link } from 'react-router';
 
-import {atomPropType} from '../../constants/atomPropType';
+import { atomPropType } from '../../constants/atomPropType';
 import publishState from '../../util/publishState';
 import PresenceIndicator from '../Utilities/PresenceIndicator';
-import {saveStateVals} from '../../constants/saveStateVals';
+import { saveStateVals } from '../../constants/saveStateVals';
 import distanceInWords from 'date-fns/distance_in_words';
 import DeleteAtom from './DeleteAtom';
+import ShowAllErrors from '../Utilities/ShowAllErrors';
 
 class EditHeader extends React.Component {
 
@@ -41,16 +42,16 @@ class EditHeader extends React.Component {
     if (this.props.atom.contentChangeDetails.created || this.props.atom.contentChangeDetails.lastModified) {
       const dateNow = Date.now();
       const lastModified = this.props.atom.contentChangeDetails.lastModified ? this.props.atom.contentChangeDetails.lastModified.date : this.props.atom.contentChangeDetails.created.date;
-      return distanceInWords(dateNow, lastModified, {addSuffix: true});
+      return distanceInWords(dateNow, lastModified, { addSuffix: true });
     }
     return false;
   }
 
   renderSaveState = () => {
 
-    if(this.props.saveState.saving === saveStateVals.inprogress) {
+    if (this.props.saveState.saving === saveStateVals.inprogress) {
       return (
-          <span className="loader save-state__loader">Saving</span>
+        <span className="loader save-state__loader">Saving</span>
       );
     }
     return (
@@ -61,12 +62,12 @@ class EditHeader extends React.Component {
   renderPublishedState = () => {
     const atomPublishState = publishState(this.props.atom);
     return (
-        <span className={`publish-state publish-state--${atomPublishState.id}`}>{atomPublishState.text}</span>
+      <span className={`publish-state publish-state--${atomPublishState.id}`}>{atomPublishState.text}</span>
     );
   }
 
   renderTakeDownButton = (atomPublishState) => {
-    if(atomPublishState.id !== 'draft') {
+    if (atomPublishState.id !== 'draft') {
       return (
         <button type="button" disabled={atomPublishState.id === 'taken-down'} onClick={this.takeDownAtom} className="btn btn--red btn--margin">Take down</button>
       );
@@ -78,27 +79,29 @@ class EditHeader extends React.Component {
     const atomPublishState = publishState(this.props.atom);
 
     return (
-        <div className="toolbar__container">
-          {this.props.presence ? <PresenceIndicator presence={this.props.presence} /> : false}
-          <button disabled={atomPublishState.id === 'published'} type="button" onClick={this.publishAtom} className="btn btn--green btn--margin">Publish</button>
+      <div className="toolbar__container">
+        {this.props.presence ? <PresenceIndicator presence={this.props.presence} /> : false}
+        <button disabled={atomPublishState.id === 'published'} type="button" onClick={this.publishAtom} className="btn btn--green btn--margin">Publish</button>
 
-          {this.renderTakeDownButton(atomPublishState)}
+        <ShowAllErrors />
 
-          <DeleteAtom atom={this.props.atom} deleteAtom={this.props.atomActions.deleteAtom} />
-        </div>
+        {this.renderTakeDownButton(atomPublishState)}
+
+        <DeleteAtom atom={this.props.atom} deleteAtom={this.props.atomActions.deleteAtom} />
+      </div>
     );
   }
 
   renderAtomStates = () => {
     return (
-        <div className="toolbar__container">
-          <div className="toolbar__item">
-            {this.renderPublishedState()}
-          </div>
-          <div className="toolbar__item">
-            {this.renderSaveState()}
-          </div>
+      <div className="toolbar__container">
+        <div className="toolbar__item">
+          {this.renderPublishedState()}
         </div>
+        <div className="toolbar__item">
+          {this.renderSaveState()}
+        </div>
+      </div>
     );
   }
 
@@ -114,7 +117,7 @@ class EditHeader extends React.Component {
 
   render() {
 
-    if(this.props.config.isEmbedded) {
+    if (this.props.config.isEmbedded) {
       return (
         <div>
           {this.renderEmbeddedheader()}
@@ -122,7 +125,7 @@ class EditHeader extends React.Component {
       );
     }
 
-    if(this.props.atom) {
+    if (this.props.atom) {
       return (
         <div className="toolbar__container toolbar__container--main">
           {this.renderAtomStates()}
