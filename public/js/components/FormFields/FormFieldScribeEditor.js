@@ -55,7 +55,7 @@ export default class FormFieldsScribeEditor extends React.Component {
       <div className={(this.props.formRowClass || "form__row") + " scribe"}>
         {this.props.fieldLabel ? <label htmlFor={this.props.fieldName} className="form__label">{this.props.fieldLabel}</label> : false}
         <ScribeEditor
-          ref={this.props.fieldName}
+          key={this.props.fieldName}
           fieldName={this.props.fieldName}
           value={this.props.fieldValue ? this.props.fieldValue : " "}
           onUpdate={this.props.onUpdateField}
