@@ -8,11 +8,11 @@ class ShowAllErrors extends React.Component {
 	render() {
 		const { formErrors } = this.props;
 		return (
-			<div>
-				{formErrors.map(([component, fields]) =>
+			<div className="list">
+				{formErrors.map(([_, fields]) =>
 					fields.map(([field, errors]) =>
 						errors.map(({ title, message }) => (
-							<div>
+							<div className="list__item">
 								{field} {title} err {message}
 							</div>
 						))

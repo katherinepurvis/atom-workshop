@@ -4,44 +4,23 @@
 @import 'abstracts/variables';
 
 // 2. Vendors
-@import 'vendor/normalize',
-'vendor/datepicker';
+@import 'vendor/normalize', 'vendor/datepicker';
 
 // 3. Base stuff
-@import 'base/base',
-'base/fonts',
-'base/typography',
-'base/helpers';
+@import 'base/base', 'base/fonts', 'base/typography', 'base/helpers';
 
 // 4. Layout-related sections
 @import 'layout/toolbar';
 @import 'layout/atom-list';
 
 // 5. Components
-@import 'components/buttons',
-'components/forms',
-'components/tables',
-'components/page',
-'components/modal',
-'components/loader',
-'components/icons',
-'components/message-bar',
-'components/details-list',
-'components/usages-list',
-'components/presence-list',
-'components/form-fields/image-select',
-'components/form-fields/scribe',
-'components/atom',
-'components/atom-search',
-'components/atom-create',
-'components/atom-card',
-'components/atom-editor',
-'components/atom-embed',
-'components/atom-actions',
-'components/workflow',
-'components/targeting',
-'components/suggestions',
-'components/commons-divisions',
-'components/search-suggestions',
-'components/chart',
-'components/audio';
+@import 'components/buttons', 'components/forms', 'components/tables',
+	'components/page', 'components/modal', 'components/loader', 'components/icons',
+	'components/lists', 'components/message-bar', 'components/details-list',
+	'components/usages-list', 'components/presence-list',
+	'components/form-fields/image-select', 'components/form-fields/scribe',
+	'components/atom', 'components/atom-search', 'components/atom-create',
+	'components/atom-card', 'components/atom-editor', 'components/atom-embed',
+	'components/atom-actions', 'components/workflow', 'components/targeting',
+	'components/suggestions', 'components/commons-divisions',
+	'components/search-suggestions', 'components/chart', 'components/audio';
