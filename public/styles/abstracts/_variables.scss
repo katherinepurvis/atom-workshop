@@ -86,3 +86,10 @@ $disabledColor: $color300Grey;
 $toolbarHeight: 50px;
 $standard-padding: 10px;
 $iconSize: 16px; /* Preferred icon size */
+
+
+// Z-index
+$zIndex-base: 0;
+$zIndex-raised: 1;
+$zIndex-header: 90;
+$zIndex-modal: 100;

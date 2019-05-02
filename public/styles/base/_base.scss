@@ -31,3 +31,9 @@ html {
   width: 100%;
   margin: 0 auto;
 }
+
+.page__header {
+  position: sticky;
+  top: 0;
+  z-index: $zIndex-header;
+}

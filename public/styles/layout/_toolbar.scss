@@ -3,13 +3,11 @@
 // -----------------------------------------------------------------------------
 $toolbarHeight: 50px;
 
-
 .toolbar {
   width: 100%;
   height: $toolbarHeight;
   background-color: $cWhite;
   display: flex;
-  z-index: 1;
   border-bottom: 1px solid $greyBorderColor;
   justify-content: space-between;
 
@@ -19,11 +17,10 @@ $toolbarHeight: 50px;
     background-color: $color200Grey;
     width: 100%;
   }
-
 }
 
 .toolbar__title {
-  width:120px;
+  width: 100px;
   position: relative;
   margin: 0;
   display: flex;
@@ -31,7 +28,7 @@ $toolbarHeight: 50px;
 }
 
 .toolbar__title__hover-state {
-  font-family: $title-font-stack;
+  font-family: $text-font-stack;
   visibility: hidden;
   position: absolute;
   left: 0;
@@ -41,45 +38,45 @@ $toolbarHeight: 50px;
   background-color: $textColor;
   color: $cWhite;
   padding: 5px;
+  font-weight: 500;
+  display: flex;
+  line-height: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .toolbar__title:hover .toolbar__title__hover-state {
-  visibility:visible;
-}
-
-.toolbar__title__hover-state__subtitle {
-  font-weight:bold;
-  font-size: 13px;
-  line-height: 18px;
+  visibility: visible;
 }
 
 .toolbar__title__hover-state__title {
-  font-weight:bold;
-  font-size: 18px;
-  line-height: 23px;
+  font-size: 12px;
 }
 
-.toolbar__logo, .toolbar__page-icon {
-  display: inline-block;
-  text-align: center;
-  line-height: 55px;
-}
-
-.toolbar__title .toolbar__logo {
-  flex: 0 0 60px;
-  background: no-repeat center url(../images/logo.svg) $darkBrandColor;
-  background-size: 40px;
-}
-
+.toolbar__logo,
 .toolbar__page-icon {
   display: inline-block;
   text-align: center;
   line-height: 55px;
 }
 
+.toolbar__title .toolbar__logo {
+  flex: 0 0 $toolbarHeight;
+  background: no-repeat center url(../images/logo.svg) $brandColor;
+  background-size: 75%;
+}
+
+.toolbar__page-icon {
+  display: inline-block;
+  text-align: center;
+  line-height: 55px;
+  background: no-repeat center url(../images/type-logo.svg) $textColor;
+  background-size: 33%;
+}
+
 .toolbar__title .toolbar__page-icon {
-  flex: 0 0 60px;
-  background: no-repeat center $brandColor;
+  flex: 0 0 $toolbarHeight;
 }
 
 .toolbar__container {
@@ -152,7 +149,6 @@ $toolbarHeight: 50px;
       background: $darkBrandColor;
       box-shadow: none;
     }
-
   }
 }
 
@@ -162,7 +158,7 @@ $toolbarHeight: 50px;
   position: relative;
 
   &:after {
-    content: " ";
+    content: ' ';
     background: url(../images/arrow.png) no-repeat right center;
     background-size: 12px;
     width: 17px;
