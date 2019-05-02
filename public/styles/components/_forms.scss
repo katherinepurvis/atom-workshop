@@ -211,7 +211,7 @@
 .form__message {
   margin-bottom: 10px;
 
-  &[data-highlighted=true] {
+  &[data-highlighted="true"] {
     overflow: hidden;
     background-color: lighten($cYellow, 40);
     padding: 5px 10px;
