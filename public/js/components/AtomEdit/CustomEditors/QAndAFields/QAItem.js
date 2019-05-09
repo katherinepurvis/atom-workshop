@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import {ManagedForm, ManagedField} from '../../../ManagedEditor';
+import { ManagedForm, ManagedField } from '../../../ManagedEditor';
 import FormFieldsScribeEditor from '../../../FormFields/FormFieldScribeEditor';
 
 const WordLimit = 250;
@@ -22,7 +22,7 @@ export class QAItem extends React.Component {
     this.props.onUpdateField(item);
   }
 
-  render () {
+  render() {
     const value = this.props.fieldValue || {
       title: "",
       body: ""
@@ -31,7 +31,11 @@ export class QAItem extends React.Component {
       <div className="form__field">
         <ManagedForm data={value} updateData={this.updateItem} onFormErrorsUpdate={this.props.onFormErrorsUpdate} formName="qaEditor">
           <ManagedField fieldLocation="body" name="Answer" isRequired={true}>
-            <FormFieldsScribeEditor showWordCount={true} suggestedLength={WordLimit} showToolbar={true} tooLongMsg={`You've exceeded the ${WordLimit} word limit for this atom.`}/>
+            <FormFieldsScribeEditor
+              showWordCount={true}
+              suggestedLength={WordLimit}
+              showToolbar={true}
+              tooLongMsg={<div>Heads up. <strong>You've exceeded the {WordLimit} word limit for this field.</strong> You can still publish it, but bear in mind that atoms should be concise.</div>} />
           </ManagedField>
         </ManagedForm>
       </div>
