@@ -4,7 +4,7 @@ import { uriEncodeParams, sanitiseQuery } from '../util/uriEncodeParams';
 
 export const searchTags = (searchText, type = null) => {
   return pandaFetch(
-    `/support/previewCapi/tags?q=${searchText}${type ? `&type=${type}` : ''}`,
+    `/support/previewCapi/tags?internal-name=${searchText}${type ? `&type=${type}` : ''}`,
     {
       method: 'get',
       credentials: 'same-origin'
