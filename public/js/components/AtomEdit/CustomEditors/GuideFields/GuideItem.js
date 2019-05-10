@@ -45,7 +45,7 @@ export class GuideItem extends React.Component {
 							showWordCount={true}
 							showToolbar={true}
 							suggestedLength={wordLimits.default}
-							tooLongMsg={tooLongMsg}
+							tooLongMsg={tooLongMsg(wordLimits.default)}
 						/>
 					</ManagedField>
 				</ManagedForm>

@@ -39,7 +39,7 @@ export class QAItem extends React.Component {
 							showWordCount={true}
 							showToolbar={true}
 							suggestedLength={wordLimits.qanda}
-							tooLongMsg={tooLongMsg}
+							tooLongMsg={tooLongMsg(wordLimits.qanda)}
 						/>
 					</ManagedField>
 				</ManagedForm>
