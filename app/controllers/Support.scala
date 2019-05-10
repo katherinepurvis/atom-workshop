@@ -21,7 +21,7 @@ class Support(val wsClient: WSClient) extends Controller with PanDomainAuthActio
   def previewCapiProxy(path: String) = APIAuthAction.async { request =>
     val capiUrl = Config.capiPreviewIAMUrl
 
-    val url = s"$capiUrl/$path?${request.rawQueryString}"
+    val url = s"$capiUrl/$path?user-tier=internal&${request.rawQueryString}"
 
     val req = wsClient
       .url(url)
