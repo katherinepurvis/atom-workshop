@@ -83,6 +83,8 @@ object Config extends AwsInstanceTags {
   val capiPreviewIAMUrl = config.getString("capi.previewIAMUrl")
   val capiLiveUrl = config.getString("capi.liveUrl")
 
+  val capiApiKey = getOptionalProperty("capi.apiKey", config.getString).getOrElse("atom-workshop-DEV")
+
   val capiCredentialsProvider = new ProfileCredentialsProvider("capi")
   val capiPreviewRole = config.getString("capi.previewRole")
   val capiPreviewCredentials: AWSCredentialsProvider = {
