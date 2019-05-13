@@ -1,8 +1,16 @@
 .list {
-	&__item {
-		padding: 10px 20px;
-	}
-	&__item + &__item {
-		border-bottom: 1px solid $color300Grey;
-	}
+  .list__item {
+    padding: 5px 10px;
+  }
+  .list__item + .list__item {
+    border-top: 1px solid $color300Grey;
+  }
+}
+
+.list__item__title {
+  font-weight: 700;
+}
+
+.list__item--error .list__item__title {
+  color: $errorColor;
 }
