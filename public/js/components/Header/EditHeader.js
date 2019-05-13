@@ -90,6 +90,13 @@ class EditHeader extends React.Component {
     return false;
   };
 
+  isPublishingDisabled = () => {
+    const atomPublishState = publishState(this.props.atom);
+    return (
+      atomPublishState.id === 'published' || this.props.formErrors.length > 0
+    );
+  };
+
   renderHeaderRight = () => {
     const atomPublishState = publishState(this.props.atom);
 
@@ -104,10 +111,7 @@ class EditHeader extends React.Component {
         <HoverExpander
           proxy={
             <button
-              disabled={
-                atomPublishState.id === 'published' ||
-                this.props.formErrors.length > 0
-              }
+              disabled={this.isPublishingDisabled()}
               type="button"
               onClick={this.publishAtom}
               className="btn btn--green btn--margin"

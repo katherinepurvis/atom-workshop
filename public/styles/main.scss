@@ -4,24 +4,46 @@
 @import 'abstracts/variables';
 
 // 2. Vendors
-@import 'vendor/normalize', 'vendor/datepicker';
+@import 'vendor/normalize';
+@import 'vendor/datepicker';
 
 // 3. Base stuff
-@import 'base/base', 'base/fonts', 'base/typography', 'base/helpers';
+@import 'base/base';
+@import 'base/fonts';
+@import 'base/typography';
+@import 'base/helpers';
 
 // 4. Layout-related sections
 @import 'layout/toolbar';
 @import 'layout/atom-list';
 
 // 5. Components
-@import 'components/buttons', 'components/forms', 'components/tables',
-  'components/page', 'components/modal', 'components/loader', 'components/icons',
-  'components/lists', 'components/message-bar', 'components/details-list',
-  'components/usages-list', 'components/presence-list',
-  'components/form-fields/image-select', 'components/form-fields/scribe',
-  'components/atom', 'components/atom-search', 'components/atom-create',
-  'components/atom-card', 'components/atom-editor', 'components/atom-embed',
-  'components/atom-actions', 'components/workflow', 'components/targeting',
-  'components/suggestions', 'components/commons-divisions',
-  'components/search-suggestions', 'components/chart', 'components/audio',
-  'components/hover-expander';
+@import 'components/buttons';
+@import 'components/forms';
+@import 'components/tables';
+@import 'components/page';
+@import 'components/modal';
+@import 'components/loader';
+@import 'components/icons';
+@import 'components/lists';
+@import 'components/message-bar';
+@import 'components/details-list';
+@import 'components/usages-list';
+@import 'components/presence-list';
+@import 'components/form-fields/image-select';
+@import 'components/form-fields/scribe';
+@import 'components/atom';
+@import 'components/atom-search';
+@import 'components/atom-create';
+@import 'components/atom-card';
+@import 'components/atom-editor';
+@import 'components/atom-embed';
+@import 'components/atom-actions';
+@import 'components/workflow';
+@import 'components/targeting';
+@import 'components/suggestions';
+@import 'components/commons-divisions';
+@import 'components/search-suggestions';
+@import 'components/chart';
+@import 'components/audio';
+@import 'components/hover-expander';
