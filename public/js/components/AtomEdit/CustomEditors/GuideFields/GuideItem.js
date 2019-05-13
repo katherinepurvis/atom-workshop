@@ -1,9 +1,10 @@
-import React, { PropTypes } from 'react';
-import {ManagedForm, ManagedField} from '../../../ManagedEditor';
-import FormFieldTextInput from '../../../FormFields/FormFieldTextInput';
-import FormFieldsScribeEditor from '../../../FormFields/FormFieldScribeEditor';
-import ShowErrors from '../../../Utilities/ShowErrors';
-import { errorPropType } from '../../../../constants/errorPropType';
+import React, { PropTypes } from "react";
+import { ManagedForm, ManagedField } from "../../../ManagedEditor";
+import FormFieldTextInput from "../../../FormFields/FormFieldTextInput";
+import FormFieldsScribeEditor from "../../../FormFields/FormFieldScribeEditor";
+import ShowErrors from "../../../Utilities/ShowErrors";
+import { errorPropType } from "../../../../constants/errorPropType";
+import { wordLimits, tooLongMsg } from "../../../../util/wordLimits";
 
 export class GuideItem extends React.Component {
   static propTypes = {
@@ -12,33 +13,43 @@ export class GuideItem extends React.Component {
     fieldName: PropTypes.string,
     fieldValue: PropTypes.shape({
       title: PropTypes.string,
-      body: PropTypes.string
+      body: PropTypes.string,
     }),
     fieldPlaceholder: PropTypes.string,
     onUpdateField: PropTypes.func,
-    onFormErrorsUpdate: PropTypes.func
+    onFormErrorsUpdate: PropTypes.func,
   };
 
-  updateItem = (item) => {
+  updateItem = item => {
     this.props.onUpdateField(item);
-  }
+  };
 
-  render () {
+  render() {
     const value = this.props.fieldValue || {
       title: null,
-      body: "-"
+      body: "-",
     };
     return (
       <div className="form__field form__field--nested">
-        <ManagedForm data={value} updateData={this.updateItem} onFormErrorsUpdate={this.props.onFormErrorsUpdate} formName="guideEditor">
+        <ManagedForm
+          data={value}
+          updateData={this.updateItem}
+          onFormErrorsUpdate={this.props.onFormErrorsUpdate}
+          formName="guideEditor"
+        >
           <ManagedField fieldLocation="title" name="Title">
-            <FormFieldTextInput/>
+            <FormFieldTextInput />
           </ManagedField>
           <ManagedField fieldLocation="body" name="Body" isRequired={true}>
-            <FormFieldsScribeEditor showWordCount={true} showToolbar={true} tooLongMsg={"Remember that snippets should be concise"}/>
+            <FormFieldsScribeEditor
+              showWordCount={true}
+              showToolbar={true}
+              suggestedLength={wordLimits.default}
+              tooLongMsg={tooLongMsg(wordLimits.default)}
+            />
           </ManagedField>
         </ManagedForm>
-        <ShowErrors errors={this.props.fieldErrors}/>
+        <ShowErrors errors={this.props.fieldErrors} />
       </div>
     );
   }

@@ -39,20 +39,27 @@ export default class FormFieldTagPicker extends React.Component {
 
     const searchText = e.target.value;
 
-    this.setState({
-      searchText: searchText
-    });
-
-    searchTags(searchText, this.props.tagType).then((results) => {
+    if (searchText.length > 0) {
       this.setState({
-        suggestions: results
+        searchText: searchText
       });
-    })
-    .catch(() => {
+    
+      searchTags(searchText, this.props.tagType).then((results) => {
+        this.setState({
+          suggestions: results
+        });
+      })
+      .catch(() => {
+        this.setState({
+          suggestions: null
+        });
+      });
+    } else {
       this.setState({
-        suggestions: null
+        searchText: "",
+        suggestions: []
       });
-    });
+    }
 
   }
 

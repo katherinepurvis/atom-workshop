@@ -1,8 +1,7 @@
-import React, { PropTypes } from 'react';
-import {ManagedForm, ManagedField} from '../../../ManagedEditor';
-import FormFieldsScribeEditor from '../../../FormFields/FormFieldScribeEditor';
-
-const WordLimit = 250;
+import React, { PropTypes } from "react";
+import { ManagedForm, ManagedField } from "../../../ManagedEditor";
+import FormFieldsScribeEditor from "../../../FormFields/FormFieldScribeEditor";
+import { wordLimits, tooLongMsg } from "../../../../util/wordLimits";
 
 export class QAItem extends React.Component {
   static propTypes = {
@@ -11,27 +10,37 @@ export class QAItem extends React.Component {
     fieldValue: PropTypes.shape({
       title: PropTypes.string,
       date: PropTypes.date,
-      body: PropTypes.string
+      body: PropTypes.string,
     }),
     fieldPlaceholder: PropTypes.string,
     onUpdateField: PropTypes.func,
-    onFormErrorsUpdate: PropTypes.func
+    onFormErrorsUpdate: PropTypes.func,
   };
 
-  updateItem = (item) => {
+  updateItem = item => {
     this.props.onUpdateField(item);
-  }
+  };
 
-  render () {
+  render() {
     const value = this.props.fieldValue || {
       title: "",
-      body: ""
+      body: "",
     };
     return (
       <div className="form__field">
-        <ManagedForm data={value} updateData={this.updateItem} onFormErrorsUpdate={this.props.onFormErrorsUpdate} formName="qaEditor">
+        <ManagedForm
+          data={value}
+          updateData={this.updateItem}
+          onFormErrorsUpdate={this.props.onFormErrorsUpdate}
+          formName="qaEditor"
+        >
           <ManagedField fieldLocation="body" name="Answer" isRequired={true}>
-            <FormFieldsScribeEditor showWordCount={true} suggestedLength={WordLimit} showToolbar={true} tooLongMsg={`You've exceeded the ${WordLimit} word limit for this atom.`}/>
+            <FormFieldsScribeEditor
+              showWordCount={true}
+              showToolbar={true}
+              suggestedLength={wordLimits.qanda}
+              tooLongMsg={tooLongMsg(wordLimits.qanda)}
+            />
           </ManagedField>
         </ManagedForm>
       </div>

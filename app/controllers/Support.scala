@@ -5,9 +5,10 @@ import java.net.URI
 import com.gu.contentapi.client.IAMSigner
 import config.Config
 import play.api.libs.ws.WSClient
-import play.api.mvc.Controller
+import play.api.mvc.{ Controller, Result }
 import play.api.libs.concurrent.Execution.Implicits._
 import play.api.Logger
+import scala.concurrent.Future
 
 class Support(val wsClient: WSClient) extends Controller with PanDomainAuthActions {
 
@@ -18,14 +19,19 @@ class Support(val wsClient: WSClient) extends Controller with PanDomainAuthActio
 
   private def getHeaders(url: String): Seq[(String,String)] = signer.addIAMHeaders(headers = Map.empty, uri = URI.create(url)).toSeq
 
+  def capiProxy(path: String) = APIAuthAction.async { request =>
+    query(s"${Config.capiLiveUrl}/$path?api-key=${Config.capiApiKey}&${request.rawQueryString}", Seq.empty)
+  }
+
   def previewCapiProxy(path: String) = APIAuthAction.async { request =>
-    val capiUrl = Config.capiPreviewIAMUrl
+    val url = s"${Config.capiPreviewIAMUrl}/$path?${request.rawQueryString}"
+    query(url, getHeaders(url))
+  }
 
-    val url = s"$capiUrl/$path?${request.rawQueryString}"
-
+  def query(url: String, headers: Seq[(String, String)]): Future[Result] = {
     val req = wsClient
       .url(url)
-      .withHeaders(getHeaders(url): _*)
+      .withHeaders(headers: _*)
       .get()
 
     req.map(response => response.status match {

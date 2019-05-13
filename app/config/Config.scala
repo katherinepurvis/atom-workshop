@@ -61,8 +61,8 @@ object Config extends AwsInstanceTags {
 
   val previewDynamoTableName = config.getString("aws.dynamo.preview.tableName")
   val publishedDynamoTableName = config.getString("aws.dynamo.live.tableName")
-  val explainerPreviewDynamoTableName = config.getString("aws.dynamo.explainers.preview.tableName")
-  val explainerPublishedDynamoTableName = config.getString("aws.dynamo.explainers.live.tableName")
+  val explainerPreviewDynamoTableName = getOptionalProperty("aws.dynamo.explainers.preview.tableName", config.getString).getOrElse("explain-maker-preview-DEV")
+  val explainerPublishedDynamoTableName = getOptionalProperty("aws.dynamo.explainers.live.tableName", config.getString).getOrElse("explain-maker-live-DEV")
   val notificationsDynamoTableName = config.getString("aws.dynamo.notifications.tableName")
 
   val gridUrl = config.getString("grid.url")
@@ -82,6 +82,8 @@ object Config extends AwsInstanceTags {
   
   val capiPreviewIAMUrl = config.getString("capi.previewIAMUrl")
   val capiLiveUrl = config.getString("capi.liveUrl")
+
+  val capiApiKey = getOptionalProperty("capi.apiKey", config.getString).getOrElse("atom-workshop-DEV")
 
   val capiCredentialsProvider = new ProfileCredentialsProvider("capi")
   val capiPreviewRole = config.getString("capi.previewRole")

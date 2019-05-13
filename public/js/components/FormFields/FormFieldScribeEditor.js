@@ -1,10 +1,10 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import Scribe from 'scribe';
 import scribeKeyboardShortcutsPlugin from 'scribe-plugin-keyboard-shortcuts';
 import scribePluginToolbar from 'scribe-plugin-toolbar';
 import scribePluginLinkPromptCommand from 'scribe-plugin-link-prompt-command';
 import scribePluginSanitizer from 'scribe-plugin-sanitizer';
-import {errorPropType} from '../../constants/errorPropType';
+import { errorPropType } from '../../constants/errorPropType';
 import ShowErrors from '../Utilities/ShowErrors';
 import uuidv4 from 'uuid/v4';
 
@@ -20,7 +20,7 @@ export default class FormFieldsScribeEditor extends React.Component {
     showWordCount: PropTypes.bool,
     suggestedLength: PropTypes.number,
     showToolbar: PropTypes.bool,
-    tooLongMsg: PropTypes.string
+    tooLongMsg: PropTypes.node
   }
 
   constructor(props) {
@@ -37,27 +37,33 @@ export default class FormFieldsScribeEditor extends React.Component {
   isTooLong = (wordCount) => this.props.suggestedLength && wordCount > this.props.suggestedLength;
 
   renderWordCount = () => {
-    const wordCount = this.props.fieldValue? this.wordCount(this.props.fieldValue) : 0;
+    const wordCount = this.props.fieldValue ? this.wordCount(this.props.fieldValue) : 0;
 
     const tooLong = this.isTooLong(wordCount);
 
     return (
-        <div>
-          <span className="form__message__text">{wordCount} words</span>
-          {tooLong ? <span className="form__message__text--error"> ({this.tooLongMsg})</span>: false}
-        </div>
+      <div className="form__message" data-highlighted={tooLong}>
+        <span className="form__message__title">{wordCount} words</span>
+        {tooLong ? <div className="form__message__text"> {this.tooLongMsg}</div> : false}
+      </div>
     );
   }
 
 
-  render () {
+  render() {
     return (
-        <div className={(this.props.formRowClass || "form__row") + " scribe"}>
-          {this.props.fieldLabel ? <label htmlFor={this.props.fieldName} className="form__label">{this.props.fieldLabel}</label> : false}
-          <ScribeEditor fieldName={this.props.fieldName} value={this.props.fieldValue ? this.props.fieldValue: " " } onUpdate={this.props.onUpdateField} showToolbar={this.props.showToolbar}/>
-          {this.props.showWordCount ? this.renderWordCount() : false}
-          <ShowErrors errors={this.props.fieldErrors}/>
-        </div>
+      <div className={(this.props.formRowClass || "form__row") + " scribe"}>
+        {this.props.fieldLabel ? <label htmlFor={this.props.fieldName} className="form__label">{this.props.fieldLabel}</label> : false}
+        <ScribeEditor
+          key={this.props.fieldName}
+          fieldName={this.props.fieldName}
+          value={this.props.fieldValue ? this.props.fieldValue : " "}
+          onUpdate={this.props.onUpdateField}
+          showToolbar={this.props.showToolbar}
+        />
+        {this.props.showWordCount ? this.renderWordCount() : false}
+        <ShowErrors errors={this.props.fieldErrors} />
+      </div>
     );
   }
 }
@@ -78,9 +84,9 @@ export class ScribeEditor extends React.Component {
   uuid = uuidv4();
 
   componentDidMount() {
-      this.setState({scribeElement: document.getElementById(this.props.fieldName+this.uuid)}, () => {
-        this.configureScribe();
-      });
+    this.setState({ scribeElement: document.getElementById(this.props.fieldName + this.uuid) }, () => {
+      this.configureScribe();
+    });
 
   }
 
@@ -120,7 +126,7 @@ export class ScribeEditor extends React.Component {
     this.scribe.on('content-changed', this.onContentChange);
 
     this.setState({
-        scribeElement: Object.assign(this.state.scribeElement, {innerHTML: this.props.value})
+      scribeElement: Object.assign(this.state.scribeElement, { innerHTML: this.props.value })
     });
   }
 
@@ -137,18 +143,18 @@ export class ScribeEditor extends React.Component {
 
   render() {
     return (
-        <div>
-          { this.props.showToolbar === false ? null :
-            <div id={`scribe__toolbar-${this.uuid}`} className="scribe__toolbar">
-              <button type="button" data-command-name="bold" className="scribe__toolbar__item">Bold</button>
-              <button type="button" data-command-name="italic" className="scribe__toolbar__item">Italic</button>
-              <button type="button" data-command-name="linkPrompt" className="scribe__toolbar__item">Link</button>
-              <button type="button" data-command-name="unlink" className="scribe__toolbar__item">Unlink</button>
-            </div>
-          }
+      <div>
+        {this.props.showToolbar === false ? null :
+          <div id={`scribe__toolbar-${this.uuid}`} className="scribe__toolbar">
+            <button type="button" data-command-name="bold" className="scribe__toolbar__item">Bold</button>
+            <button type="button" data-command-name="italic" className="scribe__toolbar__item">Italic</button>
+            <button type="button" data-command-name="linkPrompt" className="scribe__toolbar__item">Link</button>
+            <button type="button" data-command-name="unlink" className="scribe__toolbar__item">Unlink</button>
+          </div>
+        }
 
-          <div id={this.props.fieldName + this.uuid} className="scribe__editor"></div>
-        </div>
-  );
+        <div id={this.props.fieldName + this.uuid} className="scribe__editor"></div>
+      </div>
+    );
   }
 }

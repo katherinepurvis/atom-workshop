@@ -210,6 +210,24 @@
 
 .form__message {
   margin-bottom: 10px;
+
+  &[data-highlighted="true"] {
+    overflow: hidden;
+    background-color: lighten($cYellow, 40);
+    padding: 5px 10px;
+
+    .form__message__title {
+      margin: -5px 0 5px -10px;
+      padding: 5px;
+      background-color: lighten($cYellow, 30);
+      display: inline-block;
+    }
+  }
+}
+
+.form__message__title {
+  font-size: 13px;
+  font-weight: 700;
 }
 
 .form__message__text {
