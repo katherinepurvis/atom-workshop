@@ -1,14 +1,19 @@
 import FieldError from '../constants/FieldError';
+import { wordLimits } from './wordLimits';
+
 /**
  *
  * Validator should return a promise resolved with true for a pass and a new FieldError('error', 'message') if false
  *
  **/
 
-
-export const isHttpsUrl = (value) => {
+export const isHttpsUrl = value => {
   const stringValue = typeof value === 'string' ? value : '';
-  if (stringValue.match(/^(https:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/)) {
+  if (
+    stringValue.match(
+      /^(https:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/
+    )
+  ) {
     return Promise.resolve(true);
   } else {
     const error = new FieldError('not-https', 'Not a HTTPS url');
@@ -16,29 +21,31 @@ export const isHttpsUrl = (value) => {
   }
 };
 
-const WordLimit = 400;
-export const checkItemsUnderWordCount = (values) => {
-    if (values.length > 0) {
-        var wordCount = values.map(function(itemData) {
-            var strippedText = stripHtml(itemData.body);
-            return strippedText.split(" ").length;
-        });
+export const checkItemsUnderWordCount = values => {
+  if (values.length > 0) {
+    var wordCount = values.map(function(itemData) {
+      var strippedText = stripHtml(itemData.body);
+      return strippedText.split(' ').length;
+    });
 
-        var totalCount = wordCount.reduce(function (total, num) {
-            return total + num;
-        });
+    var totalCount = wordCount.reduce(function(total, num) {
+      return total + num;
+    });
 
-        if (totalCount <= WordLimit) {
-            return Promise.resolve(true);
-        } else {
-            const error = new FieldError('too-long', `You\'ve reached the word limit on this atom type. Please edit your items to less than a total of ${WordLimit} words.`);
-            return Promise.resolve(error);
-        }
-
+    if (totalCount <= wordLimits.default) {
+      return Promise.resolve(true);
+    } else {
+      const error = new FieldError(
+        'too-long',
+        `You\'ve reached the word limit on this atom type. Please edit your items to less than a total of ${
+          wordLimits.default
+        } words.`
+      );
+      return Promise.resolve(error);
     }
+  }
 };
 
 function stripHtml(rawBody) {
-  return rawBody.replace(/<{1}[^<>]{1,}>{1}/g,"");
+  return rawBody.replace(/<{1}[^<>]{1,}>{1}/g, '');
 }
-
