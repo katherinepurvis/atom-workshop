@@ -1,5 +1,4 @@
 import FieldError from '../constants/FieldError';
-import { wordLimits } from './wordLimits';
 
 /**
  *
@@ -20,32 +19,3 @@ export const isHttpsUrl = value => {
     return Promise.resolve(error);
   }
 };
-
-export const checkItemsUnderWordCount = values => {
-  if (values.length > 0) {
-    var wordCount = values.map(function(itemData) {
-      var strippedText = stripHtml(itemData.body);
-      return strippedText.split(' ').length;
-    });
-
-    var totalCount = wordCount.reduce(function(total, num) {
-      return total + num;
-    });
-
-    if (totalCount <= wordLimits.default) {
-      return Promise.resolve(true);
-    } else {
-      const error = new FieldError(
-        'too-long',
-        `You\'ve reached the word limit on this atom type. Please edit your items to less than a total of ${
-          wordLimits.default
-        } words.`
-      );
-      return Promise.resolve(error);
-    }
-  }
-};
-
-function stripHtml(rawBody) {
-  return rawBody.replace(/<{1}[^<>]{1,}>{1}/g, '');
-}
