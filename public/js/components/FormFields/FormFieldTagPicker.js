@@ -80,7 +80,7 @@ export default class FormFieldTagPicker extends React.Component {
           };
 
           return (
-            <a className="form__field__suggestion" key={suggestion.id} title={suggestion.id} onClick={updateFn}>{suggestion.webTitle} ({suggestion.type})</a>
+            <a className="form__field__suggestion" key={suggestion.id} title={suggestion.id} onClick={updateFn}>{suggestion.internalName} ({suggestion.type})</a>
           );
         })}
       </div>
