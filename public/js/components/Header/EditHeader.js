@@ -7,9 +7,9 @@ import PresenceIndicator from '../Utilities/PresenceIndicator';
 import { saveStateVals } from '../../constants/saveStateVals';
 import distanceInWords from 'date-fns/distance_in_words';
 import DeleteAtom from './DeleteAtom';
-import ShowAllErrors from '../Utilities/ShowAllErrors';
 import flattenFormErrors from '../../util/flattenFormErrors';
 import HoverExpander from '../Utilities/HoverExpander';
+import List from '../List/List';
 
 class EditHeader extends React.Component {
   static propTypes = {
@@ -120,7 +120,13 @@ class EditHeader extends React.Component {
             </button>
           }
         >
-          <ShowAllErrors />
+          <List
+            items={this.props.formErrors.map(({ title, message }) => ({
+              title,
+              body: message,
+              type: 'error',
+            }))}
+          />
         </HoverExpander>
 
         {this.renderTakeDownButton(atomPublishState)}

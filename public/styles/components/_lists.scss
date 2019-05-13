@@ -11,6 +11,6 @@
   font-weight: 700;
 }
 
-.list__item--error .list__item__title {
+.list__item[data-type='error'] .list__item__title {
   color: $errorColor;
 }
