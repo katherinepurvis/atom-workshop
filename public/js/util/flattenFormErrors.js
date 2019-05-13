@@ -1,4 +1,4 @@
-import flatten from 'lodash/flatten';
+import flattenDeep from 'lodash/flattenDeep';
 
 const flattenFormErrors = formErrors => {
   const nested = Object.entries(formErrors).map(([field, values]) =>
@@ -6,7 +6,7 @@ const flattenFormErrors = formErrors => {
       errors.map(error => Object.assign({}, error, { field, title }))
     )
   );
-  return flatten(flatten(nested));
+  return flattenDeep(nested);
 };
 
 export default flattenFormErrors;
