@@ -8,6 +8,7 @@ import { saveStateVals } from '../../constants/saveStateVals';
 import distanceInWords from 'date-fns/distance_in_words';
 import DeleteAtom from './DeleteAtom';
 import ShowAllErrors from '../Utilities/ShowAllErrors';
+import flattenFormErrors from '../../util/flattenFormErrors';
 import HoverExpander from '../Utilities/HoverExpander';
 
 class EditHeader extends React.Component {
@@ -15,6 +16,7 @@ class EditHeader extends React.Component {
     atom: atomPropType,
     presence: PropTypes.bool,
     saveState: PropTypes.object,
+    formErrors: PropTypes.object,
     atomActions: PropTypes.shape({
       publishAtom: PropTypes.func.isRequired,
       takeDownAtom: PropTypes.func.isRequired,
@@ -102,7 +104,10 @@ class EditHeader extends React.Component {
         <HoverExpander
           proxy={
             <button
-              disabled={atomPublishState.id === 'published'}
+              disabled={
+                atomPublishState.id === 'published' ||
+                this.props.formErrors.length > 0
+              }
               type="button"
               onClick={this.publishAtom}
               className="btn btn--green btn--margin"
@@ -172,6 +177,7 @@ import * as deleteAtomActions from '../../actions/AtomActions/deleteAtom.js';
 
 function mapStateToProps(state) {
   return {
+    formErrors: flattenFormErrors(state.formErrors),
     saveState: state.saveState,
     config: state.config,
     presence: state.presence,
