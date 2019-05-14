@@ -1,0 +1,27 @@
+.hover-expander {
+  position: relative;
+  contain: style layout;
+}
+
+.hover-expander,
+.hover-expander__trigger {
+  display: flex;
+}
+
+.hover-expander__content {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #fff;
+  min-width: 200px;
+  border: 1px solid $color300Grey;
+}
+
+.hover-expander {
+  .hover-expander__content {
+    display: none;
+  }
+  &:hover .hover-expander__content {
+    display: block;
+  }
+}

@@ -2,7 +2,6 @@
 // This file contains all application-wide Sass variables.
 // -----------------------------------------------------------------------------
 
-
 /// Regular font family
 /// $type List
 $text-font-stack: 'Guardian Agate Sans', Arial, sans-serif !default;
@@ -19,17 +18,16 @@ $title-font-stack: 'Guardian Egyptian Text', Georgia, serif;
 Grayscale colour palette
 As per: https://docs.google.com/a/guardian.co.uk/file/d/0B6htkhydcF-aV1lUUEhyYTBuRGM/edit
 */
-$color100Grey: #F6F6F6; // hsl(59,0%,96%)
-$color150Grey: #F1F1F1; // hsl(59,0%,94%)
-$color200Grey: #EDEDED; // hsl(59,0%,92%)
-$color250Grey: #E6E6E6; // hsl(59,0%,90%)
-$color300Grey: #DCDCDC; // hsl(59,0%,86%)
-$color400Grey: #BDBDBD; // hsl(59,0%,74%)
+$color100Grey: #f6f6f6; // hsl(59,0%,96%)
+$color150Grey: #f1f1f1; // hsl(59,0%,94%)
+$color200Grey: #ededed; // hsl(59,0%,92%)
+$color250Grey: #e6e6e6; // hsl(59,0%,90%)
+$color300Grey: #dcdcdc; // hsl(59,0%,86%)
+$color400Grey: #bdbdbd; // hsl(59,0%,74%)
 $color500Grey: #898984; // hsl(59,3%,53%)
 $color600Grey: #767676; // hsl(59,0%,46%)
 $color650Grey: #333333; // hsl(59,0%,20%)
-$color700Grey: #2B2B29; // hsl(59,4%,16%)
-
+$color700Grey: #2b2b29; // hsl(59,4%,16%)
 
 /*
 Generic colours
@@ -48,7 +46,7 @@ $cRedE3: #e31f26;
 $cYellow: #ffbc01;
 $cGreen1c: #1c6326;
 $cGreen33: #33a22b;
-$cWhite: #FFFFFF;
+$cWhite: #ffffff;
 
 /*
 Background colours
@@ -61,7 +59,7 @@ $darkGreyBgColor: $color300Grey;
 // pattern emerges later down the line
 $btnBgColor: $color500Grey;
 $btnDisabledBgColor: $color300Grey;
-$btnActiveBgColor: #0D6A71;
+$btnActiveBgColor: #0d6a71;
 $btnDeepCtaHoverBgColor: #47af37;
 $btnLightBgColor: $color400Grey;
 
@@ -76,17 +74,16 @@ Text colours
 */
 $textColor: $color700Grey;
 $anchorColor: $cBlueLink;
-$brandColor: #06A2AB;
-$darkBrandColor: #0D6A71;
+$brandColor: #06a2ab;
+$darkBrandColor: #0d6a71;
 $lightBrandColor: lighten($brandColor, 60);
 $disabledColor: $color300Grey;
-
+$errorColor: $cRedE3;
 
 // Sizes
 $toolbarHeight: 50px;
 $standard-padding: 10px;
 $iconSize: 16px; /* Preferred icon size */
-
 
 // Z-index
 $zIndex-base: 0;
