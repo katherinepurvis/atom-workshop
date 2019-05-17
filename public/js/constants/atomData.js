@@ -165,7 +165,6 @@ export function isAtomTypeEditable(typeString) {
 }
 
 export function doesAtomTypeRequireTagging(typeString) {
-  console.log(typeString);
   return snippetAtomTypes.find(
     atomData => atomData.type.toLowerCase() === typeString.toLowerCase()
   );
