@@ -9,10 +9,11 @@ import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 import CreateTargetForm from './CreateTargetForm';
 import { connect } from 'react-redux';
 import { updateFormErrors } from '../../actions/FormErrorActions/updateFormErrors';
+import { doesAtomTypeRequireTagging } from '../../constants/atomData';
 
 const taggingRequiredError = {
   title: 'required',
-  message: 'Please suggest at least one tag for this atom',
+  message: 'Please add at least one tag for this atom',
 };
 
 class CurrentTargets extends React.Component {
@@ -47,14 +48,16 @@ class CurrentTargets extends React.Component {
   };
 
   componentDidUpdate = () => {
-    this.props.dispatch(
-      updateFormErrors({
-        currentTargets: {
-          'Tagging required':
-            this.state.targets.length > 0 ? [] : [taggingRequiredError],
-        },
-      })
-    );
+    if (doesAtomTypeRequireTagging(this.props.atom.atomType)) {
+      this.props.dispatch(
+        updateFormErrors({
+          currentTargets: {
+            'Tagging required':
+              this.state.targets.length > 0 ? [] : [taggingRequiredError],
+          },
+        })
+      );
+    }
   };
 
   toggleEditMode = () => {
@@ -133,7 +136,4 @@ class CurrentTargets extends React.Component {
   }
 }
 
-export default connect(
-  null,
-  null
-)(CurrentTargets);
+export default connect()(CurrentTargets);

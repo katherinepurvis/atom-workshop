@@ -3,6 +3,7 @@ import { atomPropType } from '../../constants/atomPropType.js';
 import copy from 'copy-to-clipboard';
 import { Link } from 'react-router';
 import Workflow from '../Workflow/Workflow';
+import { doesAtomTypeRequireTagging } from '../../constants/atomData';
 
 import CurrentTargets from './CurrentTargets';
 
@@ -93,7 +94,10 @@ class AtomEmbed extends React.Component {
             />
           </div>
           <div className="form__row">
-            <h3 className="form__subheading">Tag This Atom *</h3>
+            <h3 className="form__subheading">
+              Tag This Atom
+              {doesAtomTypeRequireTagging(this.props.atom.atomType) && ' *'}
+            </h3>
             <div className="form__row">
               <CurrentTargets atom={this.props.atom} />
             </div>
