@@ -13,7 +13,7 @@ import { doesAtomTypeRequireTagging } from '../../constants/atomData';
 
 const taggingRequiredError = {
   title: 'required',
-  message: 'Please add at least one tag for this atom',
+  message: 'You must add at least one tag before publishing your atom',
 };
 
 class CurrentTargets extends React.Component {
@@ -52,7 +52,7 @@ class CurrentTargets extends React.Component {
       this.props.dispatch(
         updateFormErrors({
           currentTargets: {
-            'Tagging required':
+            'Tags required':
               this.state.targets.length > 0 ? [] : [taggingRequiredError],
           },
         })

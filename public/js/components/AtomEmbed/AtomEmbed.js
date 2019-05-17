@@ -95,7 +95,7 @@ class AtomEmbed extends React.Component {
           </div>
           <div className="form__row">
             <h3 className="form__subheading">
-              Tag This Atom
+              Tags
               {doesAtomTypeRequireTagging(this.props.atom.atomType) && ' *'}
             </h3>
             <div className="form__row">
