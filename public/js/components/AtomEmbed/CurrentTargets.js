@@ -1,21 +1,32 @@
-import React from 'react';
-import {atomPropType} from '../../constants/atomPropType';
-import {fetchTargetsForAtomPath, deleteTarget} from '../../services/TargetingApi';
+import React, { PropTypes } from 'react';
+import { atomPropType } from '../../constants/atomPropType';
+import {
+  fetchTargetsForAtomPath,
+  deleteTarget,
+} from '../../services/TargetingApi';
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 
 import CreateTargetForm from './CreateTargetForm';
+import { connect } from 'react-redux';
+import { updateFormErrors } from '../../actions/FormErrorActions/updateFormErrors';
+import { doesAtomTypeRequireTagging } from '../../constants/atomData';
+
+const taggingRequiredError = {
+  title: 'required',
+  message: 'You must add at least one tag before publishing your atom',
+};
 
 class CurrentTargets extends React.Component {
-
   static propTypes = {
     atom: atomPropType,
-  }
+    dispatch: PropTypes.func,
+  };
 
   state = {
     targets: [],
     fetching: false,
-    editing: false
-  }
+    editing: false,
+  };
 
   componentDidMount() {
     this.fetchTargets();
@@ -24,47 +35,69 @@ class CurrentTargets extends React.Component {
   calculateAtomPath = () => {
     const atom = this.props.atom;
     return `/atom/${atom.atomType.toLowerCase()}/${atom.id}`;
-  }
+  };
 
   fetchTargets = () => {
-    this.setState({fetching: true});
-    fetchTargetsForAtomPath(this.calculateAtomPath()).then((targets) => {
+    this.setState({ fetching: true });
+    fetchTargetsForAtomPath(this.calculateAtomPath()).then(targets => {
       this.setState({
         targets: targets,
-        fetching: false
+        fetching: false,
       });
     });
-  }
+  };
+
+  componentDidUpdate = () => {
+    if (doesAtomTypeRequireTagging(this.props.atom.atomType)) {
+      this.props.dispatch(
+        updateFormErrors({
+          currentTargets: {
+            'Tags required':
+              this.state.targets.length > 0 ? [] : [taggingRequiredError],
+          },
+        })
+      );
+    }
+  };
 
   toggleEditMode = () => {
     this.setState({
       editing: !this.state.editing,
-      currentTarget: {}
+      currentTarget: {},
     });
-  }
+  };
 
-  deleteTarget = (target) => {
+  deleteTarget = target => {
     deleteTarget(target.id).then(() => {
       this.fetchTargets();
     });
-  }
+  };
 
   renderTarget = (target, i) => {
     return (
       <div className="targeting__target">
-        <div className="targeting__target__title">
-          Target {i + 1}
-        </div>
-        <a className="targeting__target__delete" onClick={this.deleteTarget.bind(this, target)}>
-            <img className="targeting__target__delete"src="/assets/images/delete-icon.svg"/>
+        <div className="targeting__target__title">Target {i + 1}</div>
+        <a
+          className="targeting__target__delete"
+          onClick={this.deleteTarget.bind(this, target)}
+        >
+          <img
+            className="targeting__target__delete"
+            src="/assets/images/delete-icon.svg"
+          />
         </a>
         <ul className="targeting__target__tags">
-          {target.tagPaths.map((tagPath) => <li key={tagPath}>{tagPath}</li>)}
+          {target.tagPaths.map(tagPath => (
+            <li key={tagPath}>{tagPath}</li>
+          ))}
         </ul>
-        <div>Expires {distanceInWordsToNow(target.activeUntil, {addSuffix: true})} </div>
+        <div>
+          Expires{' '}
+          {distanceInWordsToNow(target.activeUntil, { addSuffix: true })}{' '}
+        </div>
       </div>
     );
-  }
+  };
 
   renderTargets() {
     if (this.state.fetching) {
@@ -80,26 +113,27 @@ class CurrentTargets extends React.Component {
         {this.state.targets.map(this.renderTarget)}
       </div>
     );
-
   }
 
-  render () {
+  render() {
     return (
       <div className="targeting">
         {this.renderTargets()}
-        {this.state.editing ?
+        {this.state.editing ? (
           <CreateTargetForm
             atomPath={this.calculateAtomPath()}
             title={this.props.atom.title}
             triggerTargetFetch={this.fetchTargets}
             toggleEditMode={this.toggleEditMode}
-            />
-          :
-          <button className="btn" onClick={this.toggleEditMode}>Create Target</button>
-        }
+          />
+        ) : (
+          <button className="btn" onClick={this.toggleEditMode}>
+            Create Target
+          </button>
+        )}
       </div>
     );
   }
 }
 
-export default CurrentTargets;
+export default connect()(CurrentTargets);
