@@ -50,9 +50,12 @@ function extractFields (audioPage) {
   let audioAsset = audioEl.assets.find(asset => asset.type === "audio");
   let storyImage = audioPage.fields.thumbnail || "";
 
-  let durationSeconds = audioAsset ? parseInt(audioAsset.typeData.durationMinutes) * 60 + parseInt(audioAsset.typeData.durationSeconds) : 0;
-  let trackUrl = audioAsset ? audioAsset.file : "";
-  let contentId = audioEl ? audioEl.id : "";
+  let durationSeconds = (audioAsset && audioAsset.typeData) ?
+    parseInt(audioAsset.typeData.durationMinutes || 0) * 60 + parseInt(audioAsset.typeData.durationSeconds || 0) :
+    0;
+
+  let trackUrl = audioAsset ? (audioAsset.file || "") : "";
+  let contentId = audioEl ? (audioEl.id || "") : "";
 
   // subscription links are optional
   var subscriptionLinks = {};
