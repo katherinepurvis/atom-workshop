@@ -10,8 +10,14 @@ for both the composer and capi AWS accounts from [janus](https://janus.gutools.c
 
  - Fetch config from S3: `./fetch-config.sh`
  - If you get an error message saying that you requred AWS Signature Version 4, configure your aws cli by running `aws configure set default.s3.signature_version s3v4`
- - Setup the nginx mapping by following the instructions in the
+ - Setup the nginx mapping by following the instructions in the "Install config for an application" section of the 
  [dev-nginx readme](https://github.com/guardian/dev-nginx#install-config-for-an-application).
+ 
+    tl;dr? Try this...
+    * Clone the [dev-nginx](https://github.com/guardian/dev-nginx) private repo to your machine (e.g. ~/code/dev-nginx)
+    * Change directory to that location: `cd ~/code/dev-nginx`
+    * Assuming your copy of atom-workshop is in ~/code/atom-workshop, run `sudo ./setup-app.rb ~/code/atom-workshop/nginx/nginx-mapping.yml`
+    
  - Install Client Side Dependencies with `./scripts/setup.sh`
  - Run app with: `./scripts/start.sh`
  - Run using sbt: `sbt "run 9050"`. (For quick restart you should run `sbt` and then `run 9050`, so that you can exit
