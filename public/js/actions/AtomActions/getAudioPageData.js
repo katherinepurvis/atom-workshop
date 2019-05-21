@@ -72,7 +72,7 @@ function extractFields (audioPage) {
     contentId,
     trackUrl,
     duration: durationSeconds,
-    kicker: seriesTag.webTitle,
+    kicker: seriesTag ? seriesTag.webTitle : "",
     coverUrl: storyImage,
     subscriptionLinks
   };
