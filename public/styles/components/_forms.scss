@@ -28,7 +28,8 @@
     background: $color250Grey;
     padding: 10px;
 
-    .form__section:not(:last-child), .form__btn-heading {
+    .form__section:not(:last-child),
+    .form__btn-heading {
       border-color: $color400Grey;
     }
   }
@@ -56,11 +57,12 @@
     -webkit-appearance: none;
     -moz-appearance: none;
     border-radius: 0;
-    text-indent: .01px;
+    text-indent: 0.01px;
     padding: 9px; // Select boxes don't adhere to box-sizing
   }
 
-  &--error, &--error:focus {
+  &--error,
+  &--error:focus {
     border-color: $cRedB5;
   }
 
@@ -75,7 +77,7 @@
   }
 
   input[disabled] {
-    background-color: #D3D3D3;
+    background-color: #d3d3d3;
     color: #565a5c;
   }
 }
@@ -100,7 +102,7 @@
   &__options {
     background: $color200Grey;
     border: 1px solid $color300Grey;
-    box-shadow: 2px 2px 2px 0px rgba(0,0,0,0.1);
+    box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.1);
     position: absolute;
     top: 48px;
     left: 0;
@@ -116,7 +118,7 @@
 
     &:not(:last-child) {
       border-bottom: 1px solid $color300Grey;
-    };
+    }
 
     &:hover {
       background: $color250Grey;
@@ -161,7 +163,6 @@
       display: flex;
       justify-content: space-between;
     }
-
   }
 
   &--flex {
@@ -182,7 +183,8 @@
 }
 
 // because they're special snowflakes
-.form__radio-btn, .form__checkbox {
+.form__radio-btn,
+.form__checkbox {
   display: inline-block;
 
   & + .form__label {
@@ -196,7 +198,8 @@
   font-weight: bold;
   margin: 0 0 5px;
 
-  &--radio, &--checkbox {
+  &--radio,
+  &--checkbox {
     display: inline-block;
     margin: 0;
     font-weight: normal;
@@ -211,7 +214,7 @@
 .form__message {
   margin-bottom: 10px;
 
-  &[data-highlighted="true"] {
+  &[data-highlighted='true'] {
     overflow: hidden;
     background-color: lighten($cYellow, 40);
     padding: 5px 10px;
@@ -245,6 +248,9 @@
 
 .form__field__suggestions {
   border-top: 1px solid $color400Grey;
+  border-bottom: 1px solid $color400Grey;
+  max-height: 380px;
+  overflow: auto;
 }
 
 .form__field__suggestion {
