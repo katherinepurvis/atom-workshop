@@ -1,6 +1,8 @@
+import {workshopEditableAtomTypes} from './atomData';
+
 export const searchParams = {
-  types:[],
-  "page-size": "10",
+  types: workshopEditableAtomTypes.map(atom => atom.type),
+  "page-size": "20",
   q: "",
   searchFields: "data.title,data.label,title,labels,data.body"
 };
