@@ -1,4 +1,4 @@
-import {workshopEditableAtomTypes} from '../atomData';
+import {workshopEditableAtomTypes} from './atomData';
 
 export const searchParams = {
   types: workshopEditableAtomTypes.map(atom => atom.type),
