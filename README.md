@@ -5,32 +5,21 @@ A single tool for all atom types.
 ## Running locally
 
 You'll need the [AWS CLI](http://docs.aws.amazon.com/cli/latest/userguide/installing.html) installed, and credentials
-for both the composer and capi AWS accounts from [janus](https://janus.gutools.co.uk). You'll also need to follow the
-'Install SSL certificates' step in the [dev-nginx readme](https://github.com/guardian/dev-nginx). Then:
+for both the composer and capi AWS accounts from [janus](https://janus.gutools.co.uk/multi-credentials?&permissionIds=capi-dev,composer-dev&tzOffset=1). You will then need to:
 
- - Fetch config from S3: `./fetch-config.sh`
+ - Fetch config from S3 `./fetch-config.sh`
  - If you get an error message saying that you requred AWS Signature Version 4, configure your aws cli by running `aws configure set default.s3.signature_version s3v4`
- - Setup the nginx mapping by following the instructions in the "Install config for an application" section of the 
- [dev-nginx readme](https://github.com/guardian/dev-nginx#install-config-for-an-application).
- 
-    tl;dr? Try this...
-    * Clone the [dev-nginx](https://github.com/guardian/dev-nginx) private repo to your machine (e.g. ~/code/dev-nginx)
-    * Change directory to that location: `cd ~/code/dev-nginx`
-    * Assuming your copy of atom-workshop is in ~/code/atom-workshop, run `sudo ./setup-app.rb ~/code/atom-workshop/nginx/nginx-mapping.yml`
-    
- - Install Client Side Dependencies with `./scripts/setup.sh`
- - Run app with: `./scripts/start.sh`
- - Run using sbt: `sbt "run 9050"`. (For quick restart you should run `sbt` and then `run 9050`, so that you can exit
-  the application without exiting sbt.)
+ - Install dependencies with `./scripts/setup.sh`
+ - Run app with `./scripts/start.sh`
+ - Alternatively, run with [Hot Reloading](https://github.com/guardian/atom-workshop#hot-reloading) using `.scripts/client-dev.sh`
  - Access the app by visiting https://atomworkshop.local.dev-gutools.co.uk (just make sure nginx is running on your machine)
 
 ## Compiling Client Side Dependencies
 
-Requires Node 6, we recommend you use [nvm](https://github.com/creationix/nvm) to manage versions of node. We've included an `.nvmrc` file so you can use `nvm use` to switch to the correct version.
+Requires Node 6, we recommend you use [nvm](https://github.com/creationix/nvm) to manage versions of node. We've included an `.nvmrc` file 
+in this project so you can use `nvm use` to switch to the correct version.
 You can compile client side dependencies with `yarn build` or `npm run build`.
 Alternatively to compile client side assets on change run `yarn build-dev` or `npm run build-dev`
-
-There's a handy script to run both the server and watch for file changes `./scripts/start.sh`
 
 ## Hot Reloading
 
