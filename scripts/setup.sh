@@ -1,15 +1,13 @@
 #!/usr/bin/env bash
 
-red='\x1B[0;31m'
+set -e
 
-test $(which yarn)
-if [ $? != "0" ]; then
-    echo -e "\n\r\n\r${red}yarn not found: please install yarn from https://yarnpkg.com/${plain}\n\r"
-    echo -e "Yarn is not required for the application (but is for the scripts)"
-    echo -e "Packages can be manually installed with npm\n\r\n\r"
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR=${DIR}/..
 
-    exit 1
-fi
+brew bundle --file=${ROOT_DIR}/Brewfile
+
+dev-nginx setup-app ${ROOT_DIR}/nginx/nginx-mapping.yml
 
 printf "\n\rSetting up client side dependancies... \n\r\n\r"
 printf "\n\rInstalling NPM packages via yarn... \n\r\n\r"
