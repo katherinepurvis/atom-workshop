@@ -11,7 +11,6 @@ import play.api.ApplicationLoader.Context
 import play.api._
 import play.api.libs.ws.ahc.AhcWSComponents
 import router.Routes
-import services.NotificationLists
 
 class AppComponents(context: Context)
   extends BuiltInComponentsFromContext(context) with AhcWSComponents {
@@ -24,7 +23,7 @@ class AppComponents(context: Context)
   lazy val loginController = new controllers.Login(wsClient)
   lazy val healthcheckController = new controllers.Healthcheck()
   lazy val supportController = new controllers.Support(wsClient)
-  lazy val atomActionsController = new controllers.AtomActions(wsClient, atomWorkshopDB, notificationsDB, notificationLists)
+  lazy val atomActionsController = new controllers.AtomActions(wsClient, atomWorkshopDB, notificationsDB)
 
   lazy val reindex = new ReindexController(previewDataStore, publishedDataStore, reindexPreview, reindexPublished, Configuration(config), actorSystem)
 
@@ -41,8 +40,6 @@ class AppComponents(context: Context)
   lazy val atomWorkshopDB = new AtomWorkshopDB()
 
   lazy val explainerDB = new ExplainerDB()
-
-  lazy val notificationLists = new NotificationLists(capiLambdaClient)
 
   lazy val notificationsDB = new NotificationsDB(capiDynamoDB)
 }

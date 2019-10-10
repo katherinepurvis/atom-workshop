@@ -9,7 +9,6 @@ import models._
 import play.api.libs.ws.WSClient
 import play.api.mvc.Controller
 import services.AtomPublishers._
-import services.NotificationLists
 import util.AtomLogic._
 import util.AtomUpdateOperations._
 import io.circe._
@@ -19,45 +18,8 @@ import com.gu.pandomainauth.action.UserRequest
 class AtomActions(
   val wsClient: WSClient, 
   val atomWorkshopDB: AtomWorkshopDBAPI, 
-  val notificationsDB: NotificationsDB,
-  val notificationLists: NotificationLists) extends Controller with PanDomainAuthActions {
-
-  def createNotificationList(atomType: String, id: String) = AuthAction { req =>
-    APIResponse {
-      for {
-        currentDraftAtom <- getCurrentDraftAtom(atomType, id)
-        postHookAtom <- notificationLists.createNotificationList(currentDraftAtom)
-        updatedAtom <- publishUpdatedAtom(postHookAtom, req)
-      } yield updatedAtom
-    }
-  }
-
-  def deleteNotificationList(atomType: String, id: String) = AuthAction { req =>
-    APIResponse {
-      for {
-        currentDraftAtom <- getCurrentDraftAtom(atomType, id)
-        postHookAtom <- notificationLists.deleteNotificationList(currentDraftAtom)
-        updatedAtom <- publishUpdatedAtom(postHookAtom, req)
-      } yield updatedAtom
-    }
-  }
-
-  def sendNotificationList(atomType: String, id: String) = AuthAction { req =>
-    APIResponse {
-      for {
-        currentDraftAtom <- getCurrentDraftAtom(atomType, id)
-        postHookAtom <- notificationLists.sendNotificationList(currentDraftAtom)
-        updatedAtom <- publishUpdatedAtom(postHookAtom, req)
-      } yield updatedAtom
-    }
-  }
-
-  def hasNotificationBeenSent(atomId: String, questionId: String) = AuthAction { req =>
-    APIResponse {
-      notificationsDB.getNotification(atomId, questionId)
-    }
-  }
-
+  val notificationsDB: NotificationsDB) extends Controller with PanDomainAuthActions {
+    
   private def getCurrentDraftAtom(atomType: String, id: String): Either[AtomAPIError, Atom] = for {
     atomType <- validateAtomType(atomType)
     currentDraftAtom <- atomWorkshopDB.getAtom(previewDataStore, atomType, id)
