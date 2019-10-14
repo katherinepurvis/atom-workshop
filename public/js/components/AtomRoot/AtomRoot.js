@@ -47,7 +47,6 @@ class AtomRoot extends React.Component {
         <div className="atom__content">
           {this.props.children}
         </div>
-        <AtomActions atom={this.props.atom}/>
       </div>
     );
   }
