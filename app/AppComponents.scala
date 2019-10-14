@@ -5,7 +5,6 @@ import controllers.ExplainerReindexController
 import db.AtomDataStores._
 import db.AtomWorkshopDB
 import db.ExplainerDB
-import db.NotificationsDB
 import db.ReindexDataStores._
 import play.api.ApplicationLoader.Context
 import play.api._
@@ -17,13 +16,12 @@ class AppComponents(context: Context)
 
   val logger = new LogConfig
 
-  lazy val router = new Routes(httpErrorHandler, appController, healthcheckController, loginController, assets, supportController, reindex, explainerReindex, atomActionsController)
+  lazy val router = new Routes(httpErrorHandler, appController, healthcheckController, loginController, assets, supportController, reindex, explainerReindex)
   lazy val assets = new controllers.Assets(httpErrorHandler)
   lazy val appController = new controllers.App(wsClient, atomWorkshopDB, permissions)
   lazy val loginController = new controllers.Login(wsClient)
   lazy val healthcheckController = new controllers.Healthcheck()
   lazy val supportController = new controllers.Support(wsClient)
-  lazy val atomActionsController = new controllers.AtomActions(wsClient, atomWorkshopDB, notificationsDB)
 
   lazy val reindex = new ReindexController(previewDataStore, publishedDataStore, reindexPreview, reindexPublished, Configuration(config), actorSystem)
 
@@ -40,6 +38,4 @@ class AppComponents(context: Context)
   lazy val atomWorkshopDB = new AtomWorkshopDB()
 
   lazy val explainerDB = new ExplainerDB()
-
-  lazy val notificationsDB = new NotificationsDB(capiDynamoDB)
 }
