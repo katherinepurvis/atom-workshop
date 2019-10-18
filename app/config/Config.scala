@@ -11,7 +11,6 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient
 import com.amazonaws.services.kinesis.AmazonKinesisClient
 import com.amazonaws.services.lambda.AWSLambdaClient
 import com.gu.cm.{Mode, Configuration => ConfigurationMagic}
-import com.gu.exact_target_lists.ExactTargetConfig
 import services.{AtomWorkshopPermissionsProvider, AwsInstanceTags}
 
 object Config extends AwsInstanceTags {
@@ -127,13 +126,4 @@ object Config extends AwsInstanceTags {
   val lambdaFunctionName = config.getString("aws.lambda.notifications.name")
 
   val permissions = new AtomWorkshopPermissionsProvider(stage, awsCredentialsProvider)
-
-  val exactTargetConfig: Option[ExactTargetConfig] =
-    for {
-      username <- getOptionalProperty("exactTarget.username", config.getString)
-      password <- getOptionalProperty("exactTarget.password", config.getString)
-      folderId <- getOptionalProperty("exactTarget.folderId", config.getInt)
-      endpoint <- getOptionalProperty("exactTarget.endpoint", config.getString)
-      clientId <- getOptionalProperty("exactTarget.clientId", config.getString)
-    } yield ExactTargetConfig(username, password, folderId, endpoint, clientId)
 }

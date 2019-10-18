@@ -14,7 +14,6 @@ case class AtomWorkshopDynamoDatastoreError(message: String) extends AtomAPIErro
 case class ExplainerDynamoDatastoreError(message: String) extends AtomAPIError(message)
 case class AtomJsonParsingError(message: String) extends AtomAPIError(s"Failed to parse Json string with error: $message")
 case class AtomThriftDeserialisingError(message: String) extends AtomAPIError(s"Failed to deserialise JSON into thrift with error: $message")
-case class NotificationListsError(message: String) extends AtomAPIError(s"Notification lists error for atom: $message")
 case object UnexpectedExceptionError extends AtomAPIError("Atom workshop hit an exception it didn't expect. Please try again!")
 case object BodyRequiredForUpdateError extends AtomAPIError("You must provide a JSON representation of the the new version of the atom you wish to update in the body of your request")
 case object KinesisPublishingFailed extends AtomAPIError("Failed to publish to Content API via kinesis")

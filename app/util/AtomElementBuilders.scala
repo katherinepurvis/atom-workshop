@@ -4,7 +4,6 @@ import com.gu.contentatom.thrift.AtomData.Chart
 import com.gu.contentatom.thrift.atom.chart._
 import com.gu.contentatom.thrift.atom.cta.CTAAtom
 import com.gu.contentatom.thrift.atom.recipe.{RecipeAtom, Tags => RecipeTags, Time => RecipeTime}
-import com.gu.contentatom.thrift.atom.storyquestions.{RelatedStoryLinkType, StoryQuestionsAtom}
 import com.gu.contentatom.thrift.atom.qanda.{QAndAAtom, QAndAItem}
 import com.gu.contentatom.thrift.atom.profile.ProfileAtom
 import com.gu.contentatom.thrift.atom.guide.GuideAtom
@@ -48,7 +47,6 @@ object AtomElementBuilders {
       AtomType.Cta -> AtomData.Cta(CTAAtom("-")),
       AtomType.Recipe -> AtomData.Recipe(RecipeAtom(title, RecipeTags(), RecipeTime())),
       AtomType.Explainer -> AtomData.Explainer(ExplainerAtom(title, "-", DisplayType.Flat)),
-      AtomType.Storyquestions -> AtomData.Storyquestions(StoryQuestionsAtom("(None)", RelatedStoryLinkType.Tag, title)),
       AtomType.Qanda -> AtomData.Qanda(QAndAAtom(Some("Q&A"), None, QAndAItem(None, "Body"), None)),
       AtomType.Guide -> AtomData.Guide(GuideAtom(None, None, Nil)),
       AtomType.Profile -> AtomData.Profile(ProfileAtom(None, None, Nil, None)),
@@ -86,24 +84,11 @@ object AtomElementBuilders {
   }
 
   def buildHtml(atomType: AtomType, atomData: AtomData): Option[String] = atomData match {
-    case x: AtomData.Storyquestions if isOpen(x.storyquestions) => buildStoryQuestionsHtml(x.storyquestions)
     case x: AtomData.Guide          => buildGuideHtml(x.guide)
     case x: AtomData.Profile        => buildProfileHtml(x.profile)
     case x: AtomData.Qanda          => buildQAndAHtml(x.qanda)
     case x: AtomData.Timeline       => buildTimelineHtml(x.timeline)
     case _ => None
-  }
-
-  val isOpen: StoryQuestionsAtom => Boolean =
-    !_.closeDate.exists { closeDate =>
-      closeDate < DateTime.now(DateTimeZone.UTC).getMillis
-    }
-  
-  def buildStoryQuestionsHtml(storyquestions: StoryQuestionsAtom): Option[String] = for {
-    eqs <- storyquestions.editorialQuestions
-  } yield {
-    val list = eqs flatMap (_.questions map { q => s"<li>${q.questionText}</li>" }) mkString ""
-    "<ul>" ++ list ++ "</ul>"
   }
 
   def buildGuideHtml(atom: GuideAtom): Option[String] =

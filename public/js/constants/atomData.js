@@ -24,15 +24,6 @@ export const recipe = {
     'Structured recipes for better website presentation within articles',
 };
 
-export const storyQuestions = {
-  type: 'storyquestions',
-  fullName: 'Reader Questions',
-  description: 'Pose further questions to the audience and gather interest',
-  statsUrl: _template(
-    'https://dashboard.ophan.co.uk/interaction/storyQuestions?days=7&platform=all&atom-id=${atomId}'
-  ),
-};
-
 export const quiz = {
   type: 'quiz',
   fullName: 'Quiz',
@@ -111,14 +102,12 @@ export const allAtomTypes = [
   media,
   chart,
   audio,
-  storyQuestions,
   quiz,
   explainer,
   commonsDivision,
 ];
 export const workshopEditableAtomTypes = [
   cta,
-  storyQuestions,
   recipe,
   qa,
   guide,
